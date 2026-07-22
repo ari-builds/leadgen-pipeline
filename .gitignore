@@ -26,10 +26,19 @@ yarn-debug.log*
 yarn-error.log*
 
 # local env files
+.env
 .env*.local
 
 # vercel
 .vercel
+
+# database
+local.db
+
+# temp files
+test-body.json
+test-lead.json
+dev-server.log
 
 # typescript
 *.tsbuildinfo
