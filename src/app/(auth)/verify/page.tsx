@@ -19,6 +19,8 @@ export default function VerifyPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
+  const [resendCooldown, setResendCooldown] = useState(60);
+  const [resending, setResending] = useState(false);
 
   useEffect(() => {
     const storedEmail = sessionStorage.getItem("userEmail");
@@ -28,6 +30,12 @@ export default function VerifyPage() {
     }
     setEmail(storedEmail);
   }, [router]);
+
+  useEffect(() => {
+    if (resendCooldown <= 0) return;
+    const timer = setTimeout(() => setResendCooldown(resendCooldown - 1), 1000);
+    return () => clearTimeout(timer);
+  }, [resendCooldown]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -57,16 +65,42 @@ export default function VerifyPage() {
 
       sessionStorage.removeItem("tempToken");
       sessionStorage.removeItem("userEmail");
-
-      if (data.user?.role === "admin") {
-        router.push("/dashboard");
-      } else {
-        router.push("/dashboard");
-      }
+      router.push("/dashboard");
     } catch {
       setError("Something went wrong");
     } finally {
       setLoading(false);
+    }
+  }
+
+  async function handleResend() {
+    setResending(true);
+    setError("");
+    const tempToken = sessionStorage.getItem("tempToken");
+    if (!tempToken) {
+      setError("Session expired. Please sign in again.");
+      router.push("/login");
+      return;
+    }
+
+    try {
+      const res = await fetch("/api/auth/resend-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ tempToken }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error);
+        return;
+      }
+
+      setResendCooldown(60);
+    } catch {
+      setError("Failed to resend code");
+    } finally {
+      setResending(false);
     }
   }
 
@@ -100,7 +134,18 @@ export default function VerifyPage() {
               {loading ? "Verifying..." : "Verify Code"}
             </Button>
           </form>
-          <div className="mt-4 text-center text-sm text-muted-foreground">
+          <div className="mt-4 flex flex-col items-center gap-2 text-sm text-muted-foreground">
+            <button
+              onClick={handleResend}
+              disabled={resendCooldown > 0 || resending}
+              className="underline hover:text-foreground disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {resending
+                ? "Sending..."
+                : resendCooldown > 0
+                ? `Resend code in ${resendCooldown}s`
+                : "Resend code"}
+            </button>
             <button
               onClick={() => router.push("/login")}
               className="underline hover:text-foreground"
