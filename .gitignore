@@ -40,6 +40,10 @@ test-body.json
 test-lead.json
 dev-server.log
 
+# scripts with secrets
+scripts/create-admin.js
+scripts/update-password.js
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
