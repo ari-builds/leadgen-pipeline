@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { ExportButton } from "@/components/export-button";
 import {
   Card,
   CardContent,
@@ -20,7 +21,32 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  PieChart,
+  Pie,
+  Cell,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  Legend,
+} from "recharts";
 import { toast } from "sonner";
+
+const STATUS_COLORS: Record<string, string> = {
+  new: "#2563EB",
+  contacted: "#CA8A04",
+  qualified: "#16A34A",
+  closed: "#7C3AED",
+};
+
+const INDUSTRY_COLORS = [
+  "#2563EB", "#CA8A04", "#16A34A", "#7C3AED", "#DC2626",
+  "#0891B2", "#DB2777", "#65A30D", "#EA580C", "#6366F1",
+];
 
 interface Client {
   id: number;
@@ -91,6 +117,7 @@ export default function ClientDetailPage() {
           <p className="text-muted-foreground mt-1">{client.description}</p>
         </div>
         <div className="flex gap-2">
+          <ExportButton clientId={Number(params.id)} />
           <a href={`/client/${client.slug}`} target="_blank">
             <Button variant="outline">Client Dashboard ↗</Button>
           </a>
@@ -126,6 +153,79 @@ export default function ClientDetailPage() {
           </CardHeader>
         </Card>
       </div>
+
+      {/* Analytics Charts */}
+      {leads.length > 0 && (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Leads by Status</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ResponsiveContainer width="100%" height={250}>
+                <PieChart>
+                  <Pie
+                    data={[
+                      { name: "New", value: leads.filter((l) => l.status === "new").length },
+                      { name: "Contacted", value: leads.filter((l) => l.status === "contacted").length },
+                      { name: "Qualified", value: leads.filter((l) => l.status === "qualified").length },
+                      { name: "Closed", value: leads.filter((l) => l.status === "closed").length },
+                    ].filter((d) => d.value > 0)}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={50}
+                    outerRadius={80}
+                    paddingAngle={4}
+                    dataKey="value"
+                    label={({ name, value }) => `${name}: ${value}`}
+                  >
+                    {["new", "contacted", "qualified", "closed"].map((status) => (
+                      <Cell key={status} fill={STATUS_COLORS[status]} />
+                    ))}
+                  </Pie>
+                  <Tooltip />
+                  <Legend />
+                </PieChart>
+              </ResponsiveContainer>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Leads by Industry</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {(() => {
+                const map = new Map<string, number>();
+                leads.forEach((l) => {
+                  const ind = l.industry || "Unknown";
+                  map.set(ind, (map.get(ind) || 0) + 1);
+                });
+                const industryData = Array.from(map.entries())
+                  .sort((a, b) => b[1] - a[1])
+                  .slice(0, 8)
+                  .map(([name, count]) => ({ name, count }));
+
+                return (
+                  <ResponsiveContainer width="100%" height={250}>
+                    <BarChart data={industryData}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                      <XAxis dataKey="name" tick={{ fontSize: 11 }} angle={-35} textAnchor="end" height={70} />
+                      <YAxis allowDecimals={false} />
+                      <Tooltip />
+                      <Bar dataKey="count" radius={[4, 4, 0, 0]}>
+                        {industryData.map((_, i) => (
+                          <Cell key={i} fill={INDUSTRY_COLORS[i % INDUSTRY_COLORS.length]} />
+                        ))}
+                      </Bar>
+                    </BarChart>
+                  </ResponsiveContainer>
+                );
+              })()}
+            </CardContent>
+          </Card>
+        </div>
+      )}
 
       <Card>
         <CardHeader>

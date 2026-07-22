@@ -24,6 +24,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { ExportButton } from "@/components/export-button";
 import { toast } from "sonner";
 
 interface Lead {
@@ -108,6 +109,7 @@ export default function LeadsPage() {
             <SelectItem value="closed">Closed</SelectItem>
           </SelectContent>
         </Select>
+        <ExportButton status={statusFilter} search={search} />
       </div>
 
       <Card>
