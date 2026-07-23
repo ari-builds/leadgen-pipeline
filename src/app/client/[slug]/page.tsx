@@ -217,7 +217,7 @@ export default function ClientDashboardPage() {
     }
     toast.info("Preparing " + format.toUpperCase() + " export...");
     try {
-      const res = await fetch(`/api/leads/export?format=${format}&client_id=2`);
+      const res = await fetch(`/api/leads/export?format=${format}&client_id=1`);
       if (!res.ok) throw new Error("Export failed");
       const blob = await res.blob();
       const url = URL.createObjectURL(blob);
