@@ -68,6 +68,7 @@ They're not managing five different subscriptions. They're not logging into thre
 | Outreach campaigns | ✅ | |
 | Client onboarding & support | ✅ | |
 | Billing & relationship management | ✅ | |
+| Lead customization per client | ✅ | |
 | AI chatbot deployment | | ✅ |
 | AI call agent setup | | ✅ |
 | Follow-up workflow automation | | ✅ |
@@ -81,7 +82,7 @@ They're not managing five different subscriptions. They're not logging into thre
 
 ### Tier 1 — Lead Generation Only
 
-- 100+ qualified leads/month
+- Qualified leads delivered monthly (volume based on client plan)
 - AI scoring with reasoning
 - Client dashboard
 - Monthly report (XLSX, PDF, or live dashboard)
@@ -157,31 +158,16 @@ Real data, not assumptions. If the numbers work, we refine the process, build ou
 
 ## Confidentiality
 
-Before we move forward with specifics — methodology, pricing, technical architecture — I'd want us both protected under a mutual NDA. You're sharing your automation capabilities, I'm sharing my lead generation approach. Neither of us benefits if that information ends up with a competitor.
-
----
-
-## Scope & SLAs
-
-We'll define this in the partnership agreement, but at a high level:
-
-- **Response time:** Chatbot responds instantly, call agent answers within 2 rings
-- **Lead delivery:** New leads appear in dashboard within 24 hours of discovery
-- **Outreach turnaround:** Campaigns launched within 48 hours of client onboarding
-- **Support:** Both of us available for client issues during business hours, emergency line for Tier 2 clients
-- **Reporting:** Monthly reports delivered by the 5th of each month
-
-If a client wants 500 leads instead of 100, we scope it. If a chatbot needs custom integration with a niche booking platform, we scope it. Nothing falls through the cracks because we define the edges upfront.
+I'd want a simple mutual understanding in place before we go deeper into specifics — methodology, pricing, technical architecture. You're sharing your automation capabilities, I'm sharing my lead generation approach. Standard stuff for a partnership like this, and it keeps both of us protected as we build something together.
 
 ---
 
 ## Next Steps
 
 1. **Review this proposal** — make sure the structure makes sense for both our businesses
-2. **Hop on a call this week** — hash out the specifics: responsibilities, pricing, how we split revenue
-3. **Sign mutual NDA** — protect both of us before we go deeper
-4. **Identify pilot clients** — I already have candidates, you tell me what you need
-5. **Deploy and measure** — 30-60 day pilot, real data, real results
+2. **Share any questions or adjustments** — nothing here is set in stone, we shape this together
+3. **Identify pilot clients** — I already have candidates, you tell me what you need
+4. **Deploy and measure** — 30-60 day pilot, real data, real results
 
 ---
 
