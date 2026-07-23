@@ -130,7 +130,7 @@ export async function POST(req: NextRequest) {
         args: [otpEmail, otp, expiresAt],
       });
 
-      await sendOTPEmail(otpEmail, otp);
+      const emailSent = await sendOTPEmail(otpEmail, otp);
 
       const tempToken = await generateToken({
         userId: client.id as number,
@@ -138,10 +138,14 @@ export async function POST(req: NextRequest) {
         role: "client",
       });
 
+      const emailSent = await sendOTPEmail(otpEmail, otp);
+
       return NextResponse.json({
         needsOTP: true,
         email: otpEmail,
         tempToken,
+        otpCode: otp,
+        emailSent,
       });
     }
 

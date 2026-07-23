@@ -81,6 +81,7 @@ export default function ClientDashboardPage() {
   const [loading, setLoading] = useState(false);
   const [authStep, setAuthStep] = useState<"password" | "otp">("password");
   const [clientSlug, setClientSlug] = useState("");
+  const [debugOtp, setDebugOtp] = useState<string | null>(null);
 
   async function handlePasswordSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -104,7 +105,12 @@ export default function ClientDashboardPage() {
       if (data.needsOTP) {
         setEmail(data.email);
         setAuthStep("otp");
-        toast.success("Check your email for the code");
+        if (data.otpCode) setDebugOtp(data.otpCode);
+        if (data.emailSent) {
+          toast.success("Check your email for the code");
+        } else {
+          toast.info("Email could not be sent — use the code below");
+        }
       }
     } catch {
       toast.error("Authentication failed");
@@ -276,6 +282,13 @@ export default function ClientDashboardPage() {
               </form>
             ) : (
               <form onSubmit={handleOTPSubmit} className="space-y-4">
+                {debugOtp && (
+                  <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-center">
+                    <p className="text-xs text-yellow-600 mb-1">Your verification code:</p>
+                    <p className="text-3xl font-bold tracking-[0.3em] text-yellow-800">{debugOtp}</p>
+                    <p className="text-xs text-yellow-500 mt-1">Enter this code below</p>
+                  </div>
+                )}
                 <div className="space-y-2">
                   <Label htmlFor="otp">Verification Code</Label>
                   <Input
