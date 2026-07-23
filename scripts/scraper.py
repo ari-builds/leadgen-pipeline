@@ -16,6 +16,7 @@ import urllib.request
 import urllib.parse
 import urllib.error
 import ssl
+import html as html_module
 from html.parser import HTMLParser
 
 
@@ -138,9 +139,9 @@ def extract_company_info(html, url):
             break
 
     return {
-        "company_name": title.split(" - ")[0].split(" | ")[0].strip() if title else "",
+        "company_name": html_module.unescape(title.split(" - ")[0].split(" | ")[0].strip()) if title else "",
         "website": url,
-        "description": description[:200],
+        "description": html_module.unescape(description[:200]),
         "emails": emails[:5],
         "phones": phones[:3],
         "social": social,
@@ -150,41 +151,54 @@ def extract_company_info(html, url):
 
 def search_leads(query, max_results=10):
     """
-    Search for leads using DuckDuckGo HTML (no API key needed).
+    Search for leads using duckduckgo-search (handles CAPTCHAs).
     Returns a list of URLs with snippets.
     """
-    encoded = urllib.parse.quote_plus(query)
-    url = f"https://html.duckduckgo.com/html/?q={encoded}"
-    html = fetch_url(url)
+    try:
+        from ddgs import DDGS
+        with DDGS() as ddgs:
+            results_raw = list(ddgs.text(query, max_results=max_results))
+        
+        results = []
+        for r in results_raw:
+            results.append({
+                "url": r.get("href", ""),
+                "title": r.get("title", ""),
+                "snippet": r.get("body", ""),
+            })
+        return {"query": query, "results": results}
+    except Exception as e:
+        # Fallback to HTML scraping
+        encoded = urllib.parse.quote_plus(query)
+        url = f"https://html.duckduckgo.com/html/?q={encoded}"
+        html = fetch_url(url)
 
-    if html.startswith("ERROR"):
-        return {"error": html, "results": []}
+        if html.startswith("ERROR"):
+            return {"error": str(e), "results": []}
 
-    # Extract result links and snippets
-    results = []
-    # DuckDuckGo HTML results pattern
-    link_pattern = r'<a[^>]+class="result__a"[^>]+href="([^"]+)"[^>]*>([^<]*(?:<[^>]*>[^<]*)*)</a>'
-    snippet_pattern = r'<a[^>]+class="result__snippet"[^>]*>([^<]*(?:<[^>]*>[^<]*)*)</a>'
+        results = []
+        link_pattern = r'<a[^>]+class="result__a"[^>]+href="([^"]+)"[^>]*>(.*?)</a>'
+        snippet_pattern = r'<a[^>]+class="result__snippet"[^>]*>(.*?)</a>'
 
-    links = re.findall(link_pattern, html)
-    snippets = re.findall(snippet_pattern, html)
+        links = re.findall(link_pattern, html, re.DOTALL)
+        snippets = re.findall(snippet_pattern, html, re.DOTALL)
 
-    # Clean HTML tags from snippets
-    def clean(s):
-        return re.sub(r'<[^>]+>', '', s).strip()
+        def clean(s):
+            return re.sub(r'<[^>]+>', '', s).strip()
 
-    for i, (link, title) in enumerate(links[:max_results]):
-        # Decode DuckDuckGo redirect URL
-        if "uddg=" in link:
-            link = urllib.parse.unquote(link.split("uddg=")[1].split("&")[0])
-        snippet = clean(snippets[i]) if i < len(snippets) else ""
-        results.append({
-            "url": link,
-            "title": clean(title),
-            "snippet": snippet,
-        })
+        for i, (link, title) in enumerate(links[:max_results]):
+            if "uddg=" in link:
+                link = urllib.parse.unquote(link.split("uddg=")[1].split("&")[0])
+            elif "duckduckgo.com/y.js" in link or "duckduckgo.com/l/" in link:
+                continue
+            snippet = clean(snippets[i]) if i < len(snippets) else ""
+            results.append({
+                "url": link,
+                "title": clean(title),
+                "snippet": snippet,
+            })
 
-    return {"query": query, "results": results}
+        return {"query": query, "results": results}
 
 
 def scrape_website(url):
