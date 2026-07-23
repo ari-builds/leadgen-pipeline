@@ -2,12 +2,36 @@ import { NextRequest, NextResponse } from "next/server";
 import { verifyToken } from "@/lib/auth";
 
 const publicRoutes = ["/login", "/verify", "/api/auth/login", "/api/auth/register", "/api/auth/verify-otp"];
+const clientPublicRoutes = ["/client/"];
 
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
+  const hostname = req.headers.get("host") || "";
 
-  // Allow public routes
+  // --- SUBDOMAIN ROUTING ---
+  // Extract subdomain: "legacy-memorial.leadgen-pipeline.vercel.app" -> "legacy-memorial"
+  const baseDomain = process.env.VERCEL_URL || "leadgen-pipeline-mauve.vercel.app";
+  const subdomain = hostname.replace(`.${baseDomain}`, "").replace(baseDomain, "");
+
+  if (subdomain && subdomain.length > 0 && !subdomain.includes(".") && subdomain !== "www" && subdomain !== "api") {
+    // Rewrite /subdomain-path to /client/{subdomain}
+    const url = req.nextUrl.clone();
+    url.pathname = `/client/${subdomain}${pathname === "/" ? "" : pathname}`;
+    return NextResponse.rewrite(url);
+  }
+
+  // Allow public routes (admin auth)
   if (publicRoutes.some((route) => pathname.startsWith(route))) {
+    return NextResponse.next();
+  }
+
+  // Allow client dashboard routes (they handle their own auth)
+  if (clientPublicRoutes.some((route) => pathname.startsWith(route))) {
+    return NextResponse.next();
+  }
+
+  // Allow API routes for client auth
+  if (pathname.startsWith("/api/client-auth")) {
     return NextResponse.next();
   }
 
@@ -20,7 +44,7 @@ export async function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
-  // Check auth token
+  // Check auth token for admin routes
   const token = req.cookies.get("auth-token")?.value;
   if (!token) {
     return NextResponse.redirect(new URL("/login", req.url));
@@ -38,7 +62,6 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL("/dashboard", req.url));
   }
 
-  // Add user info to headers for server components
   const requestHeaders = new Headers(req.headers);
   requestHeaders.set("x-user-id", payload.userId.toString());
   requestHeaders.set("x-user-email", payload.email);
