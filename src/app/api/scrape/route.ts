@@ -23,6 +23,14 @@ function runScraper(args: string[], timeout = 30000): string {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 async function saveLeadToDb(info: any, clientId?: number): Promise<number> {
+  // Skip leads with no contact info at all
+  const hasEmail = info.emails && info.emails.length > 0 && info.emails[0];
+  const hasPhone = info.phones && info.phones.length > 0 && info.phones[0];
+  const hasSocial = info.social && Object.keys(info.social).length > 0;
+  if (!hasEmail && !hasPhone && !hasSocial) {
+    return -1; // Signal: no contact info, skip
+  }
+
   // Deduplicate by website URL
   if (info.website) {
     const existing = await db.execute({
@@ -110,6 +118,13 @@ export async function POST(req: NextRequest) {
         if (info.error) {
           return NextResponse.json({ error: info.error }, { status: 500 });
         }
+        // Check contact info before saving
+        const hasEmail2 = info.emails && info.emails.length > 0 && info.emails[0];
+        const hasPhone2 = info.phones && info.phones.length > 0 && info.phones[0];
+        const hasSocial2 = info.social && Object.keys(info.social).length > 0;
+        if (!hasEmail2 && !hasPhone2 && !hasSocial2) {
+          return NextResponse.json({ error: "No contact info found for this lead — skipped" }, { status: 400 });
+        }
         const leadId = await saveLeadToDb(info, clientId);
         return NextResponse.json({ ...info, lead_id: leadId });
       }
@@ -133,11 +148,16 @@ export async function POST(req: NextRequest) {
           return NextResponse.json({ error: result.error }, { status: 500 });
         }
 
-        // Save each lead to DB
+        // Save each lead to DB (skip leads with no contact info)
         const savedLeads = [];
+        let skippedNoContact = 0;
         for (const lead of result.leads || []) {
           try {
             const leadId = await saveLeadToDb(lead, clientId);
+            if (leadId === -1) {
+              skippedNoContact++;
+              continue;
+            }
             savedLeads.push({ ...lead, lead_id: leadId });
           } catch {
             // Skip failed saves
@@ -151,6 +171,7 @@ export async function POST(req: NextRequest) {
           total_urls_found: result.total_urls_found,
           total_scraped: result.total_scraped,
           total_saved: savedLeads.length,
+          skipped_no_contact: skippedNoContact,
           leads: savedLeads,
         });
       }
