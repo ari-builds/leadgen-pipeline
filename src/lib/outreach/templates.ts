@@ -113,10 +113,11 @@ function scoreTier(score: number): "hot" | "warm" | "cool" {
   return "cool";
 }
 
-const SIGNATURE = `---
-Ariana, Founder & CEO
-NetClicks by Ari
-netclicksbyari@gmail.com`;
+const SIGNATURE = `Ariana
+Founder & CEO | NetClicks by Ari
+📞 netclicksbyari@gmail.com
+🌐 Yakima, WA
+"Helping local businesses get found by the families who need them"`;
 
 export function generateEmailTemplate(
   type: "initial" | "followup_1" | "followup_2",
