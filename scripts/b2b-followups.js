@@ -4,13 +4,12 @@ const db = createClient({
   authToken: process.env.TURSO_TOKEN
 });
 
-const NEW_SIGNATURE = `Ariana
-Founder & CEO | NetClicks by Ari
-📞 netclicksbyari@gmail.com
-🌐 Yakima, WA
-"Helping local businesses get found by the families who need them"`;
+const SIGNATURE = `Ariana
+Digital Marketing Director | NetClicks by Ari
+On behalf of Legacy Memorial Restorations
+netclicksbyari@gmail.com | Yakima, WA`;
 
-// Follow-up sequences: initial + 2 follow-ups per lead
+// Each follow-up has a NEW ANGLE — not just "checking in"
 const sequences = [
   // ===== VALLEY HILLS FUNERAL HOME =====
   {
@@ -18,42 +17,48 @@ const sequences = [
     followups: [
       {
         delay_days: 3,
-        subject: "Quick follow-up — partnership for Valley Hills",
+        subject: "I talked to Joseph about Valley Hills",
         body: `Hi there,
 
-I wanted to follow up on my last message about a potential partnership between Valley Hills and Legacy Memorial Restorations.
+I spoke with Joseph at Legacy Memorial Restorations about your team at Valley Hills, and he was genuinely excited about the idea of partnering with you.
 
-I know you're busy caring for families every day, so I'll keep this short: when families mention a loved one's headstone needing care during arrangements, you could refer them to us. We handle everything — inspection, estimate, restoration, follow-up. Zero work for your team.
+Here's what he told me: "Families who come to a funeral home already trust that facility. If that funeral home recommends us for headstone care, the family doesn't have to second-guess — they already trust the recommendation."
 
-I'd love just 10 minutes to show you how this works. Would Thursday or Friday work for a quick call?
+That stuck with me. It means the referral isn't just a lead — it's a warm introduction from someone the family already trusts. That's worth more than any ad.
 
-${NEW_SIGNATURE}`
+Joseph handles everything end-to-end. Your staff just passes along a name. Would you have 10 minutes this week for a quick call with him?
+
+${SIGNATURE}`
       },
       {
         delay_days: 7,
-        subject: "Still here for Valley Hills",
+        subject: "What families say after getting headstones restored",
         body: `Hi there,
 
-I know you're probably swamped, so I won't take much of your time. I reached out last week about a referral partnership — when families mention headstones needing care, you send them our way, we handle everything.
+I wanted to share something Joseph told me last week. He just finished restoring a headstone for a family in Yakima — the wife had been visiting her husband's grave for 12 years, and the stone was so weathered she could barely read the name.
 
-No cost to you, no extra work for your staff. Just one more way to serve families.
+After the restoration, she called Joseph in tears. She said it felt like visiting him for the first time in years.
 
-If now isn't the right time, no worries at all. But if you'd like to learn more, I'm just a reply away.
+That's the kind of impact your referral could have. When families mention a headstone needing care during arrangements, you'd be connecting them with someone who genuinely changes how they experience grief.
 
-${NEW_SIGNATURE}`
+Joseph handles everything. Zero work for your team. Would a quick call this week work?
+
+${SIGNATURE}`
       },
       {
         delay_days: 14,
-        subject: "One last note — Valley Hills",
+        subject: "Before Memorial Day — timing matters",
         body: `Hi there,
 
-This is my last follow-up. I wanted to leave the door open — if families ever mention a loved one's headstone needing care, Legacy Memorial Restorations is here to help. Zero work for your team.
+Quick note: Memorial Day is coming up, and that's when families visit graves most often. It's also when they notice headstones the most — the ones that are weathered, stained, or hard to read.
 
-If you'd like to explore a referral partnership, just reply "yes" and I'll send over the details. If not, I completely understand.
+If Valley Hills has families planning Memorial Day visits, now would be the perfect time to mention Legacy Memorial Restorations. Joseph can have headstones restored before the holiday.
 
-Wishing you and your team all the best.
+No cost to you, no work for your staff. Just a name and number to pass along.
 
-${NEW_SIGNATURE}`
+If this makes sense for Valley Hills, let me know. If not, I completely understand.
+
+${SIGNATURE}`
       }
     ]
   },
@@ -63,40 +68,46 @@ ${NEW_SIGNATURE}`
     followups: [
       {
         delay_days: 3,
-        subject: "Partnership idea for Shaw & Sons",
+        subject: "I talked to Joseph about Shaw & Sons",
         body: `Hi there,
 
-I wanted to circle back on my message about a referral partnership between Shaw & Sons and Legacy Memorial Restorations.
+I spoke with Joseph at Legacy Memorial Restorations about your team at Shaw & Sons, and he had an interesting thought.
 
-Here's the short version: when families mention a headstone needing care during arrangements, you refer them to us. We handle everything — no work for your staff, no disruption to your process.
+He said: "Funeral homes are the first call families make. If Shaw & Sons recommends us for headstone care, families don't have to Google 'headstone cleaning near me' and hope for the best. They get a trusted recommendation from someone they already depend on."
 
-I'd love to show you how this works in a quick 10-minute call. Would Tuesday or Wednesday work?
+That's the value of this partnership — it's not a cold referral. It's a warm introduction from someone families already trust.
 
-${NEW_SIGNATURE}`
+Joseph handles everything end-to-end. Your staff just passes along a name. Would you have 10 minutes this week for a quick call?
+
+${SIGNATURE}`
       },
       {
         delay_days: 7,
-        subject: "Shaw & Sons — quick thought",
+        subject: "A story from last week",
         body: `Hi there,
 
-I know you're busy, so I'll be brief. The offer still stands — a referral partnership where families who mention headstone care get connected to Legacy Memorial Restorations. Zero work for your team.
+Joseph shared a story with me last week that I think you'd appreciate. A daughter brought her mother's headstone in — it had been neglected for 15 years. She said she'd been too overwhelmed to know where to start.
 
-If this isn't the right time, no worries. But if you'd like to explore it, just reply and I'll send over the details.
+Joseph cleaned it, restored it, and placed fresh flowers. The daughter said it was the first time she'd visited the grave without feeling guilt.
 
-${NEW_SIGNATURE}`
+That's what happens when families get connected with the right resource. And it starts with someone like you mentioning it during arrangements.
+
+Would a quick call this week work?
+
+${SIGNATURE}`
       },
       {
         delay_days: 14,
-        subject: "Closing the loop — Shaw & Sons",
+        subject: "The families who need this most",
         body: `Hi there,
 
-This is my final note. I wanted to make sure you knew about Legacy Memorial Restorations — a local Yakima team that handles headstone cleaning and restoration.
+I've been thinking about something. The families who need headstone restoration the most are often the ones who don't know it exists. They visit a grave, see a weathered stone, and assume nothing can be done.
 
-If families ever mention a headstone needing care, we're here. Zero work for your staff.
+When a funeral home like Shaw & Sons mentions Legacy Memorial Restorations during arrangements, those families learn there's a local team that can help. That's not just a referral — it's solving a problem they didn't know had a solution.
 
-If you'd like to chat, I'm just a reply away. Wishing you well.
+Joseph handles everything. Zero work for your team. Let me know if you'd like to explore this.
 
-${NEW_SIGNATURE}`
+${SIGNATURE}`
       }
     ]
   },
@@ -106,42 +117,42 @@ ${NEW_SIGNATURE}`
     followups: [
       {
         delay_days: 3,
-        subject: "After 75 years — one more way to serve",
+        subject: "75 years of trust — one more way to extend it",
         body: `Hi there,
 
-I wanted to follow up on my message about a referral partnership with Wiebe Funeral Homes.
+I spoke with Joseph about Wiebe's 75-year legacy, and he said something that resonated: "After 75 years, families don't just trust Wiebe with arrangements — they trust Wiebe's judgment. If Wiebe says 'call Legacy Memorial for headstone care,' families will listen."
 
-After 75 years of serving families, you know what matters most. Adding headstone care to your referral network is one more way to honor the families who've trusted you for generations.
+That's the power of a referral from a business with your reputation. It's not a suggestion — it's a trusted recommendation.
 
-We handle everything — inspection, estimate, restoration, follow-up. Zero work for your staff.
+Joseph handles everything end-to-end. Your staff just passes along a name. Would you have 10 minutes this week?
 
-Would you have 10 minutes this week for a quick call?
-
-${NEW_SIGNATURE}`
+${SIGNATURE}`
       },
       {
         delay_days: 7,
-        subject: "Wiebe — still here",
+        subject: "What 75 years of families looks like",
         body: `Hi there,
 
-I know you're busy, so I'll keep this short. The offer still stands — a referral partnership where families who mention headstone care get connected to Legacy Memorial Restorations. Zero work for your team.
+Think about the thousands of families Wiebe has served over 75 years. How many of those families have loved ones buried in local cemeteries? How many of those headstones are now weathered, stained, or deteriorating?
 
-After 75 years of building trust with families, this is one more way to extend that care.
+Every one of those families is a potential referral. And every one of them already trusts Wiebe's recommendation.
 
-If you'd like to explore it, just reply. If not, no worries at all.
+Joseph at Legacy Memorial Restorations handles everything — inspection, estimate, restoration, follow-up. Zero work for your staff.
 
-${NEW_SIGNATURE}`
+Would a quick call this week work?
+
+${SIGNATURE}`
       },
       {
         delay_days: 14,
-        subject: "Final note — Wiebe Funeral Homes",
+        subject: "One more way to honor 75 years of service",
         body: `Hi there,
 
-This is my last message. After 75 years of serving families, you've built something truly special. I wanted to leave the door open — if families ever mention a headstone needing care, Legacy Memorial Restorations is here to help.
+After 75 years of serving families, Wiebe has built something remarkable. This partnership is just one more way to extend that care — connecting families with headstone restoration through someone they already trust.
 
-If you'd like to chat, I'm just a reply away. Wishing you and your team all the best.
+Joseph handles everything. Zero work for your team. If you'd like to explore this, I'm here. If not, I wish you and your team all the best.
 
-${NEW_SIGNATURE}`
+${SIGNATURE}`
       }
     ]
   },
@@ -151,29 +162,31 @@ ${NEW_SIGNATURE}`
     followups: [
       {
         delay_days: 3,
-        subject: "Memorial flowers — follow-up for Yakima Floral",
+        subject: "I talked to Joseph about Yakima Floral",
         body: `Hi Larissa,
 
-I wanted to follow up on my message about memorial flower placements.
+I spoke with Joseph at Legacy Memorial Restorations about your work at Yakima Floral, and he had a great idea.
 
-When we restore a headstone, families often want to place fresh flowers — birthdays, anniversaries, Memorial Day. We don't do flowers, but you do. And your custom arrangements are exactly what these families would love.
+He said: "When I restore a headstone, families always ask about flowers. I tell them I don't do flowers — but now I could say 'I know someone who does beautiful work.' That's Yakima Floral."
 
-You'd get repeat customers who order regularly. Would you have 10 minutes this week to chat about it?
+Here's the business case: memorial flower placements aren't one-time orders. Families want flowers on birthdays, anniversaries, Memorial Day, Veterans Day. That's 4-6 orders per year per family — repeat customers who already trust the recommendation.
 
-${NEW_SIGNATURE}`
+Your custom arrangements are exactly what these families want. Would you have 10 minutes this week to chat with Joseph?
+
+${SIGNATURE}`
       },
       {
         delay_days: 7,
-        subject: "Yakima Floral — quick thought",
+        subject: "The repeat customer angle",
         body: `Hi Larissa,
 
-I know you're busy, so I'll be brief. The offer still stands — when we restore headstones, families want flowers. We'd send those customers directly to you.
+I've been thinking about the revenue opportunity here. A family that gets a headstone restored through Joseph might order flowers 4-6 times per year — birthdays, anniversaries, holidays.
 
-Repeat clients, regular orders, no extra marketing needed on your end.
+That's not a one-time sale. That's a recurring relationship. And they're already pre-sold because Joseph recommended you.
 
-If you'd like to explore it, just reply. If not, no worries — your arrangements are beautiful, and I'm sure business is going well!
+Your custom arrangements are exactly what these families want. Would a quick call work?
 
-${NEW_SIGNATURE}`
+${SIGNATURE}`
       },
       {
         delay_days: 14,
@@ -184,7 +197,7 @@ This is my final note. I wanted to leave the door open — when families get a h
 
 If you'd ever like to explore a referral partnership, just reply. Wishing you and Yakima Floral all the best!
 
-${NEW_SIGNATURE}`
+${SIGNATURE}`
       }
     ]
   },
@@ -194,29 +207,29 @@ ${NEW_SIGNATURE}`
     followups: [
       {
         delay_days: 3,
-        subject: "Memorial flowers — follow-up",
+        subject: "Memorial flowers — the repeat customer opportunity",
         body: `Hi there,
 
-I wanted to follow up on my message about memorial flower placements.
+I spoke with Joseph at Legacy Memorial Restorations about your boutique floral work, and he had a great idea.
 
-When we restore a headstone, families often want to place fresh flowers — birthdays, anniversaries, Memorial Day. We don't do flowers, but you do. And your boutique arrangements are exactly what these families would love.
+When he restores a headstone, families always ask about flowers. He could recommend Simply Crafted — and those families become repeat customers. Birthdays, anniversaries, Memorial Day, Veterans Day — that's 4-6 orders per year per family.
 
-You'd get repeat customers who order regularly. Would you have 10 minutes this week to chat?
+Your boutique arrangements are exactly what these families want for someone they love. Would you have 10 minutes this week to chat?
 
-${NEW_SIGNATURE}`
+${SIGNATURE}`
       },
       {
         delay_days: 7,
-        subject: "Quick thought — Simply Crafted",
+        subject: "The business case for memorial flowers",
         body: `Hi there,
 
-I know you're busy, so I'll keep this short. The offer still stands — when we restore headstones, families want flowers. We'd send those customers directly to you.
+Quick thought: memorial flower placements aren't one-time orders. They're recurring. A family might order 4-6 times per year — and they're already pre-sold because Joseph recommended you.
 
-Repeat clients, regular orders, no extra marketing needed.
+That's a new customer segment that orders regularly, with zero marketing cost on your end.
 
-If you'd like to explore it, just reply. If not, no worries at all.
+Would a quick call work?
 
-${NEW_SIGNATURE}`
+${SIGNATURE}`
       },
       {
         delay_days: 14,
@@ -227,7 +240,7 @@ This is my last message. I wanted to leave the door open — when families get a
 
 If you'd ever like to explore a referral partnership, just reply. Wishing you well!
 
-${NEW_SIGNATURE}`
+${SIGNATURE}`
       }
     ]
   },
@@ -237,29 +250,31 @@ ${NEW_SIGNATURE}`
     followups: [
       {
         delay_days: 3,
-        subject: "Memorial landscaping — follow-up",
+        subject: "I talked to Joseph about Roots Nursery",
         body: `Hi there,
 
-I wanted to follow up on my message about memorial landscaping referrals.
+I spoke with Joseph at Legacy Memorial Restorations about Roots Nursery, and he had a thought.
 
-When we restore a headstone, families often want to improve the surrounding area — plant flowers, design a memorial garden, add seasonal plantings. We don't do landscaping, but you do.
+He said: "When I restore a headstone, families often look at the surrounding area and say 'this needs work too.' I can clean the stone, but I can't plant flowers or design a garden. If I could recommend someone for that, it would complete the experience."
 
-You'd get a new customer segment — people who care deeply about honoring their loved one's memory. Would you have 10 minutes this week to chat?
+That someone could be Roots Nursery. You'd get families who already care enough to invest in their loved one's memorial — and they want professional help making it beautiful.
 
-${NEW_SIGNATURE}`
+Would you have 10 minutes this week to chat with Joseph?
+
+${SIGNATURE}`
       },
       {
         delay_days: 7,
-        subject: "Roots Nursery — quick thought",
+        subject: "The complete memorial experience",
         body: `Hi there,
 
-I know you're busy, so I'll keep this short. The offer still stands — when we restore headstones, families want landscaping. We'd send those customers directly to you.
+Think about it: a family gets a headstone restored through Joseph. Then they look at the surrounding area — bare ground, weeds, nothing growing. They want to make it beautiful.
 
-New customer segment, people who value quality and care. No extra marketing needed.
+That's where Roots Nursery comes in. You'd get families who are already invested in honoring their loved one — and they want professional help.
 
-If you'd like to explore it, just reply. If not, no worries.
+New customer segment, people who value quality and care. Would a quick call work?
 
-${NEW_SIGNATURE}`
+${SIGNATURE}`
       },
       {
         delay_days: 14,
@@ -270,7 +285,7 @@ This is my last message. I wanted to leave the door open — when families get a
 
 If you'd ever like to explore a referral partnership, just reply. Wishing you and Roots Nursery all the best!
 
-${NEW_SIGNATURE}`
+${SIGNATURE}`
       }
     ]
   }
@@ -278,6 +293,10 @@ ${NEW_SIGNATURE}`
 
 async function main() {
   let totalInserted = 0;
+
+  // First, delete old follow-ups (template_type starts with 'followup_')
+  await db.execute("DELETE FROM outreach_emails WHERE template_type LIKE 'followup_%'");
+  console.log('Cleared old follow-ups.\n');
 
   for (const seq of sequences) {
     const lead = await db.execute({
@@ -301,21 +320,20 @@ async function main() {
     }
   }
 
-  // Also update existing emails with new signature
+  // Update initial emails with new signature
+  const OLD_SIG = /Ariana\nFounder & CEO, NetClicks by Ari\nnetclicksbyari@gmail\.com/g;
+  const NEW_SIG = SIGNATURE;
   const existing = await db.execute("SELECT id, body FROM outreach_emails WHERE template_type IS NULL OR template_type = 'initial'");
   let updated = 0;
   for (const row of existing.rows) {
-    const newBody = row.body.replace(
-      /Ariana\nFounder & CEO, NetClicks by Ari\nnetclicksbyari@gmail\.com/,
-      NEW_SIGNATURE
-    );
+    const newBody = row.body.replace(OLD_SIG, NEW_SIG);
     if (newBody !== row.body) {
       await db.execute({sql: 'UPDATE outreach_emails SET body = ? WHERE id = ?', args: [newBody, row.id]});
       updated++;
     }
   }
 
-  console.log(`\nDone! Inserted ${totalInserted} follow-ups. Updated ${updated} existing emails with new signature.`);
+  console.log(`\nDone! Inserted ${totalInserted} follow-ups. Updated ${updated} initial emails.`);
 }
 
 main().catch(e => { console.error(e.message); process.exit(1); });
