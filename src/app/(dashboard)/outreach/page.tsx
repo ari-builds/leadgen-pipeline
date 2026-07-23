@@ -109,6 +109,34 @@ function ScoreBadge({ score, notes }: { score: number | null; notes: string | nu
   );
 }
 
+function MessageBubble({ msg }: { msg: OutreachMessage }) {
+  return (
+    <div
+      className={`p-3 rounded-lg text-sm ${
+        msg.direction === "outbound"
+          ? "bg-blue-50 border border-blue-200 ml-8"
+          : "bg-gray-50 border border-gray-200 mr-8"
+      }`}
+    >
+      <div className="flex items-center gap-2 mb-1">
+        <Badge
+          variant={msg.direction === "outbound" ? "default" : "secondary"}
+          className="text-[10px]"
+        >
+          {msg.direction === "outbound" ? "Sent" : "Received"}
+        </Badge>
+        {msg.is_ai_generated ? (
+          <span className="text-[10px] text-muted-foreground">AI Generated</span>
+        ) : null}
+        <span className="text-[10px] text-muted-foreground ml-auto">
+          {new Date(msg.sent_at).toLocaleString()}
+        </span>
+      </div>
+      <p className="whitespace-pre-wrap">{msg.content}</p>
+    </div>
+  );
+}
+
 export default function OutreachPage() {
   const [activeTab, setActiveTab] = useState<Tab>("emails");
   const [emails, setEmails] = useState<OutreachEmail[]>([]);
@@ -136,8 +164,10 @@ export default function OutreachPage() {
         fetch("/api/outreach"),
         fetch("/api/outreach/threads"),
       ]);
-      setEmails(await emailRes.json());
-      setThreads(await threadRes.json());
+      const emailData = await emailRes.json();
+      const threadData = await threadRes.json();
+      setEmails(Array.isArray(emailData) ? emailData : []);
+      setThreads(Array.isArray(threadData) ? threadData : []);
     } catch {
       toast.error("Failed to load outreach data");
     } finally {
@@ -253,7 +283,7 @@ export default function OutreachPage() {
       const res = await fetch(`/api/outreach/threads/${threadId}/messages`);
       const msgs = await res.json();
       setSelectedThread(threadId);
-      setThreadMessages(msgs);
+      setThreadMessages(Array.isArray(msgs) ? msgs : []);
     } catch {
       toast.error("Failed to load messages");
     }
@@ -297,7 +327,7 @@ export default function OutreachPage() {
       const res = await fetch(`/api/outreach/threads/${thread.id}/messages`);
       const msgs = await res.json();
       setExpandedConversation(thread.id);
-      setConversationMessages(msgs);
+      setConversationMessages(Array.isArray(msgs) ? msgs : []);
     } catch {
       toast.error("Failed to load conversation");
     }
@@ -412,6 +442,38 @@ export default function OutreachPage() {
             </Button>
           </div>
 
+          {/* Selected email — ABOVE the table */}
+          {selectedEmail && (
+            <Card className="border-blue-200 bg-blue-50/30">
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <CardTitle className="text-lg">
+                      {selectedEmail.subject}
+                    </CardTitle>
+                    <CardDescription>
+                      To: {selectedEmail.contact_name} &lt;
+                      {selectedEmail.contact_email}&gt; | Status:{" "}
+                      {selectedEmail.status}
+                    </CardDescription>
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setSelectedEmail(null)}
+                  >
+                    Close
+                  </Button>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="whitespace-pre-wrap text-sm bg-white p-4 rounded-lg border">
+                  {selectedEmail.body}
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
           <Card>
             <CardContent className="p-0">
               {emails.length === 0 ? (
@@ -432,7 +494,10 @@ export default function OutreachPage() {
                   </TableHeader>
                   <TableBody>
                     {emails.map((email) => (
-                      <TableRow key={email.id}>
+                      <TableRow
+                        key={email.id}
+                        className={selectedEmail?.id === email.id ? "bg-blue-50" : ""}
+                      >
                         <TableCell className="font-medium">
                           {email.contact_name || "—"}
                         </TableCell>
@@ -465,7 +530,7 @@ export default function OutreachPage() {
                               )
                             }
                           >
-                            View
+                            {selectedEmail?.id === email.id ? "Hide" : "View"}
                           </Button>
                         </TableCell>
                       </TableRow>
@@ -475,37 +540,6 @@ export default function OutreachPage() {
               )}
             </CardContent>
           </Card>
-
-          {selectedEmail && (
-            <Card>
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <CardTitle className="text-lg">
-                      {selectedEmail.subject}
-                    </CardTitle>
-                    <CardDescription>
-                      To: {selectedEmail.contact_name} &lt;
-                      {selectedEmail.contact_email}&gt; | Status:{" "}
-                      {selectedEmail.status}
-                    </CardDescription>
-                  </div>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setSelectedEmail(null)}
-                  >
-                    Close
-                  </Button>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="whitespace-pre-wrap text-sm bg-gray-50 p-4 rounded-lg border">
-                  {selectedEmail.body}
-                </div>
-              </CardContent>
-            </Card>
-          )}
         </div>
       )}
 
@@ -535,6 +569,34 @@ export default function OutreachPage() {
             </Button>
           </div>
 
+          {/* Selected thread messages — ABOVE the table */}
+          {selectedThread && threadMessages.length > 0 && (
+            <Card className="border-blue-200 bg-blue-50/30">
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <CardTitle className="text-lg">
+                    DM Script — {threads.find((t) => t.id === selectedThread)?.contact_name || "Unknown"}
+                  </CardTitle>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => {
+                      setSelectedThread(null);
+                      setThreadMessages([]);
+                    }}
+                  >
+                    Close
+                  </Button>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                {threadMessages.map((msg) => (
+                  <MessageBubble key={msg.id} msg={msg} />
+                ))}
+              </CardContent>
+            </Card>
+          )}
+
           <Card>
             <CardContent className="p-0">
               {threads.length === 0 ? (
@@ -555,7 +617,10 @@ export default function OutreachPage() {
                   </TableHeader>
                   <TableBody>
                     {threads.map((thread) => (
-                      <TableRow key={thread.id}>
+                      <TableRow
+                        key={thread.id}
+                        className={selectedThread === thread.id ? "bg-blue-50" : ""}
+                      >
                         <TableCell className="font-medium">
                           {thread.contact_name || "—"}
                         </TableCell>
@@ -585,7 +650,7 @@ export default function OutreachPage() {
                               size="sm"
                               onClick={() => viewThreadMessages(thread.id)}
                             >
-                              View Script
+                              {selectedThread === thread.id ? "Hide" : "View Script"}
                             </Button>
                             <Button
                               variant="ghost"
@@ -609,58 +674,6 @@ export default function OutreachPage() {
               )}
             </CardContent>
           </Card>
-
-          {selectedThread && threadMessages.length > 0 && (
-            <Card>
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <CardTitle className="text-lg">Thread Messages</CardTitle>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => {
-                      setSelectedThread(null);
-                      setThreadMessages([]);
-                    }}
-                  >
-                    Close
-                  </Button>
-                </div>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                {threadMessages.map((msg) => (
-                  <div
-                    key={msg.id}
-                    className={`p-3 rounded-lg text-sm ${
-                      msg.direction === "outbound"
-                        ? "bg-blue-50 border border-blue-200 ml-8"
-                        : "bg-gray-50 border border-gray-200 mr-8"
-                    }`}
-                  >
-                    <div className="flex items-center gap-2 mb-1">
-                      <Badge
-                        variant={
-                          msg.direction === "outbound" ? "default" : "secondary"
-                        }
-                        className="text-[10px]"
-                      >
-                        {msg.direction === "outbound" ? "Sent" : "Received"}
-                      </Badge>
-                      {msg.is_ai_generated ? (
-                        <span className="text-[10px] text-muted-foreground">
-                          AI Generated
-                        </span>
-                      ) : null}
-                      <span className="text-[10px] text-muted-foreground ml-auto">
-                        {new Date(msg.sent_at).toLocaleString()}
-                      </span>
-                    </div>
-                    <p className="whitespace-pre-wrap">{msg.content}</p>
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
-          )}
 
           {logReplyThread && (
             <Card>
@@ -713,7 +726,9 @@ export default function OutreachPage() {
             threads.map((thread) => (
               <Card
                 key={thread.id}
-                className="cursor-pointer hover:border-gray-300 transition-colors"
+                className={`cursor-pointer hover:border-gray-300 transition-colors ${
+                  expandedConversation === thread.id ? "border-blue-300" : ""
+                }`}
                 onClick={() => expandConversation(thread)}
               >
                 <CardContent className="p-4">
@@ -770,38 +785,7 @@ export default function OutreachPage() {
                         </p>
                       ) : (
                         conversationMessages.map((msg) => (
-                          <div
-                            key={msg.id}
-                            className={`p-3 rounded-lg text-sm ${
-                              msg.direction === "outbound"
-                                ? "bg-blue-50 border border-blue-200 ml-8"
-                                : "bg-gray-50 border border-gray-200 mr-8"
-                            }`}
-                          >
-                            <div className="flex items-center gap-2 mb-1">
-                              <Badge
-                                variant={
-                                  msg.direction === "outbound"
-                                    ? "default"
-                                    : "secondary"
-                                }
-                                className="text-[10px]"
-                              >
-                                {msg.direction === "outbound"
-                                  ? "Sent"
-                                  : "Received"}
-                              </Badge>
-                              {msg.is_ai_generated ? (
-                                <span className="text-[10px] text-muted-foreground">
-                                  AI
-                                </span>
-                              ) : null}
-                              <span className="text-[10px] text-muted-foreground ml-auto">
-                                {new Date(msg.sent_at).toLocaleString()}
-                              </span>
-                            </div>
-                            <p className="whitespace-pre-wrap">{msg.content}</p>
-                          </div>
+                          <MessageBubble key={msg.id} msg={msg} />
                         ))
                       )}
 
