@@ -11,6 +11,7 @@ const navItems = [
   { href: "/scrape", label: "Lead Scraper", icon: "🔍" },
   { href: "/clients", label: "Clients", icon: "👥" },
   { href: "/leads", label: "Leads", icon: "🎯" },
+  { href: "/outreach", label: "Outreach", icon: "✉️" },
   { href: "/admin/passwords", label: "Credentials", icon: "🔐", adminOnly: true },
 ];
 

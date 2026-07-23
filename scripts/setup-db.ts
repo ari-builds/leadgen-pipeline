@@ -68,6 +68,36 @@ async function setup() {
       used INTEGER DEFAULT 0,
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP
     )`,
+    `CREATE TABLE IF NOT EXISTS outreach_emails (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      lead_id INTEGER REFERENCES leads(id) ON DELETE CASCADE,
+      client_id INTEGER REFERENCES clients(id) ON DELETE CASCADE,
+      template_type TEXT,
+      subject TEXT,
+      body TEXT,
+      status TEXT DEFAULT 'draft',
+      resend_email_id TEXT,
+      sent_at DATETIME,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    )`,
+    `CREATE TABLE IF NOT EXISTS outreach_threads (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      lead_id INTEGER REFERENCES leads(id) ON DELETE CASCADE,
+      client_id INTEGER REFERENCES clients(id) ON DELETE CASCADE,
+      platform TEXT,
+      status TEXT DEFAULT 'active',
+      last_message_at DATETIME,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    )`,
+    `CREATE TABLE IF NOT EXISTS outreach_messages (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      thread_id INTEGER REFERENCES outreach_threads(id) ON DELETE CASCADE,
+      direction TEXT,
+      platform TEXT,
+      content TEXT NOT NULL,
+      is_ai_generated INTEGER DEFAULT 0,
+      sent_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    )`,
   ]);
 
   console.log("Database setup complete!");
