@@ -65,6 +65,13 @@ interface Lead {
   industry: string;
   score: number;
   status: string;
+  notes: string;
+}
+
+function extractHook(notes: string | null): string {
+  if (!notes) return "";
+  const match = notes.match(/Hook:\s*(.+?)(?:\n|$)/i);
+  return match ? match[1].trim() : "";
 }
 
 export default function ClientDetailPage() {
@@ -154,6 +161,18 @@ export default function ClientDetailPage() {
         </Card>
       </div>
 
+      {/* Ideal Customer Profile */}
+      {client.ideal_customer_profile && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Ideal Customer Profile</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm whitespace-pre-wrap">{client.ideal_customer_profile}</p>
+          </CardContent>
+        </Card>
+      )}
+
       {/* Analytics Charts */}
       {leads.length > 0 && (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -239,10 +258,10 @@ export default function ClientDetailPage() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Company</TableHead>
                   <TableHead>Contact</TableHead>
                   <TableHead>Industry</TableHead>
                   <TableHead>Score</TableHead>
+                  <TableHead className="max-w-xs">Score Reason</TableHead>
                   <TableHead>Status</TableHead>
                 </TableRow>
               </TableHeader>
@@ -251,12 +270,23 @@ export default function ClientDetailPage() {
                   <TableRow key={lead.id}>
                     <TableCell>
                       <Link href={`/leads/${lead.id}`} className="font-medium hover:underline">
-                        {lead.company_name}
+                        {lead.contact_name || lead.company_name || "—"}
                       </Link>
                     </TableCell>
-                    <TableCell>{lead.contact_name}</TableCell>
-                    <TableCell>{lead.industry}</TableCell>
-                    <TableCell>{lead.score}/10</TableCell>
+                    <TableCell className="text-sm">{lead.industry || "—"}</TableCell>
+                    <TableCell>
+                      <span className={`inline-flex items-center justify-center w-7 h-7 rounded-full text-xs font-bold ${
+                        lead.score >= 9 ? "bg-red-100 text-red-800" :
+                        lead.score >= 7 ? "bg-orange-100 text-orange-800" :
+                        lead.score >= 5 ? "bg-yellow-100 text-yellow-800" :
+                        "bg-gray-100 text-gray-800"
+                      }`}>
+                        {lead.score}
+                      </span>
+                    </TableCell>
+                    <TableCell className="text-sm text-muted-foreground max-w-xs truncate" title={extractHook(lead.notes)}>
+                      {extractHook(lead.notes) || "—"}
+                    </TableCell>
                     <TableCell>
                       <Badge className={statusColors[lead.status] || ""}>
                         {lead.status}

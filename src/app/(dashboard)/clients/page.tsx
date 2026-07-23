@@ -40,6 +40,7 @@ export default function ClientsPage() {
   const [form, setForm] = useState({
     name: "",
     description: "",
+    idealCustomerProfile: "",
     dashboardPassword: "",
   });
   const [saving, setSaving] = useState(false);
@@ -72,7 +73,7 @@ export default function ClientsPage() {
       if (!res.ok) throw new Error(data.error);
       toast.success(`Client "${form.name}" created`);
       setDialogOpen(false);
-      setForm({ name: "", description: "", dashboardPassword: "" });
+      setForm({ name: "", description: "", idealCustomerProfile: "", dashboardPassword: "" });
       fetchClients();
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Failed to create client");
@@ -118,6 +119,21 @@ export default function ClientsPage() {
                     setForm({ ...form, description: e.target.value })
                   }
                 />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="icp">Ideal Customer Profile</Label>
+                <Textarea
+                  id="icp"
+                  value={form.idealCustomerProfile}
+                  onChange={(e) =>
+                    setForm({ ...form, idealCustomerProfile: e.target.value })
+                  }
+                  placeholder="e.g. Families with deceased loved ones in local cemeteries who need headstone cleaning. Age 45-65, 78% female. Local and out-of-town relatives. Veterans' families."
+                  rows={3}
+                />
+                <p className="text-xs text-muted-foreground">
+                  Describe who this client serves. Used for lead scoring and outreach personalization.
+                </p>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="password">Dashboard Password</Label>
