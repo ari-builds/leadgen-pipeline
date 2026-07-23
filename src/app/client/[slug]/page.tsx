@@ -92,6 +92,7 @@ export default function ClientDashboardPage() {
         body: JSON.stringify({
           slug: params.slug,
           password,
+          email,
           step: "password",
         }),
       });
@@ -241,13 +242,24 @@ export default function ClientDashboardPage() {
             <CardTitle className="text-2xl">Client Dashboard</CardTitle>
             <CardDescription>
               {authStep === "password"
-                ? "Enter your password to view leads"
+                ? "Enter your email and password to view leads"
                 : `Enter the code sent to ${email}`}
             </CardDescription>
           </CardHeader>
           <CardContent>
             {authStep === "password" ? (
               <form onSubmit={handlePasswordSubmit} className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="email">Email</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="your@email.com"
+                    required
+                  />
+                </div>
                 <div className="space-y-2">
                   <Label htmlFor="password">Password</Label>
                   <Input

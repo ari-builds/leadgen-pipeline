@@ -73,10 +73,10 @@ export async function POST(req: NextRequest) {
     const { slug, step } = body;
 
     if (step === "password") {
-      const { password } = body;
+      const { password, email } = body;
 
       const clientResult = await db.execute({
-        sql: "SELECT id, name, slug, description, dashboard_password_hash FROM clients WHERE slug = ?",
+        sql: "SELECT id, name, slug, description, dashboard_password_hash, contact_email FROM clients WHERE slug = ?",
         args: [slug],
       });
 
@@ -107,26 +107,40 @@ export async function POST(req: NextRequest) {
         );
       }
 
-      const otp = generateOTP();
+      // Determine which email to send OTP to
       const adminEmail = process.env.ADMIN_EMAIL || "admin@localhost";
+      const clientEmail = client.contact_email as string;
+      
+      // Accept either admin email or client email
+      let otpEmail = adminEmail;
+      if (email && clientEmail && email.toLowerCase() === clientEmail.toLowerCase()) {
+        otpEmail = clientEmail;
+      } else if (email && email.toLowerCase() !== adminEmail.toLowerCase()) {
+        return NextResponse.json(
+          { error: "Email not authorized. Use the admin email or client email." },
+          { status: 401 }
+        );
+      }
+
+      const otp = generateOTP();
       const expiresAt = new Date(Date.now() + 10 * 60 * 1000).toISOString();
 
       await db.execute({
         sql: "INSERT INTO otp_codes (email, code, expires_at) VALUES (?, ?, ?)",
-        args: [adminEmail, otp, expiresAt],
+        args: [otpEmail, otp, expiresAt],
       });
 
-      await sendOTPEmail(adminEmail, otp);
+      await sendOTPEmail(otpEmail, otp);
 
       const tempToken = await generateToken({
         userId: client.id as number,
-        email: adminEmail,
+        email: otpEmail,
         role: "client",
       });
 
       return NextResponse.json({
         needsOTP: true,
-        email: adminEmail,
+        email: otpEmail,
         tempToken,
       });
     }
@@ -177,35 +191,42 @@ export async function POST(req: NextRequest) {
         args: [clientId],
       });
 
-      const subResult = await db.execute({
-        sql: `SELECT monthly_lead_quota, reset_day, current_period_start, last_export_at
-              FROM client_subscriptions WHERE client_id = ? ORDER BY id DESC LIMIT 1`,
-        args: [clientId],
-      });
-
       let subscription = null;
       let exportedThisPeriod = false;
 
-      if (subResult.rows.length > 0) {
-        const sub = subResult.rows[0];
-
-        const deliveryResult = await db.execute({
-          sql: `SELECT exported FROM lead_deliveries
-                WHERE client_id = ? AND exported = 1
-                AND period_start >= ?
-                ORDER BY id DESC LIMIT 1`,
-          args: [clientId, sub.current_period_start],
+      try {
+        const subResult = await db.execute({
+          sql: `SELECT monthly_lead_quota, reset_day, current_period_start, last_export_at
+                FROM client_subscriptions WHERE client_id = ? ORDER BY id DESC LIMIT 1`,
+          args: [clientId],
         });
 
-        exportedThisPeriod = deliveryResult.rows.length > 0;
+        if (subResult.rows.length > 0) {
+          const sub = subResult.rows[0];
 
-        subscription = {
-          monthly_lead_quota: sub.monthly_lead_quota,
-          reset_day: sub.reset_day,
-          current_period_start: sub.current_period_start,
-          last_export_at: sub.last_export_at,
-          exported_this_period: exportedThisPeriod,
-        };
+          try {
+            const deliveryResult = await db.execute({
+              sql: `SELECT exported FROM lead_deliveries
+                    WHERE client_id = ? AND exported = 1
+                    AND period_start >= ?
+                    ORDER BY id DESC LIMIT 1`,
+              args: [clientId, sub.current_period_start],
+            });
+            exportedThisPeriod = deliveryResult.rows.length > 0;
+          } catch {
+            // lead_deliveries table might not exist
+          }
+
+          subscription = {
+            monthly_lead_quota: sub.monthly_lead_quota,
+            reset_day: sub.reset_day,
+            current_period_start: sub.current_period_start,
+            last_export_at: sub.last_export_at,
+            exported_this_period: exportedThisPeriod,
+          };
+        }
+      } catch {
+        // client_subscriptions table might not exist
       }
 
       return NextResponse.json({
