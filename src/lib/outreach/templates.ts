@@ -114,7 +114,7 @@ function scoreTier(score: number): "hot" | "warm" | "cool" {
 }
 
 const SIGNATURE = `Ariana
-Digital Marketing Director | NetClicks by Ari
+NetClicks by Ari
 On behalf of Legacy Memorial Restorations
 netclicksbyari@gmail.com | Yakima, WA`;
 

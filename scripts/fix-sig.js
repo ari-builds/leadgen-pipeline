@@ -4,16 +4,27 @@ const db = createClient({
   authToken: process.env.TURSO_TOKEN
 });
 
-const NEW = "Ariana\nDigital Marketing Director | NetClicks by Ari\nOn behalf of Legacy Memorial Restorations\nnetclicksbyari@gmail.com | Yakima, WA";
+const NEW = "Ariana\nNetClicks by Ari\nOn behalf of Legacy Memorial Restorations\nnetclicksbyari@gmail.com | Yakima, WA";
 
 async function main() {
   const r = await db.execute("SELECT id, body FROM outreach_emails");
   let updated = 0;
   for (const row of r.rows) {
-    const old = row.body.match(/---\nAriana, Founder & CEO\nNetClicks by Ari\nnetclicksbyari@gmail\.com/);
-    if (old) {
-      const nb = row.body.replace(old[0], NEW);
-      await db.execute({sql: 'UPDATE outreach_emails SET body = ? WHERE id = ?', args: [nb, row.id]});
+    const patterns = [
+      /Ariana\nDigital Marketing Director \| NetClicks by Ari\nOn behalf of Legacy Memorial Restorations\nnetclicksbyari@gmail\.com \| Yakima, WA/,
+      /Ariana\nFounder & CEO \| NetClicks by Ari\nOn behalf of Legacy Memorial Restorations\nnetclicksbyari@gmail\.com \| Yakima, WA/,
+      /Ariana\nFounder & CEO, NetClicks by Ari\nnetclicksbyari@gmail\.com/,
+      /---\nAriana, Founder & CEO\nNetClicks by Ari\nnetclicksbyari@gmail\.com/,
+    ];
+    let newBody = row.body;
+    for (const p of patterns) {
+      if (p.test(newBody)) {
+        newBody = newBody.replace(p, NEW);
+        break;
+      }
+    }
+    if (newBody !== row.body) {
+      await db.execute({sql: 'UPDATE outreach_emails SET body = ? WHERE id = ?', args: [newBody, row.id]});
       updated++;
     }
   }
