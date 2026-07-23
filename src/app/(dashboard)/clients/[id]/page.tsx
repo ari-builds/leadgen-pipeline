@@ -162,16 +162,72 @@ export default function ClientDetailPage() {
       </div>
 
       {/* Ideal Customer Profile */}
-      {client.ideal_customer_profile && (
-        <Card>
-          <CardHeader>
-            <CardTitle>Ideal Customer Profile</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm whitespace-pre-wrap">{client.ideal_customer_profile}</p>
-          </CardContent>
-        </Card>
-      )}
+      {client.ideal_customer_profile && (() => {
+        let icp: Record<string, unknown>;
+        try { icp = JSON.parse(client.ideal_customer_profile); } catch { icp = {}; }
+        const icpObj = icp as Record<string, string | string[] | Record<string, string>>;
+        return (
+          <Card>
+            <CardHeader>
+              <CardTitle>Ideal Customer Profile</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              {icpObj.business && (
+                <div><span className="font-medium text-sm">Business:</span> <span className="text-sm">{String(icpObj.business)}</span></div>
+              )}
+              {icpObj.owner && (
+                <div><span className="font-medium text-sm">Owner:</span> <span className="text-sm">{String(icpObj.owner)}</span></div>
+              )}
+              {icpObj.location && (
+                <div><span className="font-medium text-sm">Location:</span> <span className="text-sm">{String(icpObj.location)}</span></div>
+              )}
+              {icpObj.target_audience && (
+                <div><span className="font-medium text-sm">Target Audience:</span> <span className="text-sm">{String(icpObj.target_audience)}</span></div>
+              )}
+              {Array.isArray(icpObj.services) && icpObj.services.length > 0 && (
+                <div>
+                  <span className="font-medium text-sm">Services:</span>
+                  <ul className="list-disc list-inside text-sm mt-1 space-y-0.5">
+                    {icpObj.services.map((s, i) => <li key={i}>{s}</li>)}
+                  </ul>
+                </div>
+              )}
+              {icpObj.demographics && typeof icpObj.demographics === "object" && (
+                <div>
+                  <span className="font-medium text-sm">Demographics:</span>
+                  <span className="text-sm ml-1">
+                    {Object.entries(icpObj.demographics).map(([k, v]) => `${k.replace(/_/g, " ")}: ${v}`).join(" | ")}
+                  </span>
+                </div>
+              )}
+              {Array.isArray(icpObj.segments) && icpObj.segments.length > 0 && (
+                <div>
+                  <span className="font-medium text-sm">Segments:</span>
+                  <ul className="list-disc list-inside text-sm mt-1 space-y-0.5">
+                    {icpObj.segments.map((s, i) => <li key={i}>{s}</li>)}
+                  </ul>
+                </div>
+              )}
+              {Array.isArray(icpObj.competitor_weaknesses) && icpObj.competitor_weaknesses.length > 0 && (
+                <div>
+                  <span className="font-medium text-sm">Competitor Weaknesses:</span>
+                  <ul className="list-disc list-inside text-sm mt-1 space-y-0.5">
+                    {icpObj.competitor_weaknesses.map((s, i) => <li key={i}>{s}</li>)}
+                  </ul>
+                </div>
+              )}
+              {Array.isArray(icpObj.seasonal_triggers) && icpObj.seasonal_triggers.length > 0 && (
+                <div>
+                  <span className="font-medium text-sm">Seasonal Triggers:</span>
+                  <ul className="list-disc list-inside text-sm mt-1 space-y-0.5">
+                    {icpObj.seasonal_triggers.map((s, i) => <li key={i}>{s}</li>)}
+                  </ul>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        );
+      })()}
 
       {/* Analytics Charts */}
       {leads.length > 0 && (
