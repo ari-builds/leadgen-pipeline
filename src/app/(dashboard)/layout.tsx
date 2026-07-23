@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: "📊" },
   { href: "/analytics", label: "Analytics", icon: "📈" },
+  { href: "/scrape", label: "Lead Scraper", icon: "🔍" },
   { href: "/clients", label: "Clients", icon: "👥" },
   { href: "/leads", label: "Leads", icon: "🎯" },
   { href: "/admin/passwords", label: "Credentials", icon: "🔐", adminOnly: true },
