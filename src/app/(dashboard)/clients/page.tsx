@@ -44,6 +44,11 @@ export default function ClientsPage() {
     dashboardPassword: "",
   });
   const [saving, setSaving] = useState(false);
+  const [quotaDialogOpen, setQuotaDialogOpen] = useState(false);
+  const [quotaClient, setQuotaClient] = useState<Client | null>(null);
+  const [quotaForm, setQuotaForm] = useState({ monthly_lead_quota: 100, reset_day: 1 });
+  const [quotaConfirm, setQuotaConfirm] = useState(false);
+  const [savingQuota, setSavingQuota] = useState(false);
 
   useEffect(() => {
     fetchClients();
@@ -79,6 +84,39 @@ export default function ClientsPage() {
       toast.error(err instanceof Error ? err.message : "Failed to create client");
     } finally {
       setSaving(false);
+    }
+  }
+
+  async function openQuotaDialog(client: Client) {
+    setQuotaClient(client);
+    setQuotaConfirm(false);
+    try {
+      const res = await fetch(`/api/clients/${client.id}/subscription`);
+      if (res.ok) {
+        const sub = await res.json();
+        setQuotaForm({ monthly_lead_quota: sub.monthly_lead_quota, reset_day: sub.reset_day });
+      }
+    } catch {}
+    setQuotaDialogOpen(true);
+  }
+
+  async function saveQuota() {
+    if (!quotaClient) return;
+    setSavingQuota(true);
+    try {
+      const res = await fetch(`/api/clients/${quotaClient.id}/subscription`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(quotaForm),
+      });
+      if (!res.ok) throw new Error("Failed");
+      toast.success("Quota updated");
+      setQuotaDialogOpen(false);
+      setQuotaConfirm(false);
+    } catch {
+      toast.error("Failed to update quota");
+    } finally {
+      setSavingQuota(false);
     }
   }
 
@@ -178,15 +216,86 @@ export default function ClientsPage() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-xs text-muted-foreground">
-                    Created {new Date(client.created_at).toLocaleDateString()}
-                  </p>
+                  <div className="flex items-center justify-between">
+                    <p className="text-xs text-muted-foreground">
+                      Created {new Date(client.created_at).toLocaleDateString()}
+                    </p>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        openQuotaDialog(client);
+                      }}
+                    >
+                      Manage Quota
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
             </Link>
           ))}
         </div>
       )}
+
+      <Dialog open={quotaDialogOpen} onOpenChange={setQuotaDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Manage Quota — {quotaClient?.name}</DialogTitle>
+            <DialogDescription>
+              Set monthly lead quota and reset day for this client.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 mt-4">
+            <div className="space-y-2">
+              <Label>Monthly Lead Quota</Label>
+              <Input
+                type="number"
+                min={1}
+                max={10000}
+                value={quotaForm.monthly_lead_quota}
+                onChange={(e) =>
+                  setQuotaForm({ ...quotaForm, monthly_lead_quota: parseInt(e.target.value) || 100 })
+                }
+              />
+              <p className="text-xs text-muted-foreground">Max leads delivered per month</p>
+            </div>
+            <div className="space-y-2">
+              <Label>Reset Day (1-28)</Label>
+              <Input
+                type="number"
+                min={1}
+                max={28}
+                value={quotaForm.reset_day}
+                onChange={(e) =>
+                  setQuotaForm({ ...quotaForm, reset_day: parseInt(e.target.value) || 1 })
+                }
+              />
+              <p className="text-xs text-muted-foreground">Day of month when quota resets</p>
+            </div>
+            {!quotaConfirm ? (
+              <Button className="w-full" onClick={() => setQuotaConfirm(true)}>
+                Save Changes
+              </Button>
+            ) : (
+              <div className="space-y-2">
+                <p className="text-sm text-amber-600 font-medium text-center">
+                  Are you sure? This will change {quotaClient?.name}&apos;s monthly quota to {quotaForm.monthly_lead_quota} leads, resetting on the {quotaForm.reset_day}th.
+                </p>
+                <div className="flex gap-2">
+                  <Button variant="outline" className="flex-1" onClick={() => setQuotaConfirm(false)}>
+                    Cancel
+                  </Button>
+                  <Button className="flex-1" onClick={saveQuota} disabled={savingQuota}>
+                    {savingQuota ? "Saving..." : "Yes, Save"}
+                  </Button>
+                </div>
+              </div>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
