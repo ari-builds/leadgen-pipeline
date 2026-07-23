@@ -49,6 +49,12 @@ interface Lead {
   client_ids: string;
 }
 
+function extractHook(notes: string | null): string {
+  if (!notes) return "";
+  const match = notes.match(/Hook:\s*(.+?)(?:\n|$)/i);
+  return match ? match[1].trim() : "";
+}
+
 export default function LeadDetailPage() {
   const params = useParams();
   const router = useRouter();
@@ -221,16 +227,33 @@ export default function LeadDetailPage() {
               <CardTitle>Scoring & Status</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <Label>Score (1-10)</Label>
-                <Input
-                  type="number"
-                  min={0}
-                  max={10}
-                  value={lead.score}
-                  onChange={(e) => setLead({ ...lead, score: parseInt(e.target.value) || 0 })}
-                />
+              <div className="flex items-center gap-3">
+                <span className={`inline-flex items-center justify-center w-12 h-12 rounded-full text-lg font-bold ${
+                  lead.score >= 9 ? "bg-red-100 text-red-800" :
+                  lead.score >= 7 ? "bg-orange-100 text-orange-800" :
+                  lead.score >= 5 ? "bg-yellow-100 text-yellow-800" :
+                  "bg-gray-100 text-gray-800"
+                }`}>
+                  {lead.score}
+                </span>
+                <div>
+                  <Label className="text-xs text-muted-foreground">Score (1-10)</Label>
+                  <Input
+                    type="number"
+                    min={0}
+                    max={10}
+                    value={lead.score}
+                    onChange={(e) => setLead({ ...lead, score: parseInt(e.target.value) || 0 })}
+                    className="h-8 w-20 mt-1"
+                  />
+                </div>
               </div>
+              {extractHook(lead.notes) && (
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                  <Label className="text-xs font-medium text-blue-700">Score Reason</Label>
+                  <p className="text-sm text-blue-900 mt-1">{extractHook(lead.notes)}</p>
+                </div>
+              )}
               <div className="space-y-2">
                 <Label>Status</Label>
                 <Select

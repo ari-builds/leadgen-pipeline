@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
     const leadId = searchParams.get("lead_id");
 
     let sql = `
-      SELECT oe.*, l.contact_name, l.contact_email, l.company_name, c.name as client_name
+      SELECT oe.*, l.contact_name, l.contact_email, l.company_name, l.score, l.notes, c.name as client_name
       FROM outreach_emails oe
       LEFT JOIN leads l ON oe.lead_id = l.id
       LEFT JOIN clients c ON oe.client_id = c.id

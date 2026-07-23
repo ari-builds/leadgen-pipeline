@@ -34,6 +34,8 @@ interface OutreachEmail {
   contact_email: string | null;
   company_name: string | null;
   client_name: string | null;
+  score: number | null;
+  notes: string | null;
 }
 
 interface OutreachThread {
@@ -50,6 +52,8 @@ interface OutreachThread {
   client_name: string | null;
   last_message: string | null;
   message_count: number;
+  score: number | null;
+  notes: string | null;
 }
 
 interface OutreachMessage {
@@ -78,6 +82,30 @@ const threadStatusColors: Record<string, string> = {
 };
 
 type Tab = "emails" | "dms" | "conversations";
+
+function extractHook(notes: string | null): string {
+  if (!notes) return "";
+  const match = notes.match(/Hook:\s*(.+?)(?:\n|$)/i);
+  return match ? match[1].trim() : "";
+}
+
+function ScoreBadge({ score, notes }: { score: number | null; notes: string | null }) {
+  const s = score || 0;
+  const hook = extractHook(notes);
+  return (
+    <div className="flex items-center gap-2">
+      <span className={`inline-flex items-center justify-center w-7 h-7 rounded-full text-xs font-bold flex-shrink-0 ${
+        s >= 9 ? "bg-red-100 text-red-800" :
+        s >= 7 ? "bg-orange-100 text-orange-800" :
+        s >= 5 ? "bg-yellow-100 text-yellow-800" :
+        "bg-gray-100 text-gray-800"
+      }`}>
+        {s}
+      </span>
+      {hook && <span className="text-xs text-muted-foreground truncate max-w-[200px]" title={hook}>{hook}</span>}
+    </div>
+  );
+}
 
 export default function OutreachPage() {
   const [activeTab, setActiveTab] = useState<Tab>("emails");
@@ -394,8 +422,8 @@ export default function OutreachPage() {
                   <TableHeader>
                     <TableRow>
                       <TableHead>Lead</TableHead>
+                      <TableHead>Score</TableHead>
                       <TableHead>Subject</TableHead>
-                      <TableHead>Template Type</TableHead>
                       <TableHead>Status</TableHead>
                       <TableHead>Date</TableHead>
                       <TableHead></TableHead>
@@ -406,17 +434,12 @@ export default function OutreachPage() {
                       <TableRow key={email.id}>
                         <TableCell className="font-medium">
                           {email.contact_name || "—"}
-                          {email.company_name && (
-                            <span className="text-muted-foreground text-sm ml-1">
-                              ({email.company_name})
-                            </span>
-                          )}
+                        </TableCell>
+                        <TableCell>
+                          <ScoreBadge score={email.score} notes={email.notes} />
                         </TableCell>
                         <TableCell className="max-w-[200px] truncate">
                           {email.subject}
-                        </TableCell>
-                        <TableCell className="text-sm text-muted-foreground">
-                          {email.template_type || "—"}
                         </TableCell>
                         <TableCell>
                           <Badge
@@ -515,6 +538,7 @@ export default function OutreachPage() {
                   <TableHeader>
                     <TableRow>
                       <TableHead>Lead</TableHead>
+                      <TableHead>Score</TableHead>
                       <TableHead>Platform</TableHead>
                       <TableHead>Status</TableHead>
                       <TableHead>Last Message</TableHead>
@@ -526,11 +550,9 @@ export default function OutreachPage() {
                       <TableRow key={thread.id}>
                         <TableCell className="font-medium">
                           {thread.contact_name || "—"}
-                          {thread.company_name && (
-                            <span className="text-muted-foreground text-sm ml-1">
-                              ({thread.company_name})
-                            </span>
-                          )}
+                        </TableCell>
+                        <TableCell>
+                          <ScoreBadge score={thread.score} notes={thread.notes} />
                         </TableCell>
                         <TableCell>
                           <Badge variant="secondary">{thread.platform}</Badge>

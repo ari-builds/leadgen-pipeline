@@ -37,6 +37,13 @@ interface Lead {
   score: number;
   status: string;
   client_names: string;
+  notes: string;
+}
+
+function extractHook(notes: string | null): string {
+  if (!notes) return "";
+  const match = notes.match(/Hook:\s*(.+?)(?:\n|$)/i);
+  return match ? match[1].trim() : "";
 }
 
 export default function LeadsPage() {
@@ -122,11 +129,11 @@ export default function LeadsPage() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Company</TableHead>
                   <TableHead>Contact</TableHead>
                   <TableHead>Industry</TableHead>
                   <TableHead>Location</TableHead>
                   <TableHead>Score</TableHead>
+                  <TableHead className="max-w-xs">Score Reason</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead>Clients</TableHead>
                 </TableRow>
@@ -136,13 +143,24 @@ export default function LeadsPage() {
                   <TableRow key={lead.id}>
                     <TableCell>
                       <Link href={`/leads/${lead.id}`} className="font-medium hover:underline">
-                        {lead.company_name || "—"}
+                        {lead.contact_name || lead.company_name || "—"}
                       </Link>
                     </TableCell>
-                    <TableCell>{lead.contact_name || "—"}</TableCell>
-                    <TableCell>{lead.industry || "—"}</TableCell>
-                    <TableCell>{lead.location || "—"}</TableCell>
-                    <TableCell className="font-medium">{lead.score}/10</TableCell>
+                    <TableCell className="text-sm">{lead.industry || "—"}</TableCell>
+                    <TableCell className="text-sm">{lead.location || "—"}</TableCell>
+                    <TableCell>
+                      <span className={`inline-flex items-center justify-center w-8 h-8 rounded-full text-sm font-bold ${
+                        lead.score >= 9 ? "bg-red-100 text-red-800" :
+                        lead.score >= 7 ? "bg-orange-100 text-orange-800" :
+                        lead.score >= 5 ? "bg-yellow-100 text-yellow-800" :
+                        "bg-gray-100 text-gray-800"
+                      }`}>
+                        {lead.score}
+                      </span>
+                    </TableCell>
+                    <TableCell className="text-sm text-muted-foreground max-w-xs truncate" title={extractHook(lead.notes)}>
+                      {extractHook(lead.notes) || "—"}
+                    </TableCell>
                     <TableCell>
                       <Badge className={statusColors[lead.status] || ""}>
                         {lead.status}

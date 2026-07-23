@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
 
     let sql = `
       SELECT ot.*,
-        l.contact_name, l.contact_email, l.company_name,
+        l.contact_name, l.contact_email, l.company_name, l.score, l.notes,
         c.name as client_name,
         (
           SELECT content FROM outreach_messages
