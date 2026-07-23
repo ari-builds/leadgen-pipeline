@@ -111,45 +111,41 @@ Everything in Tier 1, plus:
 
 ---
 
-## Pricing Structure
+## Pricing & Revenue Share
+
+This is a starting point — I want to hear what works for you and adjust.
 
 ### What the Client Pays
 
-| Package | Monthly Price | Includes |
-|---|---|---|
-| Tier 1 — Lead Gen Only | $400/mo | 100 qualified leads, AI scoring, client dashboard, monthly report |
-| Tier 2 — Full Pipeline | $800/mo | Everything in Tier 1 + outreach campaigns + AI chatbot + AI call agent + follow-up workflows + full-funnel dashboard |
-| Per-appointment fee (Tier 2 only) | $50-100 per booked appointment | Paid on top of monthly fee for each qualified appointment that books through the AI system |
-| Extra leads beyond quota | $3/lead | For clients who need more than their plan allotment |
+| Package | Monthly | Per Appointment | What They Get |
+|---|---|---|---|
+| Tier 1 — Lead Gen | $400 | — | 100 qualified leads, scoring, dashboard, monthly report |
+| Tier 2 — Full Pipeline | $600 | $75 | Everything in Tier 1 + outreach + AI chatbot + AI call agent + follow-up workflows |
+| Extra leads | $3 each | — | Beyond the 100 lead quota |
 
-### How Revenue Splits
+### How I'd Structure the Split
 
-**Option A — I bundle, pay you flat per client (Recommended)**
+I'd handle client billing and pay you a flat **$250/month per Tier 2 client** for the AI infrastructure you deploy and maintain. That covers your Call AI Studio costs, your time configuring and maintaining the chatbot/call agent/follow-up workflows, and your ongoing support.
 
-| | Tier 1 | Tier 2 |
-|---|---|---|
-| Client pays me | $400/mo | $800/mo |
-| I pay you | $0 | $200-250/mo per client |
-| I keep | $400/mo | $550-600/mo + appointment fees |
-| You keep | $0 (not in Tier 1) | $200-250/mo per client |
+On a $600/month Tier 2 client, that leaves me $350 for lead generation, outreach, and client management. The $75 per-appointment fee stays with me since I'm managing the client relationship and the full pipeline — but if you'd rather split that, I'm open to it.
 
-Why this works: I own the client relationship. I handle sales, onboarding, billing, support. You build and maintain the AI infrastructure. Clean split, no confusion, no awkward billing conversations with the client.
+For Tier 1 clients (leads only, no AI tools), there's nothing on your end — those are purely lead generation.
 
-Appointment fees stay with me since I'm managing the client relationship and the full pipeline. If we want to adjust that later based on volume, we can.
+### Why This Structure
 
-**Option B — Separate billing**
+- **You get predictable income** — $250/month per client, no chasing invoices
+- **I take the sales and support burden** — one point of contact for the client, no confusion
+- **The client gets one bill, one relationship** — which is the whole point
+- **We can adjust as we scale** — if we hit 10+ clients, we revisit the split
 
-Client pays me $400/mo for leads. Client pays you directly for AI tools. We each bill separately.
+### What I'd Want to Know From You
 
-Cleaner on paper but less "one provider" feeling. The client has to manage two relationships, two invoices, two support contacts. defeats the purpose of the partnership.
+- Does $250/month per client cover your costs and time for the AI infrastructure?
+- Do you have a per-client cost on Call AI Studio I should factor in?
+- Would you prefer a flat monthly fee or a percentage of the client's package?
+- Any minimum you'd need to make this worth your while?
 
-**Option C — Revenue split**
-
-60/40 on the full package after expenses. More complex but more fair long-term if we're scaling together.
-
-### My Recommendation
-
-Start with Option A. It's the simplest, it protects the client experience, and it lets us both focus on what we're good at. If we scale past 10+ clients, we can revisit the split.
+I don't want to lowball you on the first pass. If these numbers don't work, tell me what does and we'll shape it together.
 
 ---
 
