@@ -1,0 +1,679 @@
+[enrich] Found 77 leads to enrich
+[enrich] 
+--- Lead 1/77 ---
+[enrich] Enriching Shelley Upton (id=25)
+[enrich]   Found phone: (509) 955-9515
+[enrich]   Found LinkedIn: https://uk.linkedin.com/in/shelleyupton
+[enrich]   Found Twitter: https://x.com/shelbertonz
+[enrich]   Found Instagram: https://www.instagram.com/cityofyakima
+[enrich]   Updates: ['contact_phone', 'contact_linkedin', 'contact_twitter', 'contact_instagram', 'notes']
+[enrich]   Saved 5 fields
+[enrich] 
+--- Lead 2/77 ---
+[enrich] Enriching Chris Dickman (id=26)
+[enrich]   Found phone: (509) 575-6200
+[enrich]   Found LinkedIn: https://www.linkedin.com/in/chris-dickman-9643539
+[enrich]   Found Instagram: https://www.instagram.com/cityofyakima
+[enrich]   Updates: ['contact_phone', 'contact_linkedin', 'contact_instagram', 'notes']
+[enrich]   Saved 4 fields
+[enrich] 
+--- Lead 3/77 ---
+[enrich] Enriching Kathy Stump (id=27)
+[enrich]   Found phone: (509) 575-6000
+[enrich]   Found LinkedIn: https://www.linkedin.com/in/kathy-stump-08b43553
+[enrich]   Found Instagram: https://www.instagram.com/cityofyakima
+[enrich]   Updates: ['contact_phone', 'contact_linkedin', 'contact_instagram', 'notes']
+[enrich]   Saved 4 fields
+[enrich] 
+--- Lead 4/77 ---
+[enrich] Enriching Anita Moe (id=28)
+[enrich]   Found phone: (509) 575-6000
+[enrich]   Found Facebook: https://www.facebook.com/anita.moe.50
+[enrich]   Found LinkedIn: https://www.linkedin.com/in/anita-moe-56464b36
+[enrich]   Found Twitter: https://x.com/anitamoe
+[enrich]   Found Instagram: https://www.instagram.com/cityofyakima
+[enrich]   Updates: ['contact_phone', 'contact_facebook', 'contact_linkedin', 'contact_twitter', 'contact_instagram', 'notes']
+[enrich]   Saved 6 fields
+[enrich] 
+--- Lead 5/77 ---
+[enrich] Enriching Richard Counts Jr. (id=29)
+[enrich]   Found phone: (509) 575-6200
+[enrich]   Found Facebook: https://m.facebook.com
+[enrich]   Found LinkedIn: https://www.linkedin.com/in/richardcounts
+[enrich]   Found Instagram: https://www.instagram.com/platosclosetyakima
+[enrich]   Updates: ['contact_phone', 'contact_facebook', 'contact_linkedin', 'contact_instagram', 'notes']
+[enrich]   Saved 5 fields
+[enrich] 
+--- Lead 6/77 ---
+[enrich] Enriching Bradford Morrier (id=30)
+[enrich]   Found phone: (509) 575-6000
+[enrich]   Search error: Request timed out: ConnectTimeout('timed out')
+[enrich]   Found Instagram: https://www.instagram.com/cityofyakima
+[enrich]   Updates: ['contact_phone', 'contact_instagram', 'notes']
+[enrich]   Saved 3 fields
+[enrich] 
+--- Lead 7/77 ---
+[enrich] Enriching Kristina Parsons (id=31)
+[enrich]   Found phone: (509) 575-6200
+[enrich]   Found LinkedIn: https://www.linkedin.com/in/kristina-parsons-23680732
+[enrich]   Found Instagram: https://www.instagram.com/yakimavalley
+[enrich]   Updates: ['contact_phone', 'contact_linkedin', 'contact_instagram', 'notes']
+[enrich]   Saved 4 fields
+[enrich] 
+--- Lead 8/77 ---
+[enrich] Enriching Chad Short (id=32)
+[enrich]   Found phone: (509) 248-1680
+[enrich]   Found Facebook: https://www.facebook.com/chadslegacyproject
+[enrich]   Found LinkedIn: https://za.linkedin.com/in/chad-short-36807094
+[enrich]   Found Twitter: https://x.com/zacharychadsho1
+[enrich]   Found Instagram: https://www.instagram.com/explore/locations/222888460/yakima-washington
+[enrich]   Updates: ['contact_phone', 'contact_facebook', 'contact_linkedin', 'contact_twitter', 'contact_instagram', 'notes']
+[enrich]   Saved 6 fields
+[enrich] 
+--- Lead 9/77 ---
+[enrich] Enriching Becky Cort (id=33)
+[enrich]   Found phone: (509) 248-1680
+[enrich]   Found Facebook: https://www.facebook.com/becky.cort
+[enrich]   Found LinkedIn: https://www.linkedin.com/in/becky-cort-80386911a
+[enrich]   Found Twitter: https://twitter.com/beckyycontreras
+[enrich]   Found Instagram: https://www.instagram.com/platosclosetyakima
+[enrich]   Updates: ['contact_phone', 'contact_facebook', 'contact_linkedin', 'contact_twitter', 'contact_instagram', 'notes']
+[enrich]   Saved 6 fields
+[enrich] 
+--- Lead 10/77 ---
+[enrich] Enriching Joey Cort (id=34)
+[enrich]   Found phone: (509) 575-6200
+[enrich]   Found Facebook: https://www.facebook.com/joey.cort
+[enrich]   Found LinkedIn: https://www.linkedin.com/in/joey-cort-7562a3290
+[enrich]   Found Instagram: https://www.instagram.com/cityofyakima
+[enrich]   Updates: ['contact_phone', 'contact_facebook', 'contact_linkedin', 'contact_instagram', 'notes']
+[enrich]   Saved 5 fields
+[enrich] 
+--- Lead 11/77 ---
+[enrich] Enriching Shellie Sauve (id=35)
+[enrich]   Found phone: (509) 248-1680
+[enrich]   Found Facebook: https://www.facebook.com/shellie.sauve
+[enrich]   Found LinkedIn: https://www.linkedin.com/in/shellie-sauve-09b59810
+[enrich]   Found Instagram: https://www.instagram.com/yakimavalley
+[enrich]   Updates: ['contact_phone', 'contact_facebook', 'contact_linkedin', 'contact_instagram', 'notes']
+[enrich]   Saved 5 fields
+[enrich] 
+--- Lead 12/77 ---
+[enrich] Enriching Karissa Thomas (id=36)
+[enrich]   Found phone: (509) 575-6000
+[enrich]   Found LinkedIn: https://www.linkedin.com/in/drkarissathomas
+[enrich]   Found Instagram: https://www.instagram.com/cityofyakima
+[enrich]   Updates: ['contact_phone', 'contact_linkedin', 'contact_instagram', 'notes']
+[enrich]   Saved 4 fields
+[enrich] 
+--- Lead 13/77 ---
+[enrich] Enriching Jane Watson (id=37)
+[enrich]   Found phone: (509) 575-6000
+[enrich]   Found Facebook: https://www.facebook.com/jane.watson.7127
+[enrich]   Found Twitter: https://x.com/MJWatsonDaily
+[enrich]   Found Instagram: https://www.instagram.com/yakimavalley
+[enrich]   Updates: ['contact_phone', 'contact_facebook', 'contact_twitter', 'contact_instagram', 'notes']
+[enrich]   Saved 5 fields
+[enrich] 
+--- Lead 14/77 ---
+[enrich] Enriching Fred Watson (id=38)
+[enrich]   Found phone: (509) 575-6000
+[enrich]   Found LinkedIn: https://www.linkedin.com/in/fwatson
+[enrich]   Found Twitter: https://x.com/StargazerFred
+[enrich]   Found Instagram: https://www.instagram.com/platosclosetyakima
+[enrich]   Updates: ['contact_phone', 'contact_linkedin', 'contact_twitter', 'contact_instagram', 'notes']
+[enrich]   Saved 5 fields
+[enrich] 
+--- Lead 15/77 ---
+[enrich] Enriching Dennis Watson (id=39)
+[enrich]   Found phone: (509) 575-6000
+[enrich]   Found LinkedIn: https://www.linkedin.com/in/dennis-watson-6559064
+[enrich]   Found Twitter: https://x.com/DionysiosWatson
+[enrich]   Found Instagram: https://www.instagram.com/explore/locations/222888460/yakima-washington
+[enrich]   Updates: ['contact_phone', 'contact_linkedin', 'contact_twitter', 'contact_instagram', 'notes']
+[enrich]   Saved 5 fields
+[enrich] 
+--- Lead 16/77 ---
+[enrich] Enriching Della Osborne (id=40)
+[enrich]   Found phone: (509) 248-1680
+[enrich]   Found LinkedIn: https://www.linkedin.com/in/della-osborne-18915b274
+[enrich]   Found Instagram: https://www.instagram.com/platosclosetyakima
+[enrich]   Updates: ['contact_phone', 'contact_linkedin', 'contact_instagram', 'notes']
+[enrich]   Saved 4 fields
+[enrich] 
+--- Lead 17/77 ---
+[enrich] Enriching Amy McDonald (id=41)
+[enrich]   Found Facebook: https://www.facebook.com/groups/3739441736379827/posts/4257930944530901
+[enrich]   Found LinkedIn: https://www.linkedin.com/in/amy-mcdonald-b331611a
+[enrich]   Found Twitter: https://x.com/Amy__Macdonald
+[enrich]   Found Instagram: https://www.instagram.com/the.houseofgrain_wapato
+[enrich]   Updates: ['contact_facebook', 'contact_linkedin', 'contact_twitter', 'contact_instagram', 'notes']
+[enrich]   Saved 5 fields
+[enrich] 
+--- Lead 18/77 ---
+[enrich] Enriching Marie Hulett (id=42)
+[enrich]   Found phone: (509) 575-6000
+[enrich]   Found LinkedIn: https://www.linkedin.com/in/mariehulett
+[enrich]   Found Twitter: https://x.com/thepetplace/status/858572368511246336
+[enrich]   Found Instagram: https://www.instagram.com/cityofyakima
+[enrich]   Updates: ['contact_phone', 'contact_linkedin', 'contact_twitter', 'contact_instagram', 'notes']
+[enrich]   Saved 5 fields
+[enrich] 
+--- Lead 19/77 ---
+[enrich] Enriching Maria Sauceda (id=43)
+[enrich]   Found phone: (509) 865-6319
+[enrich]   Found LinkedIn: https://www.linkedin.com/in/maria-sauceda-63ba0b149
+[enrich]   Found Instagram: https://www.instagram.com/p/DVbs9rQAcIm
+[enrich]   Updates: ['contact_phone', 'contact_linkedin', 'contact_instagram', 'notes']
+[enrich]   Saved 4 fields
+[enrich] 
+--- Lead 20/77 ---
+[enrich] Enriching Brookside Funeral Home (id=44)
+[enrich]   Found phone: (509) 575-8851
+[enrich]   Found Facebook: https://www.facebook.com/profile.php
+[enrich]   Found LinkedIn: https://www.linkedin.com/in/karla-cantu-611b351aa
+[enrich]   Found Twitter: https://x.com/xiabrookside
+[enrich]   Found Instagram: https://www.instagram.com/p/BzpBQzHA35E
+[enrich]   Updates: ['contact_phone', 'contact_facebook', 'contact_linkedin', 'contact_twitter', 'contact_instagram', 'notes']
+[enrich]   Saved 6 fields
+[enrich] 
+--- Lead 21/77 ---
+[enrich] Enriching Shaw & Sons Funeral Home (id=45)
+[enrich]   Found phone: (509) 575-6200
+[enrich]   Found Facebook: https://www.facebook.com/ShawandSonsFuneralHome
+[enrich]   Found LinkedIn: https://www.linkedin.com/in/kathy-birdwell-931734a6
+[enrich]   Found Twitter: https://twitter.com/TRHLofficial/photo
+[enrich]   Found Instagram: https://www.instagram.com/cityofyakima
+[enrich]   Updates: ['contact_phone', 'contact_facebook', 'contact_linkedin', 'contact_twitter', 'contact_instagram', 'notes']
+[enrich]   Saved 6 fields
+[enrich] 
+--- Lead 22/77 ---
+[enrich] Enriching Keith & Keith Funeral Home (id=46)
+[enrich]   Found phone: (509) 575-6038
+[enrich]   Found Facebook: https://www.facebook.com/KeithAndKeithFuneral
+[enrich]   Found LinkedIn: https://www.linkedin.com/in/daniel-m-williams-003b926b
+[enrich]   Found Instagram: https://www.instagram.com/yakimavalley
+[enrich]   Updates: ['contact_phone', 'contact_facebook', 'contact_linkedin', 'contact_instagram', 'notes']
+[enrich]   Saved 5 fields
+[enrich] 
+--- Lead 23/77 ---
+[enrich] Enriching Langevin El Paraiso Funeral Home (id=47)
+[enrich]   Found phone: (509) 575-6038
+[enrich]   Found Facebook: https://www.facebook.com/LangevinElParaiso
+[enrich]   Found Twitter: https://x.com/StokeyyG2/status/2076789926763413608
+[enrich]   Found Instagram: https://www.instagram.com/yakimavalley
+[enrich]   Updates: ['contact_phone', 'contact_facebook', 'contact_twitter', 'contact_instagram', 'notes']
+[enrich]   Saved 5 fields
+[enrich] 
+--- Lead 24/77 ---
+[enrich] Enriching Valley Hills Funeral Home (id=48)
+[enrich]   Found phone: (509) 575-6000
+[enrich]   Found Facebook: https://www.facebook.com/p/Valley-Hills-Funeral-Home-100064028315863
+[enrich]   Found LinkedIn: https://www.linkedin.com/company/valley-hills-funeral-home
+[enrich]   Found Instagram: https://www.instagram.com/yakimavalley
+[enrich]   Updates: ['contact_phone', 'contact_facebook', 'contact_linkedin', 'contact_instagram', 'notes']
+[enrich]   Saved 5 fields
+[enrich] 
+--- Lead 25/77 ---
+[enrich] Enriching Yakima Valley Genealogical Society (id=49)
+[enrich]   Found phone: (509) 248-1680
+[enrich]   Found LinkedIn: https://www.linkedin.com/in/ginny-majewski-b088a037
+[enrich]   Found Instagram: https://www.instagram.com/cityofyakima
+[enrich]   Updates: ['contact_phone', 'contact_linkedin', 'contact_instagram', 'notes']
+[enrich]   Saved 4 fields
+[enrich] 
+--- Lead 26/77 ---
+[enrich] Enriching Harman Center (id=50)
+[enrich]   Found phone: (509) 575-6000
+[enrich]   Found Facebook: https://www.facebook.com/YakimaHarmanCenter
+[enrich]   Found LinkedIn: https://www.linkedin.com/in/harman-center-187a88351
+[enrich]   Found Twitter: https://x.com/CityofYakima/status/2076382390000267336
+[enrich]   Found Instagram: https://www.instagram.com/platosclosetyakima
+[enrich]   Updates: ['contact_phone', 'contact_facebook', 'contact_linkedin', 'contact_twitter', 'contact_instagram', 'notes']
+[enrich]   Saved 6 fields
+[enrich] 
+--- Lead 27/77 ---
+[enrich] Enriching Kelly Mulvaney (id=51)
+[enrich]   Found phone: (509) 575-6200
+[enrich]   Found LinkedIn: https://www.linkedin.com/in/kelly-mulvaney
+[enrich]   Found Twitter: https://x.com/devonhaskins/status/1314329266650116098
+[enrich]   Found Instagram: https://www.instagram.com/platosclosetyakima
+[enrich]   Updates: ['contact_phone', 'contact_linkedin', 'contact_twitter', 'contact_instagram', 'notes']
+[enrich]   Saved 5 fields
+[enrich] 
+--- Lead 28/77 ---
+[enrich] Enriching Crystal Hitchcock (id=52)
+[enrich]   Found phone: (509) 248-1680
+[enrich]   Found LinkedIn: https://www.linkedin.com/in/crystal-hitchcock-1b74161b1
+[enrich]   Found Instagram: https://www.instagram.com/explore/locations/222888460/yakima-washington
+[enrich]   Updates: ['contact_phone', 'contact_linkedin', 'contact_instagram', 'notes']
+[enrich]   Saved 4 fields
+[enrich] 
+--- Lead 29/77 ---
+[enrich] Enriching Raul Sauceda (id=53)
+[enrich]   Found phone: (509) 865-6319
+[enrich]   Found Facebook: https://www.facebook.com/public/Raul-Sauceda
+[enrich]   Found LinkedIn: https://www.linkedin.com/in/raul-sauceda-4351b926a
+[enrich]   Found Instagram: https://www.instagram.com/p/DVbs9rQAcIm
+[enrich]   Updates: ['contact_phone', 'contact_facebook', 'contact_linkedin', 'contact_instagram', 'notes']
+[enrich]   Saved 5 fields
+[enrich] 
+--- Lead 30/77 ---
+[enrich] Enriching Calvary Cemetery Reviewer 1 (id=54)
+[enrich]   Found phone: (509) 955-9515
+[enrich]   Search error: No results found.
+[enrich]   Found Instagram: https://www.instagram.com/platosclosetyakima
+[enrich]   Updates: ['contact_phone', 'contact_instagram', 'notes']
+[enrich]   Saved 3 fields
+[enrich] 
+--- Lead 31/77 ---
+[enrich] Enriching Calvary Cemetery Reviewer 2 (id=55)
+[enrich]   Found phone: (509) 248-1680
+[enrich]   Search error: No results found.
+[enrich]   Search error: No results found.
+[enrich]   Found Instagram: https://www.instagram.com/platosclosetyakima
+[enrich]   Updates: ['contact_phone', 'contact_instagram', 'notes']
+[enrich]   Saved 3 fields
+[enrich] 
+--- Lead 32/77 ---
+[enrich] Enriching Calvary Cemetery Reviewer 3 (id=56)
+[enrich]   Found phone: (509) 575-6200
+[enrich]   Found Facebook: https://www.facebook.com/CalvaryCemeterySeattle
+[enrich]   Search error: No results found.
+[enrich]   Found Instagram: https://www.instagram.com/yakimavalley
+[enrich]   Updates: ['contact_phone', 'contact_facebook', 'contact_instagram', 'notes']
+[enrich]   Saved 4 fields
+[enrich] 
+--- Lead 33/77 ---
+[enrich] Enriching Tending Customer 1 (id=57)
+[enrich]   Found phone: (509) 575-6000
+[enrich]   Found Facebook: https://www.facebook.com/events/2112-south-1st-street-yakima-wa-98903/customer-appreciation-day/3096189670571704
+[enrich]   Found LinkedIn: https://www.linkedin.com/company/customer1
+[enrich]   Found Twitter: https://mobile.twitter.com/mame_00daihuku/media
+[enrich]   Found Instagram: https://www.instagram.com/cityofyakima
+[enrich]   Updates: ['contact_phone', 'contact_facebook', 'contact_linkedin', 'contact_twitter', 'contact_instagram', 'notes']
+[enrich]   Saved 6 fields
+[enrich] 
+--- Lead 34/77 ---
+[enrich] Enriching Headstoners Customer 1 (id=58)
+[enrich]   Found phone: (509) 575-6000
+[enrich]   Found Facebook: https://www.facebook.com/HeadstonersLLC/posts/headstoners-is-a-small-business-with-a-big-heart-our-aim-is-to-carefully-and-res/316087077614629
+[enrich]   Found LinkedIn: https://www.linkedin.com/company/customer1
+[enrich]   Found Twitter: https://twitter.com/theheadstones
+[enrich]   Search error: ConnectError: ConnectError('error sending request for url (https://search.yahoo.com/search;_ylt=7YrODAoDF5BOIYqC9sAkrLdI;_ylu=lEn2u0yp-hx9BKD0r8NQXE5zwa3twC_1emoZZRe39R7Sb5o?p=site%3Ainstagram.com+%22Yakima%2C+WA%22) > client error (Connect) > dns error > no connections available')
+[enrich]   Updates: ['contact_phone', 'contact_facebook', 'contact_linkedin', 'contact_twitter', 'notes']
+[enrich]   Saved 5 fields
+[enrich] 
+--- Lead 35/77 ---
+[enrich] Enriching Yakima Valley FindAGrave Maintainer (id=59)
+[enrich]   Found phone: (509) 955-9515
+[enrich]   Search error: No results found.
+[enrich]   Found Instagram: https://www.instagram.com/cityofyakima
+[enrich]   Updates: ['contact_phone', 'contact_instagram', 'notes']
+[enrich]   Saved 3 fields
+[enrich] 
+--- Lead 36/77 ---
+[enrich] Enriching Tahoma Veterans Section Maintainer (id=60)
+[enrich]   Found phone: (509) 575-6200
+[enrich]   Search error: No results found.
+[enrich]   Found Instagram: https://www.instagram.com/platosclosetyakima
+[enrich]   Updates: ['contact_phone', 'contact_instagram', 'notes']
+[enrich]   Saved 3 fields
+[enrich] 
+--- Lead 37/77 ---
+[enrich] Enriching West Hills Memorial Park Photo Volunteer (id=61)
+[enrich]   Found phone: (509) 248-1680
+[enrich]   Found Facebook: https://www.facebook.com
+[enrich]   Found Twitter: https://mobile.twitter.com/Darkness_Hedge
+[enrich]   Found Instagram: https://www.instagram.com/cityofyakima
+[enrich]   Updates: ['contact_phone', 'contact_facebook', 'contact_twitter', 'contact_instagram', 'notes']
+[enrich]   Saved 5 fields
+[enrich] 
+--- Lead 38/77 ---
+[enrich] Enriching Terrace Heights Documenter (id=62)
+[enrich]   Found phone: (509) 575-6200
+[enrich]   Found LinkedIn: https://www.linkedin.com/in/aron-lebovits-b0006417
+[enrich]   Found Twitter: https://twitter.com/BOMBAE8/media
+[enrich]   Found Instagram: https://www.instagram.com/yakimavalley
+[enrich]   Updates: ['contact_phone', 'contact_linkedin', 'contact_twitter', 'contact_instagram', 'notes']
+[enrich]   Saved 5 fields
+[enrich] 
+--- Lead 39/77 ---
+[enrich] Enriching Calvary Cemetery Record Maintainer (id=63)
+[enrich]   Found phone: (509) 575-6000
+[enrich]   Found Facebook: https://www.facebook.com/Calvary-Cemetery-Yakima-1435367946683101
+[enrich]   Search error: No results found.
+[enrich]   Found Instagram: https://www.instagram.com/cityofyakima
+[enrich]   Updates: ['contact_phone', 'contact_facebook', 'contact_instagram', 'notes']
+[enrich]   Saved 4 fields
+[enrich] 
+--- Lead 40/77 ---
+[enrich] Enriching Ahtanum Cemetery Researcher (id=64)
+[enrich]   Found phone: (509) 575-6200
+[enrich]   Search error: No results found.
+[enrich]   Search error: No results found.
+[enrich]   Found Instagram: https://www.instagram.com/yakimavalley
+[enrich]   Updates: ['contact_phone', 'contact_instagram', 'notes']
+[enrich]   Saved 3 fields
+[enrich] 
+--- Lead 41/77 ---
+[enrich] Enriching Outlook Cemetery Contributor (id=65)
+[enrich]   Found phone: (509) 575-6200
+[enrich]   Search error: No results found.
+[enrich]   Found Instagram: https://www.instagram.com/cityofyakima
+[enrich]   Updates: ['contact_phone', 'contact_instagram', 'notes']
+[enrich]   Saved 3 fields
+[enrich] 
+--- Lead 42/77 ---
+[enrich] Enriching Zillah Cemetery Volunteer (id=66)
+[enrich]   Found phone: (509) 829-5151
+[enrich]   ERROR: 'charmap' codec can't encode characters in position 54-56: character maps to <undefined>
+[enrich] 
+--- Lead 43/77 ---
+[enrich] Enriching Naches Cemetery Keeper (id=67)
+[enrich]   Found phone: (509) 653-2647
+[enrich]   Search error: No results found.
+[enrich]   Found Twitter: https://twitter.com/mitakeChang/media
+[enrich]   Found Instagram: https://www.instagram.com/nachesvalleyfruit
+[enrich]   Updates: ['contact_phone', 'contact_twitter', 'contact_instagram', 'notes']
+[enrich]   Saved 4 fields
+[enrich] 
+--- Lead 44/77 ---
+[enrich] Enriching Toppenish Elmwood Researcher (id=68)
+[enrich]   Found phone: (509) 865-6319
+[enrich]   Search error: No results found.
+[enrich]   Found Instagram: https://www.instagram.com/tophighcheer
+[enrich]   Updates: ['contact_phone', 'contact_instagram', 'notes']
+[enrich]   Saved 3 fields
+[enrich] 
+--- Lead 45/77 ---
+[enrich] Enriching Yakima Memories Member 1 (id=69)
+[enrich]   Found phone: (509) 575-6000
+[enrich]   Search error: No results found.
+[enrich]   Found Twitter: https://x.com/USARPAC/status/2055415777361289300
+[enrich]   Found Instagram: https://www.instagram.com/yakimavalley
+[enrich]   Updates: ['contact_phone', 'contact_twitter', 'contact_instagram', 'notes']
+[enrich]   Saved 4 fields
+[enrich] 
+--- Lead 46/77 ---
+[enrich] Enriching Yakima Memories Member 2 (id=70)
+[enrich]   Found phone: (509) 575-6200
+[enrich]   Found Facebook: https://www.facebook.com/groups/YakimaHistoryandMemories
+[enrich]   Found LinkedIn: https://www.linkedin.com/in/steve-smith-85084a23
+[enrich]   Found Twitter: https://mobile.twitter.com/TRHLofficial/photo
+[enrich]   Found Instagram: https://www.instagram.com/platosclosetyakima
+[enrich]   Updates: ['contact_phone', 'contact_facebook', 'contact_linkedin', 'contact_twitter', 'contact_instagram', 'notes']
+[enrich]   Saved 6 fields
+[enrich] 
+--- Lead 47/77 ---
+[enrich] Enriching Yakama Nation Community Member (id=71)
+[enrich]   Found phone: (509) 248-1680
+[enrich]   Search error: No results found.
+[enrich]   Found Instagram: https://www.instagram.com/cityofyakima
+[enrich]   Updates: ['contact_phone', 'contact_instagram', 'notes']
+[enrich]   Saved 3 fields
+[enrich] 
+--- Lead 48/77 ---
+[enrich] Enriching Local Genealogy FB Member 1 (id=72)
+[enrich]   Found phone: (509) 575-6200
+[enrich]   Search error: No results found.
+[enrich]   Found LinkedIn: https://www.linkedin.com/in/dellenbaugh
+[enrich]   Found Twitter: https://twitter.com/mame_00daihuku/media
+[enrich]   Found Instagram: https://www.instagram.com/yakimavalley
+[enrich]   Updates: ['contact_phone', 'contact_linkedin', 'contact_twitter', 'contact_instagram', 'notes']
+[enrich]   Saved 5 fields
+[enrich] 
+--- Lead 49/77 ---
+[enrich] Enriching Local Genealogy FB Member 2 (id=73)
+[enrich]   Found phone: (866) 886-7117
+[enrich]   Found Facebook: https://www.facebook.com/profile.php
+[enrich]   Found LinkedIn: https://www.linkedin.com/in/kim-carlson-225a4724
+[enrich]   Found Twitter: https://mobile.twitter.com/__rA_Ho/media
+[enrich]   Found Instagram: https://www.instagram.com/platosclosetyakima
+[enrich]   Updates: ['contact_phone', 'contact_facebook', 'contact_linkedin', 'contact_twitter', 'contact_instagram', 'notes']
+[enrich]   Saved 6 fields
+[enrich] 
+--- Lead 50/77 ---
+[enrich] Enriching Cemetery Clean Volunteer Organizer (id=74)
+[enrich]   Found phone: (509) 248-1680
+[enrich]   Found Facebook: https://secure.facebook.com
+[enrich]   ERROR: 'charmap' codec can't encode characters in position 54-56: character maps to <undefined>
+[enrich] 
+--- Lead 51/77 ---
+[enrich] Enriching Veterans Family Member 1 (id=75)
+[enrich]   Found phone: (509) 248-1680
+[enrich]   Search error: No results found.
+[enrich]   Found Instagram: https://www.instagram.com/platosclosetyakima
+[enrich]   Updates: ['contact_phone', 'contact_instagram', 'notes']
+[enrich]   Saved 3 fields
+[enrich] 
+--- Lead 52/77 ---
+[enrich] Enriching Veterans Family Member 2 (id=76)
+[enrich]   Search error: No results found.
+[enrich]   Found Instagram: https://www.instagram.com/cityofyakima
+[enrich]   Updates: ['contact_instagram', 'notes']
+[enrich]   Saved 2 fields
+[enrich] 
+--- Lead 53/77 ---
+[enrich] Enriching Memorial Day Visitor 1 (id=77)
+[enrich]   Found phone: (509) 575-6200
+[enrich]   Search error: No results found.
+[enrich]   Found Instagram: https://www.instagram.com/cityofyakima
+[enrich]   Updates: ['contact_phone', 'contact_instagram', 'notes']
+[enrich]   Saved 3 fields
+[enrich] 
+--- Lead 54/77 ---
+[enrich] Enriching Memorial Day Visitor 2 (id=78)
+[enrich]   Found phone: (509) 955-9515
+[enrich]   Search error: No results found.
+[enrich]   Search error: No results found.
+[enrich]   Found Instagram: https://www.instagram.com/platosclosetyakima
+[enrich]   Updates: ['contact_phone', 'contact_instagram', 'notes']
+[enrich]   Saved 3 fields
+[enrich] 
+--- Lead 55/77 ---
+[enrich] Enriching Google Reviewer - Tahoma 1 (id=79)
+[enrich]   Found Facebook: https://www.facebook.com/kimatv
+[enrich]   Found LinkedIn: https://www.linkedin.com/company/tahomamfg
+[enrich]   Found Twitter: https://twitter.com/ElJarochoFeliz/media
+[enrich]   Found Instagram: https://www.instagram.com/platosclosetyakima
+[enrich]   Updates: ['contact_facebook', 'contact_linkedin', 'contact_twitter', 'contact_instagram', 'notes']
+[enrich]   Saved 5 fields
+[enrich] 
+--- Lead 56/77 ---
+[enrich] Enriching Google Reviewer - Tahoma 2 (id=80)
+[enrich]   Found phone: (509) 952-5880
+[enrich]   Found Facebook: https://www.facebook.com/TheYNReview
+[enrich]   Found Twitter: https://twitter.com/Yu_Hirose1212/media
+[enrich]   Found Instagram: https://www.instagram.com/yakimavalley
+[enrich]   Updates: ['contact_phone', 'contact_facebook', 'contact_twitter', 'contact_instagram', 'notes']
+[enrich]   Saved 5 fields
+[enrich] 
+--- Lead 57/77 ---
+[enrich] Enriching Google Reviewer - West Hills 1 (id=81)
+[enrich]   Found phone: (509) 575-6000
+[enrich]   Found LinkedIn: https://www.linkedin.com/company/west-hills-construction-inc.
+[enrich]   Found Twitter: https://twitter.com/Juliblaack/media
+[enrich]   Found Instagram: https://www.instagram.com/yakimavalley
+[enrich]   Updates: ['contact_phone', 'contact_linkedin', 'contact_twitter', 'contact_instagram', 'notes']
+[enrich]   Saved 5 fields
+[enrich] 
+--- Lead 58/77 ---
+[enrich] Enriching Google Reviewer - West Hills 2 (id=82)
+[enrich]   Found phone: (509) 248-1680
+[enrich]   Found Facebook: https://www.facebook.com/West-Hills-Memorial-Park-101164966720755
+[enrich]   Search error: No results found.
+[enrich]   Found Twitter: https://twitter.com/Juliblaack/media
+[enrich]   Found Instagram: https://www.instagram.com/platosclosetyakima
+[enrich]   Updates: ['contact_phone', 'contact_facebook', 'contact_twitter', 'contact_instagram', 'notes']
+[enrich]   Saved 5 fields
+[enrich] 
+--- Lead 59/77 ---
+[enrich] Enriching Google Reviewer - Terrace Heights 1 (id=83)
+[enrich]   Found phone: (509) 248-1680
+[enrich]   Search error: No results found.
+[enrich]   Found Instagram: https://www.instagram.com/cityofyakima
+[enrich]   Updates: ['contact_phone', 'contact_instagram', 'notes']
+[enrich]   Saved 3 fields
+[enrich] 
+--- Lead 60/77 ---
+[enrich] Enriching Google Reviewer - Calvary 1 (id=84)
+[enrich]   Found phone: (509) 248-1680
+[enrich]   Found Facebook: https://www.facebook.com/CCYak
+[enrich]   Search error: No results found.
+[enrich]   Found Twitter: https://mobile.twitter.com/IQ200YukaF/media
+[enrich]   Found Instagram: https://www.instagram.com/platosclosetyakima
+[enrich]   Updates: ['contact_phone', 'contact_facebook', 'contact_twitter', 'contact_instagram', 'notes']
+[enrich]   Saved 5 fields
+[enrich] 
+--- Lead 61/77 ---
+[enrich] Enriching Google Reviewer - Calvary 2 (id=85)
+[enrich]   Found phone: (509) 952-5880
+[enrich]   Found Facebook: https://www.facebook.com/CCYak
+[enrich]   Found LinkedIn: https://www.linkedin.com/in/calvaryrogers
+[enrich]   Found Twitter: https://twitter.com/SolitaryASMR/media
+[enrich]   Found Instagram: https://www.instagram.com/platosclosetyakima
+[enrich]   Updates: ['contact_phone', 'contact_facebook', 'contact_linkedin', 'contact_twitter', 'contact_instagram', 'notes']
+[enrich]   Saved 6 fields
+[enrich] 
+--- Lead 62/77 ---
+[enrich] Enriching Google Reviewer - Ahtanum (id=86)
+[enrich]   Found phone: (509) 575-6200
+[enrich]   Search error: No results found.
+[enrich]   Found Instagram: https://www.instagram.com/platosclosetyakima
+[enrich]   Updates: ['contact_phone', 'contact_instagram', 'notes']
+[enrich]   Saved 3 fields
+[enrich] 
+--- Lead 63/77 ---
+[enrich] Enriching Donald Meyers (id=87)
+[enrich]   Found phone: (509) 575-6038
+[enrich]   Found LinkedIn: https://www.linkedin.com/in/donald-meyers-a3b56039
+[enrich]   Found Instagram: https://www.instagram.com/cityofyakima
+[enrich]   Updates: ['contact_phone', 'contact_linkedin', 'contact_instagram', 'notes']
+[enrich]   Saved 4 fields
+[enrich] 
+--- Lead 64/77 ---
+[enrich] Enriching Ken Wilkinson (id=88)
+[enrich]   Found phone: (509) 575-6038
+[enrich]   Found LinkedIn: https://www.linkedin.com/in/kenwilkinsonjr
+[enrich]   Found Twitter: https://x.com/KenWilkinsonCRE
+[enrich]   Found Instagram: https://www.instagram.com/yakimavalley
+[enrich]   Updates: ['contact_phone', 'contact_linkedin', 'contact_twitter', 'contact_instagram', 'notes']
+[enrich]   Saved 5 fields
+[enrich] 
+--- Lead 65/77 ---
+[enrich] Enriching Lance Hoyt (id=89)
+[enrich]   Found phone: (509) 865-4500
+[enrich]   Found Facebook: https://www.facebook.com/lance.hoyt.10
+[enrich]   Found LinkedIn: https://www.linkedin.com/in/lance-hoyt-397550176
+[enrich]   Found Twitter: https://x.com/WrestlingIsKing/status/1276805275975106562
+[enrich]   Found Instagram: https://www.instagram.com/topp_rodeo
+[enrich]   Updates: ['contact_phone', 'contact_facebook', 'contact_linkedin', 'contact_twitter', 'contact_instagram', 'notes']
+[enrich]   Saved 6 fields
+[enrich] 
+--- Lead 66/77 ---
+[enrich] Enriching Local Teacher/Organizer 1 (id=90)
+[enrich]   Found phone: (509) 248-1680
+[enrich]   Search error: No results found.
+[enrich]   Found Instagram: https://www.instagram.com/platosclosetyakima
+[enrich]   Updates: ['contact_phone', 'contact_instagram', 'notes']
+[enrich]   Saved 3 fields
+[enrich] 
+--- Lead 67/77 ---
+[enrich] Enriching Church Group Organizer 1 (id=91)
+[enrich]   Found phone: (509) 955-9515
+[enrich]   Search error: No results found.
+[enrich]   Found LinkedIn: https://www.linkedin.com/in/anagha-rajesh-32527b125
+[enrich]   Found Twitter: https://twitter.com/hayaniro
+[enrich]   Found Instagram: https://www.instagram.com/yakimavalley
+[enrich]   Updates: ['contact_phone', 'contact_linkedin', 'contact_twitter', 'contact_instagram', 'notes']
+[enrich]   Saved 5 fields
+[enrich] 
+--- Lead 68/77 ---
+[enrich] Enriching Rotary Club Member 1 (id=92)
+[enrich]   Found phone: (509) 575-6000
+[enrich]   Found LinkedIn: https://in.linkedin.com/in/ruthira-moorthy-5b2ab872
+[enrich]   Found Instagram: https://www.instagram.com/cityofyakima
+[enrich]   Updates: ['contact_phone', 'contact_linkedin', 'contact_instagram', 'notes']
+[enrich]   Saved 4 fields
+[enrich] 
+--- Lead 69/77 ---
+[enrich] Enriching VFW Post Member 1 (id=93)
+[enrich]   Found phone: (509) 575-6038
+[enrich]   Search error: No results found.
+[enrich]   Found Instagram: https://www.instagram.com/dairyqueenyakimawa
+[enrich]   Updates: ['contact_phone', 'contact_instagram', 'notes']
+[enrich]   Saved 3 fields
+[enrich] 
+--- Lead 70/77 ---
+[enrich] Enriching VFW Post Member 2 (id=94)
+[enrich]   Found phone: (509) 575-6200
+[enrich]   Search error: No results found.
+[enrich]   Found Instagram: https://www.instagram.com/platosclosetyakima
+[enrich]   Updates: ['contact_phone', 'contact_instagram', 'notes']
+[enrich]   Saved 3 fields
+[enrich] 
+--- Lead 71/77 ---
+[enrich] Enriching American Legion Member 1 (id=95)
+[enrich]   Found phone: (509) 452-5098
+[enrich]   Found Instagram: https://www.instagram.com/cityofyakima
+[enrich]   Updates: ['contact_phone', 'contact_instagram', 'notes']
+[enrich]   Saved 3 fields
+[enrich] 
+--- Lead 72/77 ---
+[enrich] Enriching Local Historian 1 (id=96)
+[enrich]   Found phone: (509) 575-6000
+[enrich]   Found LinkedIn: https://www.linkedin.com/in/matthew-ainsworth-91674b112
+[enrich]   Found Instagram: https://www.instagram.com/yakimavalley
+[enrich]   Updates: ['contact_phone', 'contact_linkedin', 'contact_instagram', 'notes']
+[enrich]   Saved 4 fields
+[enrich] 
+--- Lead 73/77 ---
+[enrich] Enriching Local Gardener/Landscaper 1 (id=97)
+[enrich]   Found phone: (509) 248-1680
+[enrich]   Found Facebook: https://www.facebook.com
+[enrich]   Search error: No results found.
+[enrich]   Found Instagram: https://www.instagram.com/cityofyakima
+[enrich]   Updates: ['contact_phone', 'contact_facebook', 'contact_instagram', 'notes']
+[enrich]   Saved 4 fields
+[enrich] 
+--- Lead 74/77 ---
+[enrich] Enriching Funeral Director 1 (id=98)
+[enrich]   Found phone: (509) 955-9515
+[enrich]   Found LinkedIn: https://www.linkedin.com/in/michael-neal-831a4564
+[enrich]   Found Instagram: https://www.instagram.com/platosclosetyakima
+[enrich]   Updates: ['contact_phone', 'contact_linkedin', 'contact_instagram', 'notes']
+[enrich]   Saved 4 fields
+[enrich] 
+--- Lead 75/77 ---
+[enrich] Enriching Cemetery Office Worker 1 (id=99)
+[enrich]   Found phone: (509) 575-6200
+[enrich]   Found Facebook: https://www.facebook.com/yakcountyhr
+[enrich]   Found LinkedIn: https://uk.linkedin.com/in/michael-cole-6b6965369
+[enrich]   Found Twitter: https://twitter.com/2_Coleslaw/media
+[enrich]   Found Instagram: https://www.instagram.com/platosclosetyakima
+[enrich]   Updates: ['contact_phone', 'contact_facebook', 'contact_linkedin', 'contact_twitter', 'contact_instagram', 'notes']
+[enrich]   Saved 6 fields
+[enrich] 
+--- Lead 76/77 ---
+[enrich] Enriching Local Newspaper Delivery Person (id=100)
+[enrich]   Found phone: (509) 575-6200
+[enrich]   Found Facebook: https://www.facebook.com
+[enrich]   Found Instagram: https://www.instagram.com/cityofyakima
+[enrich]   Updates: ['contact_phone', 'contact_facebook', 'contact_instagram', 'notes']
+[enrich]   Saved 4 fields
+[enrich] 
+--- Lead 77/77 ---
+[enrich] Enriching Yakima Valley Fair Attendee (id=101)
+[enrich]   Found phone: (509) 575-6000
+[enrich]   Found Facebook: https://m.facebook.com
+[enrich]   Search error: No results found.
+[enrich]   Found Instagram: https://www.instagram.com/platosclosetyakima
+[enrich]   Updates: ['contact_phone', 'contact_facebook', 'contact_instagram', 'notes']
+[enrich]   Saved 4 fields
+[enrich] 
+=== Done ===
+[enrich] Processed: 77
+[enrich] Enriched:  75
+[enrich] Updated:   75
+[enrich] Errors:    2

@@ -1,0 +1,183 @@
+[enrich] Found 20 leads to enrich
+[enrich] 
+--- Lead 1/20 ---
+[enrich] Enriching Terra Reise (id=8)
+[enrich]   Found phone: (509) 575-6000
+[enrich]   Found Facebook: https://www.facebook.com/groups/60404394981
+[enrich]   Found LinkedIn: https://www.linkedin.com/company/terrateamup
+[enrich]   Found Instagram: https://www.instagram.com/platosclosetyakima
+[enrich]   Updates: ['contact_phone', 'contact_facebook', 'contact_linkedin', 'contact_instagram', 'notes']
+[enrich]   Saved 5 fields
+[enrich] 
+--- Lead 2/20 ---
+[enrich] Enriching Ashley Ruiz (id=9)
+[enrich]   Found phone: (509) 575-6000
+[enrich]   Found LinkedIn: https://www.linkedin.com/in/ashley-ruiz-
+[enrich]   Found Twitter: https://x.com/AshleyRuizWx
+[enrich]   Found Instagram: https://www.instagram.com/platosclosetyakima
+[enrich]   Updates: ['contact_phone', 'contact_linkedin', 'contact_twitter', 'contact_instagram', 'notes']
+[enrich]   Saved 5 fields
+[enrich] 
+--- Lead 3/20 ---
+[enrich] Enriching Elizabeth Mendoza (id=10)
+[enrich]   Found phone: (509) 575-6000
+[enrich]   Found LinkedIn: https://www.linkedin.com/in/elizabeth-mendoza-321b107
+[enrich]   Found Twitter: https://x.com/eamendozah
+[enrich]   Found Instagram: https://www.instagram.com/cityofyakima
+[enrich]   Updates: ['contact_phone', 'contact_linkedin', 'contact_twitter', 'contact_instagram', 'notes']
+[enrich]   Saved 5 fields
+[enrich] 
+--- Lead 4/20 ---
+[enrich] Enriching ENDLESS SEWING (id=11)
+[enrich]   Found phone: (509) 248-1680
+[enrich]   Search error: No results found.
+[enrich]   Found LinkedIn: https://www.linkedin.com/company/compagnie-m-
+[enrich]   Found Instagram: https://www.instagram.com/platosclosetyakima
+[enrich]   Updates: ['contact_phone', 'contact_linkedin', 'contact_instagram', 'notes']
+[enrich]   Saved 4 fields
+[enrich] 
+--- Lead 5/20 ---
+[enrich] Enriching Glen Walker (id=12)
+[enrich]   Found phone: (509) 575-6200
+[enrich]   Found LinkedIn: https://uk.linkedin.com/in/glenwalker1
+[enrich]   Found Twitter: https://x.com/latimesent/status/2064905489960366194
+[enrich]   Found Instagram: https://www.instagram.com/yakimavalley
+[enrich]   Updates: ['contact_phone', 'contact_linkedin', 'contact_twitter', 'contact_instagram', 'notes']
+[enrich]   Saved 5 fields
+[enrich] 
+--- Lead 6/20 ---
+[enrich] Enriching Fern Gilliland Greene (id=13)
+[enrich]   Found phone: (509) 248-1680
+[enrich]   Found Facebook: https://www.facebook.com
+[enrich]   Search error: No results found.
+[enrich]   Found Instagram: https://www.instagram.com/cityofyakima
+[enrich]   Updates: ['contact_phone', 'contact_facebook', 'contact_instagram', 'notes']
+[enrich]   Saved 4 fields
+[enrich] 
+--- Lead 7/20 ---
+[enrich] Enriching Joan Kobernik Hoeft (id=14)
+[enrich]   Found phone: (509) 575-6200
+[enrich]   Search error: No results found.
+[enrich]   Found Instagram: https://www.instagram.com/platosclosetyakima
+[enrich]   Updates: ['contact_phone', 'contact_instagram', 'notes']
+[enrich]   Saved 3 fields
+[enrich] 
+--- Lead 8/20 ---
+[enrich] Enriching Arthur Allen Moore III (id=15)
+[enrich]   Found phone: (509) 955-9515
+[enrich]   Found Facebook: https://www.facebook.com
+[enrich]   Search error: No results found.
+[enrich]   Found Instagram: https://www.instagram.com/cityofyakima
+[enrich]   Updates: ['contact_phone', 'contact_facebook', 'contact_instagram', 'notes']
+[enrich]   Saved 4 fields
+[enrich] 
+--- Lead 9/20 ---
+[enrich] Enriching Jerry Conklin (id=16)
+[enrich]   Found phone: (509) 955-9515
+[enrich]   Found LinkedIn: https://www.linkedin.com/in/jerry-conklin-24581717
+[enrich]   Found Instagram: https://www.instagram.com/platosclosetyakima
+[enrich]   Updates: ['contact_phone', 'contact_linkedin', 'contact_instagram', 'notes']
+[enrich]   Saved 4 fields
+[enrich] 
+--- Lead 10/20 ---
+[enrich] Enriching Brianna D. (id=17)
+[enrich]   Found phone: (509) 575-6038
+[enrich]   Found LinkedIn: https://www.linkedin.com/in/brigainz
+[enrich]   Found Twitter: https://x.com/BriannaDAguanno
+[enrich]   Found Instagram: https://www.instagram.com/yakimavalley
+[enrich]   Updates: ['contact_phone', 'contact_linkedin', 'contact_twitter', 'contact_instagram', 'notes']
+[enrich]   Saved 5 fields
+[enrich] 
+--- Lead 11/20 ---
+[enrich] Enriching Ancestral Sleuth (id=18)
+[enrich]   Found phone: (509) 575-6200
+[enrich]   Search error: error sending request for url (https://grokipedia.com/api/typeahead?query=site%3Alinkedin.com+%22Ancestral+Sleuth%22&limit=1) > operation timed out
+[enrich]   Found Instagram: https://www.instagram.com/platosclosetyakima
+[enrich]   Updates: ['contact_phone', 'contact_instagram', 'notes']
+[enrich]   Saved 3 fields
+[enrich] 
+--- Lead 12/20 ---
+[enrich] Enriching Bob and Nan (Digital Magic Photography) (id=19)
+[enrich]   Found phone: (509) 575-6000
+[enrich]   Found Facebook: https://www.facebook.com/DigitalMagicPhotography
+[enrich]   Found LinkedIn: https://www.linkedin.com/company/digital-magic-crm
+[enrich]   Found Twitter: https://x.com/Digital_Bob_
+[enrich]   Found Instagram: https://www.instagram.com/platosclosetyakima
+[enrich]   Updates: ['contact_phone', 'contact_facebook', 'contact_linkedin', 'contact_twitter', 'contact_instagram', 'notes']
+[enrich]   Saved 6 fields
+[enrich] 
+--- Lead 13/20 ---
+[enrich] Enriching Jackson Pettycroft (id=20)
+[enrich]   Found phone: (509) 955-9515
+[enrich]   Found LinkedIn: https://www.linkedin.com/in/jackson-petty
+[enrich]   Found Instagram: https://www.instagram.com/platosclosetyakima
+[enrich]   Updates: ['contact_phone', 'contact_linkedin', 'contact_instagram', 'notes']
+[enrich]   Saved 4 fields
+[enrich] 
+--- Lead 14/20 ---
+[enrich] Enriching FindAGrave User #46929436 (id=21)
+[enrich]   Found phone: (509) 955-9515
+[enrich]   Found Facebook: https://www.facebook.com/FindaGrave
+[enrich]   Found Twitter: https://mobile.twitter.com/CeeHaz/media
+[enrich]   Found Instagram: https://www.instagram.com/platosclosetyakima
+[enrich]   Updates: ['contact_phone', 'contact_facebook', 'contact_twitter', 'contact_instagram', 'notes']
+[enrich]   Saved 5 fields
+[enrich] 
+--- Lead 15/20 ---
+[enrich] Enriching FindAGrave User #49836381 (id=22)
+[enrich]   Found phone: (509) 575-6200
+[enrich]   Search error: No results found.
+[enrich]   Found Instagram: https://www.instagram.com/cityofyakima
+[enrich]   Updates: ['contact_phone', 'contact_instagram', 'notes']
+[enrich]   Saved 3 fields
+[enrich] 
+--- Lead 16/20 ---
+[enrich] Enriching FindAGrave User #47486355 (id=23)
+[enrich]   Found phone: (509) 248-1680
+[enrich]   Found Facebook: https://www.facebook.com/events/yakima-bible-baptist-church/funeral-for-pastor-dave-brown/1104928931683960
+[enrich]   Search error: Request timed out: ConnectTimeout('timed out')
+[enrich]   Found Twitter: https://twitter.com/TRHLofficial/photo
+[enrich]   Found Instagram: https://www.instagram.com/cityofyakima
+[enrich]   Updates: ['contact_phone', 'contact_facebook', 'contact_twitter', 'contact_instagram', 'notes']
+[enrich]   Saved 5 fields
+[enrich] 
+--- Lead 17/20 ---
+[enrich] Enriching Curtis Upton (id=24)
+[enrich]   Found phone: (509) 248-1680
+[enrich]   Found LinkedIn: https://www.linkedin.com/in/curtisupton7777
+[enrich]   Found Twitter: https://x.com/curtis_upton
+[enrich]   Found Instagram: https://www.instagram.com/yakimavalley
+[enrich]   Updates: ['contact_phone', 'contact_linkedin', 'contact_twitter', 'contact_instagram', 'notes']
+[enrich]   Saved 5 fields
+[enrich] 
+--- Lead 18/20 ---
+[enrich] Enriching Shelley Upton (id=25)
+[enrich]   Found phone: (509) 575-6000
+[enrich]   Found LinkedIn: https://www.linkedin.com/in/shelley-upton-59abb7124
+[enrich]   Found Twitter: https://x.com/shelbertonz
+[enrich]   Found Instagram: https://www.instagram.com/platosclosetyakima
+[enrich]   Updates: ['contact_phone', 'contact_linkedin', 'contact_twitter', 'contact_instagram', 'notes']
+[enrich]   Saved 5 fields
+[enrich] 
+--- Lead 19/20 ---
+[enrich] Enriching Chris Dickman (id=26)
+[enrich]   Found phone: (509) 575-6038
+[enrich]   Found LinkedIn: https://www.linkedin.com/in/chris-dickman-9643539
+[enrich]   Found Twitter: https://x.com/CSIROPublishing/status/1067173405001166848
+[enrich]   Found Instagram: https://www.instagram.com/platosclosetyakima
+[enrich]   Updates: ['contact_phone', 'contact_linkedin', 'contact_twitter', 'contact_instagram', 'notes']
+[enrich]   Saved 5 fields
+[enrich] 
+--- Lead 20/20 ---
+[enrich] Enriching Kathy Stump (id=27)
+[enrich]   Found phone: (509) 575-6038
+[enrich]   Found LinkedIn: https://www.linkedin.com/in/kathy-stump-b78733a6
+[enrich]   Found Instagram: https://www.instagram.com/platosclosetyakima
+[enrich]   Updates: ['contact_phone', 'contact_linkedin', 'contact_instagram', 'notes']
+[enrich]   Saved 4 fields
+[enrich] 
+=== Done ===
+[enrich] Processed: 20
+[enrich] Enriched:  20
+[enrich] Updated:   20
+[enrich] Errors:    0
