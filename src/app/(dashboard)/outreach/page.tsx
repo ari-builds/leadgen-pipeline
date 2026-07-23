@@ -73,10 +73,12 @@ const emailStatusColors: Record<string, string> = {
   opened: "bg-purple-100 text-purple-800",
   bounced: "bg-red-100 text-red-800",
   replied: "bg-emerald-100 text-emerald-800",
+  no_email: "bg-gray-100 text-gray-500",
 };
 
 const threadStatusColors: Record<string, string> = {
   active: "bg-green-100 text-green-800",
+  pending: "bg-yellow-100 text-yellow-800",
   paused: "bg-yellow-100 text-yellow-800",
   closed: "bg-gray-100 text-gray-800",
 };
@@ -213,7 +215,7 @@ export default function OutreachPage() {
     fetchData();
   }
 
-  async function generateDMScripts(platform: "facebook" | "instagram") {
+  async function generateDMScripts(platform: "facebook" | "instagram" | "linkedin") {
     const leadIds = Array.from(new Set(threads.filter((t) => t.platform === platform).map((t) => t.lead_id)));
     if (leadIds.length === 0) {
       toast.info(`No threads for ${platform} to generate scripts for`);
@@ -228,7 +230,7 @@ export default function OutreachPage() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             lead_id: leadId,
-            type: platform === "facebook" ? "dm_facebook" : "dm_instagram",
+            type: platform === "facebook" ? "dm_facebook" : platform === "instagram" ? "dm_instagram" : "dm_linkedin",
           }),
         });
         if (res.ok) count++;
@@ -322,10 +324,9 @@ export default function OutreachPage() {
     }
   }
 
-  const totalEmails = emails.length;
-  const sentCount = emails.filter((e) => e.status === "sent").length;
-  const draftCount = emails.filter((e) => e.status === "draft").length;
+  const noEmailCount = emails.filter((e) => e.status === "no_email").length;
   const activeThreads = threads.filter((t) => t.status === "active").length;
+  const pendingThreads = threads.filter((t) => t.status === "pending").length;
 
   const tabs: { key: Tab; label: string }[] = [
     { key: "emails", label: "Email Campaigns" },
@@ -354,26 +355,26 @@ export default function OutreachPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card>
           <CardHeader className="pb-2">
-            <CardDescription>Total Outreach</CardDescription>
-            <CardTitle className="text-3xl">{totalEmails}</CardTitle>
+            <CardDescription>DM Threads</CardDescription>
+            <CardTitle className="text-3xl">{threads.length}</CardTitle>
           </CardHeader>
         </Card>
         <Card>
           <CardHeader className="pb-2">
-            <CardDescription>Sent</CardDescription>
-            <CardTitle className="text-3xl">{sentCount}</CardTitle>
+            <CardDescription>Pending Scripts</CardDescription>
+            <CardTitle className="text-3xl">{pendingThreads}</CardTitle>
           </CardHeader>
         </Card>
         <Card>
           <CardHeader className="pb-2">
-            <CardDescription>Drafts</CardDescription>
-            <CardTitle className="text-3xl">{draftCount}</CardTitle>
-          </CardHeader>
-        </Card>
-        <Card>
-          <CardHeader className="pb-2">
-            <CardDescription>Active Threads</CardDescription>
+            <CardDescription>Active Conversations</CardDescription>
             <CardTitle className="text-3xl">{activeThreads}</CardTitle>
+          </CardHeader>
+        </Card>
+        <Card>
+          <CardHeader className="pb-2">
+            <CardDescription>Email Drafts (No Address)</CardDescription>
+            <CardTitle className="text-3xl">{noEmailCount}</CardTitle>
           </CardHeader>
         </Card>
       </div>
@@ -513,6 +514,13 @@ export default function OutreachPage() {
         <div className="space-y-4">
           <div className="flex gap-2">
             <Button
+              onClick={() => generateDMScripts("linkedin")}
+              disabled={generating}
+            >
+              {generating ? "Generating..." : "Generate LinkedIn Scripts"}
+            </Button>
+            <Button
+              variant="secondary"
               onClick={() => generateDMScripts("facebook")}
               disabled={generating}
             >
