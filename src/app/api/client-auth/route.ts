@@ -138,8 +138,6 @@ export async function POST(req: NextRequest) {
         role: "client",
       });
 
-      const emailSent = await sendOTPEmail(otpEmail, otp);
-
       return NextResponse.json({
         needsOTP: true,
         email: otpEmail,
