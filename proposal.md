@@ -8,8 +8,8 @@
 
 Most service-based businesses — HVAC, plumbing, dental, legal, home services, memorial services — are bleeding money in two directions:
 
-1. **They don't have enough qualified leads coming in.** They're either not marketing, or their marketing only generates phone numbers and form fills, not actual demand.
-2. **They lose leads on the back end.** Even the leads they do get fall through the cracks because nobody responds fast enough, follow-up is manual and inconsistent, and the business owner is too busy running the business to chase every inquiry.
+1. They don't have enough qualified leads coming in. They're either not marketing, or their marketing only generates phone numbers and form fills, not actual demand.
+2. They lose leads on the back end. Even the leads they do get fall through the cracks because nobody responds fast enough, follow-up is manual and inconsistent, and the business owner is too busy running the business to chase every inquiry.
 
 They're paying for marketing that only solves half the problem, then duct-taping together a bunch of separate tools for the other half — and most of the time those tools don't talk to each other.
 
@@ -111,12 +111,54 @@ Everything in Tier 1, plus:
 
 ---
 
+## Pricing Structure
+
+### What the Client Pays
+
+| Package | Monthly Price | Includes |
+|---|---|---|
+| Tier 1 — Lead Gen Only | $400/mo | 100 qualified leads, AI scoring, client dashboard, monthly report |
+| Tier 2 — Full Pipeline | $800/mo | Everything in Tier 1 + outreach campaigns + AI chatbot + AI call agent + follow-up workflows + full-funnel dashboard |
+| Per-appointment fee (Tier 2 only) | $50-100 per booked appointment | Paid on top of monthly fee for each qualified appointment that books through the AI system |
+| Extra leads beyond quota | $3/lead | For clients who need more than their plan allotment |
+
+### How Revenue Splits
+
+**Option A — I bundle, pay you flat per client (Recommended)**
+
+| | Tier 1 | Tier 2 |
+|---|---|---|
+| Client pays me | $400/mo | $800/mo |
+| I pay you | $0 | $200-250/mo per client |
+| I keep | $400/mo | $550-600/mo + appointment fees |
+| You keep | $0 (not in Tier 1) | $200-250/mo per client |
+
+Why this works: I own the client relationship. I handle sales, onboarding, billing, support. You build and maintain the AI infrastructure. Clean split, no confusion, no awkward billing conversations with the client.
+
+Appointment fees stay with me since I'm managing the client relationship and the full pipeline. If we want to adjust that later based on volume, we can.
+
+**Option B — Separate billing**
+
+Client pays me $400/mo for leads. Client pays you directly for AI tools. We each bill separately.
+
+Cleaner on paper but less "one provider" feeling. The client has to manage two relationships, two invoices, two support contacts. defeats the purpose of the partnership.
+
+**Option C — Revenue split**
+
+60/40 on the full package after expenses. More complex but more fair long-term if we're scaling together.
+
+### My Recommendation
+
+Start with Option A. It's the simplest, it protects the client experience, and it lets us both focus on what we're good at. If we scale past 10+ clients, we can revisit the split.
+
+---
+
 ## Why This Works for Service Businesses
 
-- **They're busy working** — they can't answer every call or follow up with every inquiry. The AI handles it.
-- **Their customers expect instant responses** — 78% of customers go with the first business that responds. Speed wins.
-- **They're already paying for marketing** — this replaces fragmented tools with one integrated system.
-- **The ROI is obvious** — more leads in + higher conversion rate = more customers without more ad spend.
+- They're busy working — they can't answer every call or follow up with every inquiry. The AI handles it.
+- Their customers expect instant responses — 78% of customers go with the first business that responds. Speed wins.
+- They're already paying for marketing — this replaces fragmented tools with one integrated system.
+- The ROI is obvious — more leads in + higher conversion rate = more customers without more ad spend.
 
 ---
 
@@ -135,6 +177,22 @@ The sweet spot is businesses doing $500K to $5M a year — big enough that misse
 
 ---
 
+## Onboarding Process
+
+### For Each New Client
+
+1. **Discovery call** — I learn their business, their market, their ideal customer
+2. **Lead gen setup** — I configure the scraper, set their ICP, load their first batch of leads
+3. **Dashboard deployment** — Client gets their own branded dashboard with leads, analytics, and reports
+4. **AI tools deployment (Tier 2)** — You deploy the chatbot, call agent, and follow-up workflows
+5. **Handoff connection** — We wire the lead data from my system into your automation
+6. **Launch** — Outreach campaigns start, AI tools go live, client starts seeing results
+7. **Weekly check-in** — First month, we review performance together with the client
+
+Timeline: 3-5 business days from signed contract to live system. My lead gen pipeline is already running, so I can have leads flowing day one. Your 3-5 day setup for the AI tools means the full stack is live within a week.
+
+---
+
 ## Pilot Plan
 
 1-2 pilot clients from my existing pipeline. We deploy both systems, connect the handoff, and measure real results over 30-60 days.
@@ -150,9 +208,9 @@ Real data, not assumptions. If the numbers work, we refine the process, build ou
 
 ## What This Is Not
 
-- **This is not a reseller arrangement.** We're partners. You build and maintain the AI infrastructure. I build and maintain the lead generation engine. We each own our piece.
-- **This is not white-label.** Both brands exist. The client knows there are two specialists working together. That's a feature, not a bug — they're getting expert-level service on both ends.
-- **This is not a one-size-fits-all.** Every client gets customized based on their industry, their market, and their specific needs.
+- This is not a reseller arrangement. We're partners. You build and maintain the AI infrastructure. I build and maintain the lead generation engine. We each own our piece.
+- This is not white-label. Both brands exist. The client knows there are two specialists working together. That's a feature, not a bug — they're getting expert-level service on both ends.
+- This is not a one-size-fits-all. Every client gets customized based on their industry, their market, and their specific needs.
 
 ---
 
@@ -164,10 +222,10 @@ I'd want a simple mutual understanding in place before we go deeper into specifi
 
 ## Next Steps
 
-1. **Review this proposal** — make sure the structure makes sense for both our businesses
-2. **Share any questions or adjustments** — nothing here is set in stone, we shape this together
-3. **Identify pilot clients** — I already have candidates, you tell me what you need
-4. **Deploy and measure** — 30-60 day pilot, real data, real results
+1. Review this proposal — make sure the structure makes sense for both our businesses
+2. Share any questions or adjustments — nothing here is set in stone, we shape this together
+3. Identify pilot clients — I already have candidates, you tell me what you need
+4. Deploy and measure — 30-60 day pilot, real data, real results
 
 ---
 
