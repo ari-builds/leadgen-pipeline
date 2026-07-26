@@ -2,10 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Table,
   TableBody,
@@ -14,191 +11,145 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { toast } from "sonner";
 
-interface Credential {
+interface ClientCred {
   id: number;
-  client_name: string;
-  site_url: string;
-  label: string;
-  created_at: string;
+  name: string;
+  slug: string;
+  contact_email: string;
+  dashboard_password: string;
+  lead_count: number;
 }
 
 export default function AdminPasswordsPage() {
-  const [credentials, setCredentials] = useState<Credential[]>([]);
+  const [clients, setClients] = useState<ClientCred[]>([]);
   const [loading, setLoading] = useState(true);
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [form, setForm] = useState({
-    clientId: "",
-    siteUrl: "",
-    password: "",
-    label: "",
-  });
-  const [clients, setClients] = useState<{ id: number; name: string }[]>([]);
-  const [saving, setSaving] = useState(false);
+  const [visiblePwds, setVisiblePwds] = useState<Record<number, boolean>>({});
 
   useEffect(() => {
-    fetchCredentials();
-    fetch("/api/clients").then((r) => r.json()).then(setClients);
+    fetch("/api/admin/client-credentials")
+      .then((r) => r.json())
+      .then(setClients)
+      .catch(() => toast.error("Failed to load credentials"))
+      .finally(() => setLoading(false));
   }, []);
 
-  async function fetchCredentials() {
-    try {
-      const res = await fetch("/api/credentials");
-      setCredentials(await res.json());
-    } catch {
-      toast.error("Failed to load credentials");
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  async function handleCreate(e: React.FormEvent) {
-    e.preventDefault();
-    setSaving(true);
-    try {
-      const res = await fetch("/api/credentials", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          clientId: parseInt(form.clientId),
-          siteUrl: form.siteUrl,
-          password: form.password,
-          label: form.label,
-        }),
-      });
-      if (!res.ok) throw new Error("Failed to save");
-      toast.success("Credential saved");
-      setDialogOpen(false);
-      setForm({ clientId: "", siteUrl: "", password: "", label: "" });
-      fetchCredentials();
-    } catch {
-      toast.error("Failed to save credential");
-    } finally {
-      setSaving(false);
-    }
-  }
-
-  function copyToClipboard(text: string) {
+  function copyToClipboard(text: string, label: string) {
     navigator.clipboard.writeText(text);
-    toast.success("Copied to clipboard");
+    toast.success(`Copied ${label}`);
+  }
+
+  function toggleVisible(id: number) {
+    setVisiblePwds((prev) => ({ ...prev, [id]: !prev[id] }));
   }
 
   return (
     <div className="space-y-8">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">Credentials</h1>
-          <p className="text-muted-foreground mt-1">
-            Secure storage for client site passwords
-          </p>
-        </div>
-        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-          <DialogTrigger asChild>
-            <Button>+ Add Credential</Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Add Credential</DialogTitle>
-            </DialogHeader>
-            <form onSubmit={handleCreate} className="space-y-4 mt-4">
-              <div className="space-y-2">
-                <Label>Client</Label>
-                <select
-                  className="w-full border rounded-md px-3 py-2 text-sm"
-                  value={form.clientId}
-                  onChange={(e) => setForm({ ...form, clientId: e.target.value })}
-                  required
-                >
-                  <option value="">Select client...</option>
-                  {clients.map((c) => (
-                    <option key={c.id} value={c.id}>{c.name}</option>
-                  ))}
-                </select>
-              </div>
-              <div className="space-y-2">
-                <Label>Site URL</Label>
-                <Input
-                  value={form.siteUrl}
-                  onChange={(e) => setForm({ ...form, siteUrl: e.target.value })}
-                  required
-                />
-              </div>
-              <div className="space-y-2">
-                <Label>Password</Label>
-                <Input
-                  type="password"
-                  value={form.password}
-                  onChange={(e) => setForm({ ...form, password: e.target.value })}
-                  required
-                />
-              </div>
-              <div className="space-y-2">
-                <Label>Label (optional)</Label>
-                <Input
-                  value={form.label}
-                  onChange={(e) => setForm({ ...form, label: e.target.value })}
-                  placeholder="e.g. Admin panel"
-                />
-              </div>
-              <Button type="submit" className="w-full" disabled={saving}>
-                {saving ? "Saving..." : "Save Credential"}
-              </Button>
-            </form>
-          </DialogContent>
-        </Dialog>
+      <div>
+        <h1 className="text-3xl font-bold text-gray-900">Client Credentials</h1>
+        <p className="text-muted-foreground mt-1">
+          Dashboard logins for all clients — emails, passwords, and URLs
+        </p>
       </div>
 
       <Card>
         <CardContent className="p-0">
           {loading ? (
             <div className="text-center py-12 text-muted-foreground">Loading...</div>
-          ) : credentials.length === 0 ? (
-            <div className="text-center py-12 text-muted-foreground">
-              No credentials stored yet
-            </div>
+          ) : clients.length === 0 ? (
+            <div className="text-center py-12 text-muted-foreground">No clients found</div>
           ) : (
             <Table>
               <TableHeader>
                 <TableRow>
                   <TableHead>Client</TableHead>
-                  <TableHead>Site URL</TableHead>
-                  <TableHead>Label</TableHead>
+                  <TableHead>Slug / URL</TableHead>
+                  <TableHead>Email</TableHead>
                   <TableHead>Password</TableHead>
-                  <TableHead>Added</TableHead>
+                  <TableHead>Leads</TableHead>
+                  <TableHead>Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {credentials.map((cred) => (
-                  <TableRow key={cred.id}>
-                    <TableCell className="font-medium">{cred.client_name}</TableCell>
-                    <TableCell>
-                      <a href={cred.site_url} target="_blank" className="text-blue-600 hover:underline text-sm">
-                        {cred.site_url}
-                      </a>
+                {clients.map((c) => (
+                  <TableRow key={c.id}>
+                    <TableCell className="font-medium max-w-[200px] truncate">
+                      {c.name}
                     </TableCell>
-                    <TableCell className="text-muted-foreground">{cred.label || "—"}</TableCell>
                     <TableCell>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => copyToClipboard("••••••••")}
-                        className="font-mono"
-                      >
-                        •••••••• 📋
-                      </Button>
+                      <div className="flex items-center gap-2">
+                        <code className="text-xs bg-gray-100 px-1.5 py-0.5 rounded font-mono">
+                          {c.slug}
+                        </code>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="h-6 px-1.5 text-xs"
+                          onClick={() =>
+                            copyToClipboard(
+                              `https://leadgen-pipeline-mauve.vercel.app/client/${c.slug}`,
+                              "URL"
+                            )
+                          }
+                        >
+                          📋
+                        </Button>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm">{c.contact_email}</span>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="h-6 px-1.5 text-xs"
+                          onClick={() => copyToClipboard(c.contact_email, "email")}
+                        >
+                          📋
+                        </Button>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-2">
+                        <code className="text-sm font-mono">
+                          {visiblePwds[c.id] ? c.dashboard_password : "••••••••"}
+                        </code>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="h-6 px-1.5 text-xs"
+                          onClick={() => toggleVisible(c.id)}
+                        >
+                          {visiblePwds[c.id] ? "🙈" : "👁️"}
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="h-6 px-1.5 text-xs"
+                          onClick={() => copyToClipboard(c.dashboard_password, "password")}
+                        >
+                          📋
+                        </Button>
+                      </div>
                     </TableCell>
                     <TableCell className="text-sm text-muted-foreground">
-                      {new Date(cred.created_at).toLocaleDateString()}
+                      {c.lead_count}
+                    </TableCell>
+                    <TableCell>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="h-7 text-xs"
+                        onClick={() =>
+                          window.open(
+                            `/client/${c.slug}`,
+                            "_blank"
+                          )
+                        }
+                      >
+                        Open Dashboard →
+                      </Button>
                     </TableCell>
                   </TableRow>
                 ))}

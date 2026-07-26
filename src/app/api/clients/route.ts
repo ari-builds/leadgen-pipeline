@@ -8,7 +8,8 @@ export async function GET() {
     await requireAuth();
 
     const result = await db.execute({
-      sql: `SELECT c.*, 
+      sql: `SELECT c.id, c.name, c.slug, c.description, c.ideal_customer_profile,
+            c.contact_email, c.created_at,
             COUNT(cl.lead_id) as lead_count
             FROM clients c
             LEFT JOIN client_leads cl ON c.id = cl.client_id
@@ -51,14 +52,15 @@ export async function POST(req: NextRequest) {
       : null;
 
     await db.execute({
-      sql: `INSERT INTO clients (name, slug, description, ideal_customer_profile, dashboard_password_hash) 
-            VALUES (?, ?, ?, ?, ?)`,
+      sql: `INSERT INTO clients (name, slug, description, ideal_customer_profile, dashboard_password_hash, dashboard_password) 
+            VALUES (?, ?, ?, ?, ?, ?)`,
       args: [
         name,
         slug,
         description || null,
         idealCustomerProfile ? JSON.stringify(idealCustomerProfile) : null,
         passwordHash,
+        dashboardPassword || null,
       ],
     });
 
