@@ -1,8 +1,4 @@
-const {createClient} = require('@libsql/client');
-const tursoDb = createClient({
-  url:'libsql://leadgen-pipeline-ari-builds.aws-us-east-1.turso.io',
-  authToken: process.env.TURSO_TOKEN
-});
+const db = require('./db');
 
 async function main() {
   // Find leads with no contact info at all

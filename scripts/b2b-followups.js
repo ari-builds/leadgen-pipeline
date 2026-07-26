@@ -1,7 +1,7 @@
 const {createClient} = require('@libsql/client');
+const path = require('path');
 const db = createClient({
-  url: 'libsql://leadgen-pipeline-ari-builds.aws-us-east-1.turso.io',
-  authToken: process.env.TURSO_TOKEN
+  url: 'file:' + path.join(__dirname, '..', 'local.db'),
 });
 
 const SIGNATURE = `Ariana

@@ -1,9 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import db from "@/lib/db";
 import { requireAdmin } from "@/lib/session";
-import { Resend } from "resend";
-
-const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
+import { sendOutreachEmail } from "@/lib/email";
 
 export async function POST(req: NextRequest) {
   try {
@@ -12,10 +10,6 @@ export async function POST(req: NextRequest) {
 
     if (!outreach_email_id) {
       return NextResponse.json({ error: "outreach_email_id is required" }, { status: 400 });
-    }
-
-    if (!resend) {
-      return NextResponse.json({ error: "Resend API key not configured" }, { status: 500 });
     }
 
     const result = await db.execute({
@@ -40,23 +34,23 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Lead has no email address" }, { status: 400 });
     }
 
-    const { data, error: resendError } = await resend.emails.send({
-      from: "NetClicks by Ari <netclicksbyari@gmail.com>",
-      to: email.contact_email as string,
-      subject: email.subject as string,
-      html: (email.body as string).replace(/\n/g, "<br>"),
-    });
+    const sendResult = await sendOutreachEmail(
+      email.contact_email as string,
+      email.subject as string,
+      (email.body as string).replace(/\n/g, "<br>"),
+      "NetClicks by Ari <netclicksbyari@gmail.com>"
+    );
 
-    if (resendError) {
-      return NextResponse.json({ error: resendError.message }, { status: 500 });
+    if (!sendResult.success) {
+      return NextResponse.json({ error: sendResult.error }, { status: 500 });
     }
 
     await db.execute({
       sql: `UPDATE outreach_emails SET status = 'sent', resend_email_id = ?, sent_at = CURRENT_TIMESTAMP WHERE id = ?`,
-      args: [data?.id || null, outreach_email_id],
+      args: [sendResult.id || null, outreach_email_id],
     });
 
-    return NextResponse.json({ success: true, resend_email_id: data?.id });
+    return NextResponse.json({ success: true, provider: sendResult.provider, id: sendResult.id });
   } catch (error) {
     if (error instanceof Error && error.message === "Forbidden") {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });

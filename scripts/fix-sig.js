@@ -1,10 +1,6 @@
-const {createClient} = require('@libsql/client');
-const db = createClient({
-  url: 'libsql://leadgen-pipeline-ari-builds.aws-us-east-1.turso.io',
-  authToken: process.env.TURSO_TOKEN
-});
+const db = require('./db');
 
-const NEW = "Ariana\nNetClicks by Ari\nOn behalf of Legacy Memorial Restorations\nnetclicksbyari@gmail.com | Yakima, WA";
+const NEW = "Ariana\nOn behalf of Legacy Memorial Restorations\nnetclicksbyari@gmail.com | Yakima, WA";
 
 async function main() {
   const r = await db.execute("SELECT id, body FROM outreach_emails");

@@ -55,7 +55,7 @@ function scoreTier(score) {
   return "cool";
 }
 
-const SIGNATURE = "---\nAriana, Founder & CEO\nNetClicks by Ari\nnetclicksbyari@gmail.com";
+const SIGNATURE = "---\nAriana\nOn behalf of Legacy Memorial Restorations\nnetclicksbyari@gmail.com | Yakima, WA";
 
 function generateEmail(lead) {
   const name = capitalize(lead.contact_name || "Friend");

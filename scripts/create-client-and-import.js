@@ -1,7 +1,7 @@
 const { createClient } = require("@libsql/client");
 
 const db = createClient({
-  url: "libsql://leadgen-pipeline-ari-builds.aws-us-east-1.turso.io",
+  url: 'file:' + require('path').join(__dirname, '..', 'local.db'),
   authToken: "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJpYXQiOjE3ODQ3NjcyNzksImlkIjoiMDE5ZjhiYjEtZTEwMS03YjFjLThjMGMtODRjZGI4ZWQ5MGQ4Iiwia2lkIjoidm9nSHl3cVBCY1J6d1NPVlJDWWhTZkFpN25VSGlNM0FlV0tONktsY0hoSSIsInJpZCI6IjNmNDlkMGViLTc3OWQtNGZmMy04YzQ2LTg5YWE4MTAwOGFjMSJ9.vmSmog-sLzR5_PTblNB7luC5ryTjm-c-XYdgwFmFoCDv1UEc9CS65E1NGY4qsBBy3vPXsEGiFW4HhUdBixEUCQ",
 });
 
