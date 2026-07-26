@@ -81,6 +81,7 @@ export default function ClientDashboardPage() {
   const [loading, setLoading] = useState(false);
   const [authStep, setAuthStep] = useState<"password" | "otp">("password");
   const [clientSlug, setClientSlug] = useState("");
+  const [clientId, setClientId] = useState<number | null>(null);
   const [debugOtp, setDebugOtp] = useState<string | null>(null);
 
   async function handlePasswordSubmit(e: React.FormEvent) {
@@ -141,6 +142,7 @@ export default function ClientDashboardPage() {
       setLeads(data.leads);
       setSubscription(data.subscription || null);
       setClientSlug(params.slug as string);
+      setClientId(data.clientId);
       setAuthenticated(true);
     } catch {
       toast.error("Verification failed");
@@ -223,7 +225,7 @@ export default function ClientDashboardPage() {
     }
     toast.info("Preparing " + format.toUpperCase() + " export...");
     try {
-      const res = await fetch(`/api/leads/export?format=${format}&client_id=1`);
+      const res = await fetch(`/api/leads/export?format=${format}&clientId=${clientId}`);
       if (!res.ok) throw new Error("Export failed");
       const blob = await res.blob();
       const url = URL.createObjectURL(blob);

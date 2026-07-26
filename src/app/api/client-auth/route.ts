@@ -231,7 +231,14 @@ export async function POST(req: NextRequest) {
         // client_subscriptions table might not exist
       }
 
-      return NextResponse.json({
+      const authToken = await generateToken({
+        userId: clientId as number,
+        email: `client-${slug}`,
+        role: "client",
+      });
+
+      const response = NextResponse.json({
+        clientId: clientId,
         client: {
           name: client.name,
           description: client.description,
@@ -239,6 +246,16 @@ export async function POST(req: NextRequest) {
         leads: leadsResult.rows,
         subscription,
       });
+
+      response.cookies.set("auth-token", authToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+        path: "/",
+        maxAge: 60 * 60 * 24 * 7,
+      });
+
+      return response;
     }
 
     if (step === "update_status") {
