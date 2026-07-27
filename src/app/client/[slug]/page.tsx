@@ -2,42 +2,19 @@
 
 import { useState, useMemo } from "react";
 import { useParams } from "next/navigation";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
+  Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from "@/components/ui/table";
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
+  Dialog, DialogContent, DialogHeader, DialogTitle,
 } from "@/components/ui/dialog";
 import { toast } from "sonner";
 import {
-  PieChart,
-  Pie,
-  Cell,
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
+  PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer,
 } from "recharts";
 
 interface Client {
@@ -306,17 +283,6 @@ export default function ClientDashboardPage() {
       .slice(0, 10);
   }, [leads]);
 
-  const scoreData = useMemo(() => {
-    const counts: Record<string, number> = {};
-    leads.forEach((l) => {
-      const bucket = `${l.score}`;
-      counts[bucket] = (counts[bucket] || 0) + 1;
-    });
-    return Object.entries(counts)
-      .map(([name, value]) => ({ name: `Score ${name}`, value }))
-      .sort((a, b) => a.name.localeCompare(b.name));
-  }, [leads]);
-
   const avgScore = leads.length > 0
     ? Math.round(leads.reduce((a, l) => a + l.score, 0) / leads.length)
     : 0;
@@ -432,301 +398,227 @@ export default function ClientDashboardPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b border-gray-200 px-4 md:px-8 py-4 md:py-6">
-        <div className="flex flex-wrap items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">{client?.name}</h1>
-            <p className="text-muted-foreground mt-1">{client?.description}</p>
+      {/* Hero Header */}
+      <header className="bg-white border-b border-gray-100">
+        <div className="max-w-6xl mx-auto px-4 py-5 md:py-8">
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-3">
+            <div>
+              <h1 className="text-2xl md:text-3xl font-bold text-gray-900 break-words">{client?.name}</h1>
+              <p className="text-sm text-gray-500 mt-1">{client?.description}</p>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-gray-400">Export:</span>
+              {["xlsx", "docx", "pptx", "pdf"].map((fmt) => (
+                <Button key={fmt} variant="outline" size="sm" className="h-8 px-2.5 text-xs"
+                  onClick={() => handleExport(fmt)} disabled={subscription?.exported_this_period}>
+                  {fmt.toUpperCase()}
+                </Button>
+              ))}
+            </div>
           </div>
-          <div className="flex flex-wrap gap-2">
-            {["xlsx", "docx", "pptx", "pdf"].map((fmt) => (
-              <Button
-                key={fmt}
-                variant="outline"
-                size="sm"
-                onClick={() => handleExport(fmt)}
-                disabled={subscription?.exported_this_period}
-              >
-                {fmt.toUpperCase()}
-              </Button>
+          {subscription?.exported_this_period && (
+            <p className="text-xs text-amber-600 bg-amber-50 rounded-lg px-3 py-2 mt-3">
+              Export used this period. Next export on the {subscription.reset_day}th.
+            </p>
+          )}
+        </div>
+      </header>
+
+      <div className="max-w-6xl mx-auto px-4 py-6 md:py-8 space-y-8">
+
+        {/* KPI Cards — 2x2 on mobile, 4-col on desktop */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+          {[
+            { label: "Total Leads", value: leads.length, color: "border-l-blue-500" },
+            { label: "Avg Score", value: `${avgScore}/10`, color: "border-l-emerald-500" },
+            { label: "Contacted", value: contactedCount, color: "border-l-amber-500" },
+            { label: "Qualified", value: qualifiedCount, color: "border-l-purple-500" },
+          ].map(k => (
+            <div key={k.label} className={`bg-white rounded-xl border border-gray-100 border-l-4 ${k.color} p-4 shadow-sm`}>
+              <p className="text-2xl font-bold text-gray-900">{k.value}</p>
+              <p className="text-xs text-gray-500 mt-0.5">{k.label}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Charts — stacked on mobile, 2-col on desktop */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
+            <h3 className="text-sm font-semibold text-gray-700 mb-4">Lead Status</h3>
+            <ResponsiveContainer width="100%" height={240}>
+              <PieChart>
+                <Pie data={statusData} cx="50%" cy="50%" outerRadius={85} dataKey="value"
+                  label={({ name, value }) => `${name}: ${value}`}>
+                  {statusData.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
+                </Pie>
+                <Tooltip />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+
+          <div className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
+            <h3 className="text-sm font-semibold text-gray-700 mb-4">By Industry</h3>
+            <ResponsiveContainer width="100%" height={240}>
+              <BarChart data={industryData}>
+                <XAxis dataKey="name" tick={{ fontSize: 10 }} angle={-15} textAnchor="end" height={55} />
+                <YAxis />
+                <Tooltip />
+                <Bar dataKey="value" fill="#2563eb" radius={[6, 6, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        {/* Divider */}
+        <div className="border-t border-gray-200" />
+
+        {/* Lead List — Card-based for mobile */}
+        <div>
+          <h2 className="text-lg font-bold text-gray-900 mb-1">Your Leads</h2>
+          <p className="text-sm text-gray-500 mb-5">{leads.length} leads — click any to see details</p>
+
+          {/* Desktop Table */}
+          <div className="hidden md:block overflow-x-auto rounded-xl border border-gray-100 bg-white shadow-sm">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Contact</TableHead>
+                  <TableHead>Location</TableHead>
+                  <TableHead>Industry</TableHead>
+                  <TableHead>Score</TableHead>
+                  <TableHead className="max-w-xs">Hook</TableHead>
+                  <TableHead>Status</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {leads.sort((a, b) => b.score - a.score).map((lead) => (
+                  <TableRow key={lead.id} className="cursor-pointer hover:bg-gray-50" onClick={() => setSelectedLead(lead)}>
+                    <TableCell className="font-medium">
+                      {lead.contact_name}
+                      {lead.contact_email && <span className="block text-xs text-muted-foreground">{lead.contact_email}</span>}
+                      {lead.website_url && (
+                        <a href={lead.website_url} target="_blank" rel="noopener noreferrer"
+                          className="block text-xs text-blue-500 hover:underline truncate max-w-[180px]"
+                          onClick={e => e.stopPropagation()}>
+                          {lead.website_url.replace(/^https?:\/\//, "").slice(0, 40)}
+                        </a>
+                      )}
+                    </TableCell>
+                    <TableCell className="text-sm">{lead.location || "—"}</TableCell>
+                    <TableCell className="text-sm">{lead.industry || "—"}</TableCell>
+                    <TableCell>
+                      <span className={`inline-flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold ${
+                        lead.score >= 9 ? "bg-red-100 text-red-800" :
+                        lead.score >= 7 ? "bg-orange-100 text-orange-800" :
+                        lead.score >= 5 ? "bg-yellow-100 text-yellow-800" :
+                        "bg-gray-100 text-gray-800"}`}>
+                        {lead.score}
+                      </span>
+                    </TableCell>
+                    <TableCell className="text-sm text-muted-foreground max-w-xs truncate" title={extractHook(lead.notes)}>
+                      {extractHook(lead.notes) || "—"}
+                    </TableCell>
+                    <TableCell>
+                      <select value={lead.status}
+                        onChange={e => { e.stopPropagation(); updateLeadStatus(lead.id, e.target.value); }}
+                        className="text-sm border rounded-lg px-3 py-2 bg-white">
+                        {statusOptions.map(s => <option key={s} value={s}>{s}</option>)}
+                      </select>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+
+          {/* Mobile Cards */}
+          <div className="md:hidden space-y-3">
+            {leads.sort((a, b) => b.score - a.score).map((lead) => (
+              <div key={lead.id} className="bg-white rounded-xl border border-gray-100 p-4 shadow-sm active:bg-gray-50"
+                onClick={() => setSelectedLead(lead)}>
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <p className="font-semibold text-gray-900 text-sm truncate">{lead.contact_name}</p>
+                    <p className="text-xs text-gray-500 mt-0.5">{lead.location || lead.industry || "—"}</p>
+                  </div>
+                  <span className={`shrink-0 inline-flex items-center justify-center w-9 h-9 rounded-full text-xs font-bold ${
+                    lead.score >= 9 ? "bg-red-100 text-red-800" :
+                    lead.score >= 7 ? "bg-orange-100 text-orange-800" :
+                    lead.score >= 5 ? "bg-yellow-100 text-yellow-800" :
+                    "bg-gray-100 text-gray-800"}`}>
+                    {lead.score}
+                  </span>
+                </div>
+                <div className="flex items-center gap-2 mt-2.5">
+                  <select value={lead.status}
+                    onChange={e => { e.stopPropagation(); updateLeadStatus(lead.id, e.target.value); }}
+                    onClick={e => e.stopPropagation()}
+                    className="text-xs border rounded-lg px-2.5 py-1.5 bg-gray-50 flex-1">
+                    {statusOptions.map(s => <option key={s} value={s}>{s}</option>)}
+                  </select>
+                  {lead.contact_email && <span className="text-xs text-blue-600">✉️</span>}
+                  {lead.contact_phone && <span className="text-xs text-blue-600">📞</span>}
+                </div>
+              </div>
             ))}
           </div>
         </div>
-        {subscription?.exported_this_period && (
-          <p className="text-sm text-amber-600 mt-2">
-            Export used this period. Next export available on the {subscription.reset_day}th.
-          </p>
-        )}
-      </header>
-
-      <div className="p-4 md:p-8 space-y-8">
-        {/* KPI Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <Card>
-            <CardHeader className="pb-2">
-              <CardDescription>Total Leads</CardDescription>
-              <CardTitle className="text-3xl">{leads.length}</CardTitle>
-            </CardHeader>
-          </Card>
-          <Card>
-            <CardHeader className="pb-2">
-              <CardDescription>Avg Score</CardDescription>
-              <CardTitle className="text-3xl">{avgScore}/10</CardTitle>
-            </CardHeader>
-          </Card>
-          <Card>
-            <CardHeader className="pb-2">
-              <CardDescription>Contacted</CardDescription>
-              <CardTitle className="text-3xl">{contactedCount}</CardTitle>
-            </CardHeader>
-          </Card>
-          <Card>
-            <CardHeader className="pb-2">
-              <CardDescription>Qualified</CardDescription>
-              <CardTitle className="text-3xl">{qualifiedCount}</CardTitle>
-            </CardHeader>
-          </Card>
-        </div>
-
-        {/* Charts */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">Lead Status</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ResponsiveContainer width="100%" height={250}>
-                <PieChart>
-                  <Pie
-                    data={statusData}
-                    cx="50%"
-                    cy="50%"
-                    outerRadius={80}
-                    dataKey="value"
-                    label={({ name, value }) => `${name}: ${value}`}
-                  >
-                    {statusData.map((_, index) => (
-                      <Cell key={index} fill={COLORS[index % COLORS.length]} />
-                    ))}
-                  </Pie>
-                  <Tooltip />
-                </PieChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">By Industry</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ResponsiveContainer width="100%" height={250}>
-                <BarChart data={industryData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" tick={{ fontSize: 10 }} angle={-20} textAnchor="end" height={60} />
-                  <YAxis />
-                  <Tooltip />
-                  <Bar dataKey="value" fill="#2563eb" radius={[4, 4, 0, 0]} />
-                </BarChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">Score Distribution</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ResponsiveContainer width="100%" height={250}>
-                <BarChart data={scoreData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" />
-                  <YAxis />
-                  <Tooltip />
-                  <Bar dataKey="value" fill="#10b981" radius={[4, 4, 0, 0]} />
-                </BarChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">Top Leads</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
-                {leads
-                  .sort((a, b) => b.score - a.score)
-                  .slice(0, 5)
-                  .map((lead) => (
-                    <div key={lead.id} className="flex items-center justify-between p-2 rounded bg-gray-50">
-                      <div>
-                        <span className="font-medium text-sm">{lead.contact_name}</span>
-                        <span className="text-xs text-muted-foreground ml-2">{lead.location}</span>
-                      </div>
-                      <span className={`inline-flex items-center justify-center w-7 h-7 rounded-full text-xs font-bold ${
-                        lead.score >= 9 ? "bg-red-100 text-red-800" :
-                        lead.score >= 7 ? "bg-orange-100 text-orange-800" :
-                        "bg-yellow-100 text-yellow-800"
-                      }`}>
-                        {lead.score}
-                      </span>
-                    </div>
-                  ))}
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Leads Table */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Your Leads</CardTitle>
-            <CardDescription>
-              {leads.length} leads generated for your business. Click any lead to see full details.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="overflow-x-auto rounded-lg border">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Contact</TableHead>
-                    <TableHead>Location</TableHead>
-                    <TableHead>Industry</TableHead>
-                    <TableHead>Score</TableHead>
-                    <TableHead className="max-w-xs">Hook</TableHead>
-                    <TableHead>Status</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {leads
-                    .sort((a, b) => b.score - a.score)
-                    .map((lead) => (
-                      <TableRow
-                        key={lead.id}
-                        className="cursor-pointer hover:bg-gray-50"
-                        onClick={() => setSelectedLead(lead)}
-                      >
-                        <TableCell className="font-medium">
-                          {lead.contact_name}
-                          {lead.contact_email && (
-                            <span className="block text-xs text-muted-foreground">{lead.contact_email}</span>
-                          )}
-                          {lead.website_url && (
-                            <a href={lead.website_url} target="_blank" rel="noopener noreferrer"
-                              className="block text-xs text-blue-500 hover:underline truncate max-w-[200px]"
-                              onClick={(e) => e.stopPropagation()}>
-                              {lead.website_url.replace(/^https?:\/\//, "").slice(0, 40)}
-                            </a>
-                          )}
-                        </TableCell>
-                        <TableCell className="text-sm">{lead.location || "—"}</TableCell>
-                        <TableCell className="text-sm">{lead.industry || "—"}</TableCell>
-                        <TableCell>
-                          <span className={`inline-flex items-center justify-center w-7 h-7 rounded-full text-xs font-bold ${
-                            lead.score >= 9 ? "bg-red-100 text-red-800" :
-                            lead.score >= 7 ? "bg-orange-100 text-orange-800" :
-                            lead.score >= 5 ? "bg-yellow-100 text-yellow-800" :
-                            "bg-gray-100 text-gray-800"
-                          }`}>
-                            {lead.score}
-                          </span>
-                        </TableCell>
-                        <TableCell className="text-sm text-muted-foreground max-w-xs truncate" title={extractHook(lead.notes)}>
-                          {extractHook(lead.notes) || "—"}
-                        </TableCell>
-                        <TableCell>
-                          <select
-                            value={lead.status}
-                            onChange={(e) => { e.stopPropagation(); updateLeadStatus(lead.id, e.target.value); }}
-                            className="text-xs md:text-sm border rounded px-2 md:px-3 py-1.5 md:py-2 bg-white"
-                          >
-                            {statusOptions.map((s) => (
-                              <option key={s} value={s}>{s}</option>
-                            ))}
-                          </select>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                </TableBody>
-              </Table>
-            </div>
-          </CardContent>
-        </Card>
 
         {/* Lead Detail Dialog */}
         <Dialog open={!!selectedLead} onOpenChange={(open) => { if (!open) setSelectedLead(null); }}>
-          <DialogContent className="max-w-lg mx-4">
+          <DialogContent className="max-w-lg mx-4 max-h-[85vh] overflow-y-auto">
             <DialogHeader>
-              <DialogTitle>{selectedLead?.contact_name || selectedLead?.company_name}</DialogTitle>
+              <DialogTitle className="text-lg">{selectedLead?.contact_name || selectedLead?.company_name}</DialogTitle>
             </DialogHeader>
             {selectedLead && (
-              <div className="space-y-4">
-                {/* Score */}
+              <div className="space-y-5">
+                {/* Score + Industry */}
                 <div className="flex items-center gap-3">
-                  <span className={`inline-flex items-center justify-center w-10 h-10 rounded-full text-sm font-bold ${
+                  <span className={`inline-flex items-center justify-center w-12 h-12 rounded-xl text-sm font-bold ${
                     selectedLead.score >= 9 ? "bg-red-100 text-red-800" :
                     selectedLead.score >= 7 ? "bg-orange-100 text-orange-800" :
                     selectedLead.score >= 5 ? "bg-yellow-100 text-yellow-800" :
-                    "bg-gray-100 text-gray-800"
-                  }`}>
+                    "bg-gray-100 text-gray-800"}`}>
                     {selectedLead.score}/10
                   </span>
                   <div>
-                    <p className="text-sm font-medium">Lead Score</p>
-                    <p className="text-xs text-muted-foreground">{selectedLead.industry || "Unknown industry"}</p>
+                    <p className="text-sm font-semibold text-gray-900">Lead Score</p>
+                    <p className="text-xs text-gray-500">{selectedLead.industry || "Unknown industry"}</p>
                   </div>
                 </div>
 
-                {/* Contact Info */}
-                <div className="bg-gray-50 rounded-lg p-4 space-y-2">
-                  <h4 className="text-sm font-semibold text-gray-700">Contact Information</h4>
-                  {selectedLead.contact_name && (
-                    <div className="flex items-center gap-2 text-sm">
-                      <span className="text-muted-foreground w-16">Name:</span>
-                      <span className="font-medium">{selectedLead.contact_name}</span>
-                    </div>
-                  )}
-                  {selectedLead.contact_email && (
-                    <div className="flex items-center gap-2 text-sm">
-                      <span className="text-muted-foreground w-16">Email:</span>
-                      <a href={`mailto:${selectedLead.contact_email}`} className="text-blue-600 hover:underline">{selectedLead.contact_email}</a>
-                    </div>
-                  )}
-                  {selectedLead.contact_phone && (
-                    <div className="flex items-center gap-2 text-sm">
-                      <span className="text-muted-foreground w-16">Phone:</span>
-                      <a href={`tel:${selectedLead.contact_phone}`} className="text-blue-600 hover:underline">{selectedLead.contact_phone}</a>
-                    </div>
-                  )}
-                  {extractLocation(selectedLead.notes, selectedLead.location) !== "—" && (
-                    <div className="flex items-center gap-2 text-sm">
-                      <span className="text-muted-foreground w-16">Location:</span>
-                      <span>{extractLocation(selectedLead.notes, selectedLead.location)}</span>
-                    </div>
-                  )}
-                  {selectedLead.website_url && (
-                    <div className="flex items-center gap-2 text-sm">
-                      <span className="text-muted-foreground w-16">Website:</span>
-                      <a href={selectedLead.website_url.startsWith('http') ? selectedLead.website_url : `https://${selectedLead.website_url}`} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline truncate max-w-[300px]">{selectedLead.website_url}</a>
-                    </div>
-                  )}
+                {/* Contact — Clean list */}
+                <div className="space-y-2">
+                  <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Contact</h4>
+                  <div className="space-y-1.5 text-sm">
+                    {selectedLead.contact_name && <p className="text-gray-900">{selectedLead.contact_name}</p>}
+                    {selectedLead.contact_email && <a href={`mailto:${selectedLead.contact_email}`} className="block text-blue-600 hover:underline">✉️ {selectedLead.contact_email}</a>}
+                    {selectedLead.contact_phone && <a href={`tel:${selectedLead.contact_phone}`} className="block text-blue-600 hover:underline">📞 {selectedLead.contact_phone}</a>}
+                    {selectedLead.website_url && (
+                      <a href={selectedLead.website_url.startsWith('http') ? selectedLead.website_url : `https://${selectedLead.website_url}`}
+                        target="_blank" rel="noopener noreferrer" className="block text-blue-600 hover:underline truncate">
+                        🌐 {selectedLead.website_url.replace(/^https?:\/\//, "").slice(0, 45)}
+                      </a>
+                    )}
+                    {extractLocation(selectedLead.notes, selectedLead.location) !== "—" && (
+                      <p className="text-gray-600">📍 {extractLocation(selectedLead.notes, selectedLead.location)}</p>
+                    )}
+                  </div>
                 </div>
 
-                {/* Social Media */}
+                {/* Social */}
                 {extractSocials(selectedLead.notes, selectedLead).length > 0 && (
-                  <div className="bg-purple-50 rounded-lg p-4">
-                    <h4 className="text-sm font-semibold text-purple-700 mb-2">Social Media</h4>
+                  <div className="space-y-2">
+                    <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Social</h4>
                     <div className="flex flex-wrap gap-2">
                       {extractSocials(selectedLead.notes, selectedLead).map((s, i) => (
                         s.url ? (
                           <a key={i} href={s.url} target="_blank" rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1 bg-white border border-purple-200 rounded-full px-3 py-1 text-xs font-medium text-purple-700 hover:bg-purple-100">
+                            className="inline-flex items-center gap-1 bg-gray-100 text-gray-700 rounded-full px-3 py-1 text-xs font-medium hover:bg-gray-200 transition">
                             {s.platform} ↗
                           </a>
                         ) : (
-                          <span key={i} className="inline-flex items-center bg-white border border-purple-200 rounded-full px-3 py-1 text-xs font-medium text-purple-700">
+                          <span key={i} className="inline-flex items-center bg-gray-100 text-gray-500 rounded-full px-3 py-1 text-xs">
                             {s.platform}
                           </span>
                         )
@@ -735,53 +627,28 @@ export default function ClientDashboardPage() {
                   </div>
                 )}
 
-                {/* Score Reason */}
+                {/* Assessment */}
                 {(selectedLead.notes.includes('Assessment:') || extractHook(selectedLead.notes)) && (
-                  <div className="bg-blue-50 rounded-lg p-4">
-                    <h4 className="text-sm font-semibold text-blue-700 mb-1">Why This Score</h4>
-                    <p className="text-sm text-blue-900">
-                      {selectedLead.notes.includes('Assessment:') 
+                  <div className="bg-blue-50 rounded-xl p-4">
+                    <h4 className="text-xs font-semibold text-blue-700 uppercase tracking-wide mb-1">Assessment</h4>
+                    <p className="text-sm text-blue-900 leading-relaxed">
+                      {selectedLead.notes.includes('Assessment:')
                         ? selectedLead.notes.split('Assessment:')[1].split('\n')[0].trim()
                         : extractHook(selectedLead.notes)}
                     </p>
                   </div>
                 )}
 
-                {/* Notes */}
-                {selectedLead.notes && (() => {
-                  // Filter out lines already shown in other sections
-                  const lines = selectedLead.notes.split('\n').filter(line => {
-                    const trimmed = line.trim();
-                    if (!trimmed) return false;
-                    if (trimmed.startsWith('Contact:') || trimmed.startsWith('Business:')) return false;
-                    if (trimmed.startsWith('Email:') || trimmed.startsWith('Phone:')) return false;
-                    if (trimmed.startsWith('Location:') || trimmed.startsWith('Website:')) return false;
-                    if (trimmed.startsWith('Social presence:') || trimmed.startsWith('Social links:') || trimmed.startsWith('Social platforms')) return false;
-                    if (trimmed.startsWith('Assessment:')) return false;
-                    return true;
-                  });
-                  return lines.length > 0 ? (
-                    <div className="bg-gray-50 rounded-lg p-4">
-                      <h4 className="text-sm font-semibold text-gray-700 mb-1">Additional Notes</h4>
-                      <p className="text-sm text-gray-600 whitespace-pre-wrap">{lines.join('\n')}</p>
-                    </div>
-                  ) : null;
-                })()}
-
                 {/* Status */}
-                <div className="flex items-center gap-2">
-                  <Label className="text-sm">Status:</Label>
-                  <select
-                    value={selectedLead.status}
-                    onChange={(e) => {
+                <div className="flex items-center gap-3 pt-2 border-t border-gray-100">
+                  <Label className="text-sm text-gray-600">Status:</Label>
+                  <select value={selectedLead.status}
+                    onChange={e => {
                       updateLeadStatus(selectedLead.id, e.target.value);
                       setSelectedLead({ ...selectedLead, status: e.target.value });
                     }}
-                    className="text-sm border rounded px-3 py-1.5 bg-white"
-                  >
-                    {statusOptions.map((s) => (
-                      <option key={s} value={s}>{s}</option>
-                    ))}
+                    className="text-sm border rounded-lg px-3 py-2 bg-white">
+                    {statusOptions.map(s => <option key={s} value={s}>{s}</option>)}
                   </select>
                 </div>
               </div>
