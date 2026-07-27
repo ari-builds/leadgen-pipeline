@@ -1,8 +1,9 @@
 const { createClient } = require("@libsql/client");
+require('dotenv').config({ path: '.env.local' });
 
 const db = createClient({
   url: 'file:' + require('path').join(__dirname, '..', 'local.db'),
-  authToken: "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJpYXQiOjE3ODQ3NjcyNzksImlkIjoiMDE5ZjhiYjEtZTEwMS03YjFjLThjMGMtODRjZGI4ZWQ5MGQ4Iiwia2lkIjoidm9nSHl3cVBCY1J6d1NPVlJDWWhTZkFpN25VSGlNM0FlV0tONktsY0hoSSIsInJpZCI6IjNmNDlkMGViLTc3OWQtNGZmMy04YzQ2LTg5YWE4MTAwOGFjMSJ9.vmSmog-sLzR5_PTblNB7luC5ryTjm-c-XYdgwFmFoCDv1UEc9CS65E1NGY4qsBBy3vPXsEGiFW4HhUdBixEUCQ",
+  authToken: process.env.DATABASE_AUTH_TOKEN,
 });
 
 const CLIENT_ID = 1;
