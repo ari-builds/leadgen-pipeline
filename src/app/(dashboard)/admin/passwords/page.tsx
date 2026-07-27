@@ -60,6 +60,7 @@ export default function AdminPasswordsPage() {
           ) : clients.length === 0 ? (
             <div className="text-center py-12 text-muted-foreground">No clients found</div>
           ) : (
+            <div className="overflow-x-auto rounded-lg border">
             <Table>
               <TableHeader>
                 <TableRow>
@@ -85,7 +86,7 @@ export default function AdminPasswordsPage() {
                         <Button
                           variant="ghost"
                           size="sm"
-                          className="h-6 px-1.5 text-xs"
+                          className="h-8 px-2 text-xs md:h-10 md:px-3 md:text-sm"
                           onClick={() =>
                             copyToClipboard(
                               `https://leadgen-pipeline-mauve.vercel.app/client/${c.slug}`,
@@ -103,7 +104,7 @@ export default function AdminPasswordsPage() {
                         <Button
                           variant="ghost"
                           size="sm"
-                          className="h-6 px-1.5 text-xs"
+                          className="h-8 px-2 text-xs md:h-10 md:px-3 md:text-sm"
                           onClick={() => copyToClipboard(c.contact_email, "email")}
                         >
                           📋
@@ -118,7 +119,7 @@ export default function AdminPasswordsPage() {
                         <Button
                           variant="ghost"
                           size="sm"
-                          className="h-6 px-1.5 text-xs"
+                          className="h-8 px-2 text-xs md:h-10 md:px-3 md:text-sm"
                           onClick={() => toggleVisible(c.id)}
                         >
                           {visiblePwds[c.id] ? "🙈" : "👁️"}
@@ -126,7 +127,7 @@ export default function AdminPasswordsPage() {
                         <Button
                           variant="ghost"
                           size="sm"
-                          className="h-6 px-1.5 text-xs"
+                          className="h-8 px-2 text-xs md:h-10 md:px-3 md:text-sm"
                           onClick={() => copyToClipboard(c.dashboard_password, "password")}
                         >
                           📋
@@ -140,7 +141,7 @@ export default function AdminPasswordsPage() {
                       <Button
                         variant="outline"
                         size="sm"
-                        className="h-7 text-xs"
+                        className="h-9 md:h-10 text-xs"
                         onClick={() =>
                           window.open(
                             `/client/${c.slug}`,
@@ -155,6 +156,7 @@ export default function AdminPasswordsPage() {
                 ))}
               </TableBody>
             </Table>
+            </div>
           )}
         </CardContent>
       </Card>

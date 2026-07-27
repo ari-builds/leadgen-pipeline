@@ -106,7 +106,7 @@ export default function VerifyPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <Card className="w-full max-w-md">
+      <Card className="w-full max-w-md mx-4">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl font-bold">Verify Your Identity</CardTitle>
           <CardDescription>
@@ -126,7 +126,7 @@ export default function VerifyPage() {
                 required
                 maxLength={6}
                 pattern="[0-9]{6}"
-                className="text-center text-2xl tracking-[0.5em]"
+                className="text-center text-xl md:text-2xl tracking-[0.3em] md:tracking-[0.5em]"
               />
             </div>
             {error && <p className="text-sm text-red-500">{error}</p>}

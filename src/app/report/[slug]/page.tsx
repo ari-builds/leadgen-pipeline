@@ -145,11 +145,11 @@ export default function ReportPage() {
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <header className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-6 py-8">
-          <div className="flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 py-4 md:px-6 md:py-8">
+          <div className="flex flex-col md:flex-row items-center justify-between">
             <div>
               <p className="text-sm text-blue-600 font-semibold tracking-wide uppercase">NetClicks by Ari</p>
-              <h1 className="text-3xl font-bold text-gray-900 mt-1">{c.name} — Lead Analysis Report</h1>
+              <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mt-1 break-words">{c.name} — Lead Analysis Report</h1>
               <p className="text-gray-500 mt-1">{c.description}</p>
             </div>
             <div className="text-right text-sm text-gray-400">
@@ -160,7 +160,7 @@ export default function ReportPage() {
         </div>
       </header>
 
-      <div className="max-w-7xl mx-auto px-6 py-8 space-y-8">
+      <div className="max-w-7xl mx-auto px-4 py-4 md:px-6 md:py-8 space-y-8">
         {/* KPI Cards */}
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
           {[
@@ -173,7 +173,7 @@ export default function ReportPage() {
           ].map((kpi) => (
             <div key={kpi.label} className="bg-white rounded-xl border border-gray-200 p-4">
               <p className="text-xs text-gray-400 uppercase tracking-wide">{kpi.label}</p>
-              <p className={`text-2xl font-bold mt-1 ${kpi.color}`}>{kpi.value}</p>
+              <p className={`text-xl md:text-2xl font-bold mt-1 ${kpi.color}`}>{kpi.value}</p>
             </div>
           ))}
         </div>
@@ -303,7 +303,7 @@ export default function ReportPage() {
             <div key={lead.id} className="bg-white rounded-xl border border-gray-200 overflow-hidden">
               {/* Lead Header */}
               <div
-                className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50"
+                className="flex flex-wrap items-center justify-between gap-2 p-4 cursor-pointer hover:bg-gray-50"
                 onClick={() => setExpandedLead(expandedLead === lead.id ? null : lead.id)}
               >
                 <div className="flex items-center gap-4">
@@ -322,8 +322,8 @@ export default function ReportPage() {
                     </div>
                   </div>
                 </div>
-                <div className="flex items-center gap-4">
-                  {/* Contact pills */}
+                <div className="flex flex-wrap items-center gap-2">
+                   {/* Contact pills */}
                   <div className="flex gap-1">
                     {lead.hasEmail && <span className="w-2 h-2 rounded-full bg-green-400" title="Has email"></span>}
                     {lead.hasPhone && <span className="w-2 h-2 rounded-full bg-blue-400" title="Has phone"></span>}
@@ -337,13 +337,13 @@ export default function ReportPage() {
                       "bg-red-50 text-red-700"
                     }`}>
                       <p className="text-lg font-bold">{lead.audit.healthScore}</p>
-                      <p className="text-[10px] uppercase">Health</p>
+                      <p className="text-[11px] uppercase">Health</p>
                     </div>
                   )}
                   {!lead.hasWebsite && (
                     <div className="text-center px-3 py-1 rounded-lg bg-orange-50 text-orange-700">
                       <p className="text-lg font-bold">{lead.dataCompleteness}%</p>
-                      <p className="text-[10px] uppercase">Complete</p>
+                      <p className="text-[11px] uppercase">Complete</p>
                     </div>
                   )}
                   {/* Expand Arrow */}

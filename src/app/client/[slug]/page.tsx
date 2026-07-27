@@ -432,13 +432,13 @@ export default function ClientDashboardPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b border-gray-200 px-8 py-6">
-        <div className="flex items-center justify-between">
+      <header className="bg-white border-b border-gray-200 px-4 md:px-8 py-4 md:py-6">
+        <div className="flex flex-wrap items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold text-gray-900">{client?.name}</h1>
             <p className="text-muted-foreground mt-1">{client?.description}</p>
           </div>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             {["xlsx", "docx", "pptx", "pdf"].map((fmt) => (
               <Button
                 key={fmt}
@@ -459,7 +459,7 @@ export default function ClientDashboardPage() {
         )}
       </header>
 
-      <div className="p-8 space-y-8">
+      <div className="p-4 md:p-8 space-y-8">
         {/* KPI Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <Card>
@@ -587,75 +587,77 @@ export default function ClientDashboardPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Contact</TableHead>
-                  <TableHead>Location</TableHead>
-                  <TableHead>Industry</TableHead>
-                  <TableHead>Score</TableHead>
-                  <TableHead className="max-w-xs">Hook</TableHead>
-                  <TableHead>Status</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {leads
-                  .sort((a, b) => b.score - a.score)
-                  .map((lead) => (
-                    <TableRow
-                      key={lead.id}
-                      className="cursor-pointer hover:bg-gray-50"
-                      onClick={() => setSelectedLead(lead)}
-                    >
-                      <TableCell className="font-medium">
-                        {lead.contact_name}
-                        {lead.contact_email && (
-                          <span className="block text-xs text-muted-foreground">{lead.contact_email}</span>
-                        )}
-                        {lead.website_url && (
-                          <a href={lead.website_url} target="_blank" rel="noopener noreferrer"
-                            className="block text-xs text-blue-500 hover:underline truncate max-w-[200px]"
-                            onClick={(e) => e.stopPropagation()}>
-                            {lead.website_url.replace(/^https?:\/\//, "").slice(0, 40)}
-                          </a>
-                        )}
-                      </TableCell>
-                      <TableCell className="text-sm">{lead.location || "—"}</TableCell>
-                      <TableCell className="text-sm">{lead.industry || "—"}</TableCell>
-                      <TableCell>
-                        <span className={`inline-flex items-center justify-center w-7 h-7 rounded-full text-xs font-bold ${
-                          lead.score >= 9 ? "bg-red-100 text-red-800" :
-                          lead.score >= 7 ? "bg-orange-100 text-orange-800" :
-                          lead.score >= 5 ? "bg-yellow-100 text-yellow-800" :
-                          "bg-gray-100 text-gray-800"
-                        }`}>
-                          {lead.score}
-                        </span>
-                      </TableCell>
-                      <TableCell className="text-sm text-muted-foreground max-w-xs truncate" title={extractHook(lead.notes)}>
-                        {extractHook(lead.notes) || "—"}
-                      </TableCell>
-                      <TableCell>
-                        <select
-                          value={lead.status}
-                          onChange={(e) => { e.stopPropagation(); updateLeadStatus(lead.id, e.target.value); }}
-                          className="text-xs border rounded px-2 py-1 bg-white"
-                        >
-                          {statusOptions.map((s) => (
-                            <option key={s} value={s}>{s}</option>
-                          ))}
-                        </select>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-              </TableBody>
-            </Table>
+            <div className="overflow-x-auto rounded-lg border">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Contact</TableHead>
+                    <TableHead>Location</TableHead>
+                    <TableHead>Industry</TableHead>
+                    <TableHead>Score</TableHead>
+                    <TableHead className="max-w-xs">Hook</TableHead>
+                    <TableHead>Status</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {leads
+                    .sort((a, b) => b.score - a.score)
+                    .map((lead) => (
+                      <TableRow
+                        key={lead.id}
+                        className="cursor-pointer hover:bg-gray-50"
+                        onClick={() => setSelectedLead(lead)}
+                      >
+                        <TableCell className="font-medium">
+                          {lead.contact_name}
+                          {lead.contact_email && (
+                            <span className="block text-xs text-muted-foreground">{lead.contact_email}</span>
+                          )}
+                          {lead.website_url && (
+                            <a href={lead.website_url} target="_blank" rel="noopener noreferrer"
+                              className="block text-xs text-blue-500 hover:underline truncate max-w-[200px]"
+                              onClick={(e) => e.stopPropagation()}>
+                              {lead.website_url.replace(/^https?:\/\//, "").slice(0, 40)}
+                            </a>
+                          )}
+                        </TableCell>
+                        <TableCell className="text-sm">{lead.location || "—"}</TableCell>
+                        <TableCell className="text-sm">{lead.industry || "—"}</TableCell>
+                        <TableCell>
+                          <span className={`inline-flex items-center justify-center w-7 h-7 rounded-full text-xs font-bold ${
+                            lead.score >= 9 ? "bg-red-100 text-red-800" :
+                            lead.score >= 7 ? "bg-orange-100 text-orange-800" :
+                            lead.score >= 5 ? "bg-yellow-100 text-yellow-800" :
+                            "bg-gray-100 text-gray-800"
+                          }`}>
+                            {lead.score}
+                          </span>
+                        </TableCell>
+                        <TableCell className="text-sm text-muted-foreground max-w-xs truncate" title={extractHook(lead.notes)}>
+                          {extractHook(lead.notes) || "—"}
+                        </TableCell>
+                        <TableCell>
+                          <select
+                            value={lead.status}
+                            onChange={(e) => { e.stopPropagation(); updateLeadStatus(lead.id, e.target.value); }}
+                            className="text-xs md:text-sm border rounded px-2 md:px-3 py-1.5 md:py-2 bg-white"
+                          >
+                            {statusOptions.map((s) => (
+                              <option key={s} value={s}>{s}</option>
+                            ))}
+                          </select>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                </TableBody>
+              </Table>
+            </div>
           </CardContent>
         </Card>
 
         {/* Lead Detail Dialog */}
         <Dialog open={!!selectedLead} onOpenChange={(open) => { if (!open) setSelectedLead(null); }}>
-          <DialogContent className="max-w-lg">
+          <DialogContent className="max-w-lg mx-4">
             <DialogHeader>
               <DialogTitle>{selectedLead?.contact_name || selectedLead?.company_name}</DialogTitle>
             </DialogHeader>

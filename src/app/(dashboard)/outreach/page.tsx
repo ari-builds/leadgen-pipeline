@@ -410,7 +410,7 @@ export default function OutreachPage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1 border-b">
+      <div className="flex gap-1 border-b overflow-x-auto whitespace-nowrap">
         {tabs.map((tab) => (
           <button
             key={tab.key}
@@ -481,6 +481,7 @@ export default function OutreachPage() {
                   No outreach emails yet
                 </div>
               ) : (
+                <div className="overflow-x-auto rounded-lg border">
                 <Table>
                   <TableHeader>
                     <TableRow>
@@ -537,6 +538,7 @@ export default function OutreachPage() {
                     ))}
                   </TableBody>
                 </Table>
+                </div>
               )}
             </CardContent>
           </Card>
@@ -546,7 +548,7 @@ export default function OutreachPage() {
       {/* DM Scripts Tab */}
       {activeTab === "dms" && (
         <div className="space-y-4">
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             <Button
               onClick={() => generateDMScripts("linkedin")}
               disabled={generating}
@@ -604,6 +606,7 @@ export default function OutreachPage() {
                   No DM threads yet
                 </div>
               ) : (
+                <div className="overflow-x-auto rounded-lg border">
                 <Table>
                   <TableHeader>
                     <TableRow>
@@ -671,6 +674,7 @@ export default function OutreachPage() {
                     ))}
                   </TableBody>
                 </Table>
+                </div>
               )}
             </CardContent>
           </Card>
@@ -763,7 +767,7 @@ export default function OutreachPage() {
                     </div>
                     <div className="text-right">
                       {thread.last_message && (
-                        <p className="text-sm text-muted-foreground max-w-[300px] truncate">
+                        <p className="text-sm text-muted-foreground max-w-[200px] md:max-w-[300px] truncate">
                           {thread.last_message}
                         </p>
                       )}
