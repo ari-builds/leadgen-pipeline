@@ -186,6 +186,7 @@ export default function ClientDashboardPage() {
   const [clientId, setClientId] = useState<number | null>(null);
   const [debugOtp, setDebugOtp] = useState<string | null>(null);
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
+  const [tempToken, setTempToken] = useState<string | null>(null);
 
   async function handlePasswordSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -209,6 +210,7 @@ export default function ClientDashboardPage() {
       if (data.needsOTP) {
         setEmail(data.email);
         setAuthStep("otp");
+        setTempToken(data.tempToken);
         if (data.otpCode) setDebugOtp(data.otpCode);
         if (data.emailSent) {
           toast.success("Check your email for the code");
@@ -234,6 +236,7 @@ export default function ClientDashboardPage() {
           slug: params.slug,
           code: otpCode,
           step: "otp",
+          tempToken,
         }),
       });
       const data = await res.json();
@@ -264,6 +267,7 @@ export default function ClientDashboardPage() {
           lead_id: leadId,
           status: newStatus,
           step: "update_status",
+          tempToken,
         }),
       });
       if (!res.ok) {

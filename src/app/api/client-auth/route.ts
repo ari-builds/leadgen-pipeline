@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import db from "@/lib/db";
-import { verifyPassword, generateOTP, generateToken } from "@/lib/auth";
+import { verifyPassword, generateOTP, generateToken, verifyToken } from "@/lib/auth";
 import { sendOTPEmail } from "@/lib/email";
 
 export async function GET(req: NextRequest) {
@@ -148,13 +148,28 @@ export async function POST(req: NextRequest) {
     }
 
     if (step === "otp") {
-      const { code } = body;
+      const { code, tempToken } = body;
+
+      if (!tempToken || !code) {
+        return NextResponse.json(
+          { error: "tempToken and code are required" },
+          { status: 400 }
+        );
+      }
+
+      const decoded = await verifyToken(tempToken);
+      if (!decoded || !decoded.email) {
+        return NextResponse.json(
+          { error: "Invalid or expired session" },
+          { status: 401 }
+        );
+      }
 
       const result = await db.execute({
         sql: `SELECT id FROM otp_codes
-              WHERE code = ? AND used = 0 AND expires_at > datetime('now')
+              WHERE email = ? AND code = ? AND used = 0 AND expires_at > datetime('now')
               ORDER BY id DESC LIMIT 1`,
-        args: [code],
+        args: [decoded.email, code],
       });
 
       if (result.rows.length === 0) {
@@ -259,7 +274,22 @@ export async function POST(req: NextRequest) {
     }
 
     if (step === "update_status") {
-      const { lead_id, status } = body;
+      const { lead_id, status, tempToken } = body;
+
+      if (!tempToken) {
+        return NextResponse.json(
+          { error: "Authentication required" },
+          { status: 401 }
+        );
+      }
+
+      const decoded = await verifyToken(tempToken);
+      if (!decoded || decoded.role !== "client") {
+        return NextResponse.json(
+          { error: "Invalid session" },
+          { status: 401 }
+        );
+      }
 
       if (!lead_id || !status) {
         return NextResponse.json(
