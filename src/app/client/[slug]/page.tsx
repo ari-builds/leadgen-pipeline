@@ -56,6 +56,7 @@ interface Lead {
   score: number;
   status: string;
   notes: string;
+  website_url: string;
 }
 
 interface Subscription {
@@ -74,6 +75,53 @@ function extractHook(notes: string | null): string {
   const firstLine = notes.split("\n")[0];
   if (firstLine.length > 10) return firstLine.trim();
   return "";
+}
+
+interface SocialLink { platform: string; url: string; }
+
+function extractSocials(notes: string | null): SocialLink[] {
+  if (!notes) return [];
+  const socials: SocialLink[] = [];
+  // Format 1: URL-based social media (Joseph/Kevin leads)
+  const urlPatterns = [
+    { platform: "Facebook", regex: /Facebook:\s*(https?:\/\/[^\s\n]+)/gi },
+    { platform: "Instagram", regex: /Instagram:\s*(https?:\/\/[^\s\n]+)/gi },
+    { platform: "LinkedIn", regex: /LinkedIn:\s*(https?:\/\/[^\s\n]+)/gi },
+    { platform: "Twitter/X", regex: /Twitter:\s*(https?:\/\/[^\s\n]+)/gi },
+    { platform: "TikTok", regex: /TikTok:\s*(https?:\/\/[^\s\n]+)/gi },
+    { platform: "YouTube", regex: /YouTube:\s*(https?:\/\/[^\s\n]+)/gi },
+  ];
+  for (const { platform, regex } of urlPatterns) {
+    let m;
+    while ((m = regex.exec(notes)) !== null) {
+      socials.push({ platform, url: m[1] });
+    }
+  }
+  // Format 2: "Social: facebook, instagram" (Niloy/Maria/Ethan/Carter leads)
+  if (socials.length === 0) {
+    const socialMatch = notes.match(/Social:\s*(.+)/i);
+    if (socialMatch) {
+      const platforms = socialMatch[1].split(/[,|]/).map(s => s.trim().toLowerCase());
+      for (const p of platforms) {
+        if (p) {
+          const name = p.charAt(0).toUpperCase() + p.slice(1);
+          socials.push({ platform: name, url: "" });
+        }
+      }
+    }
+  }
+  return socials;
+}
+
+function extractLocation(notes: string | null, baseLocation: string | null): string {
+  let loc = baseLocation || "";
+  if (notes) {
+    const sourceMatch = notes.match(/Source:\s*(.+?)(?:\n|$)/i);
+    if (sourceMatch && !loc.includes(sourceMatch[1].trim())) {
+      loc = loc ? `${loc} — ${sourceMatch[1].trim()}` : sourceMatch[1].trim();
+    }
+  }
+  return loc || "—";
 }
 
 const COLORS = ["#2563eb", "#f59e0b", "#10b981", "#ef4444", "#8b5cf6", "#ec4899"];
@@ -515,6 +563,13 @@ export default function ClientDashboardPage() {
                         {lead.contact_email && (
                           <span className="block text-xs text-muted-foreground">{lead.contact_email}</span>
                         )}
+                        {lead.website_url && (
+                          <a href={lead.website_url} target="_blank" rel="noopener noreferrer"
+                            className="block text-xs text-blue-500 hover:underline truncate max-w-[200px]"
+                            onClick={(e) => e.stopPropagation()}>
+                            {lead.website_url.replace(/^https?:\/\//, "").slice(0, 40)}
+                          </a>
+                        )}
                       </TableCell>
                       <TableCell className="text-sm">{lead.location || "—"}</TableCell>
                       <TableCell className="text-sm">{lead.industry || "—"}</TableCell>
@@ -576,6 +631,12 @@ export default function ClientDashboardPage() {
                 {/* Contact Info */}
                 <div className="bg-gray-50 rounded-lg p-4 space-y-2">
                   <h4 className="text-sm font-semibold text-gray-700">Contact Information</h4>
+                  {selectedLead.contact_name && (
+                    <div className="flex items-center gap-2 text-sm">
+                      <span className="text-muted-foreground w-16">Name:</span>
+                      <span className="font-medium">{selectedLead.contact_name}</span>
+                    </div>
+                  )}
                   {selectedLead.contact_email && (
                     <div className="flex items-center gap-2 text-sm">
                       <span className="text-muted-foreground w-16">Email:</span>
@@ -588,13 +649,34 @@ export default function ClientDashboardPage() {
                       <a href={`tel:${selectedLead.contact_phone}`} className="text-blue-600 hover:underline">{selectedLead.contact_phone}</a>
                     </div>
                   )}
-                  {selectedLead.location && (
+                  {extractLocation(selectedLead.notes, selectedLead.location) !== "—" && (
                     <div className="flex items-center gap-2 text-sm">
                       <span className="text-muted-foreground w-16">Location:</span>
-                      <span>{selectedLead.location}</span>
+                      <span>{extractLocation(selectedLead.notes, selectedLead.location)}</span>
                     </div>
                   )}
                 </div>
+
+                {/* Social Media */}
+                {extractSocials(selectedLead.notes).length > 0 && (
+                  <div className="bg-purple-50 rounded-lg p-4">
+                    <h4 className="text-sm font-semibold text-purple-700 mb-2">Social Media</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {extractSocials(selectedLead.notes).map((s, i) => (
+                        s.url ? (
+                          <a key={i} href={s.url} target="_blank" rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1 bg-white border border-purple-200 rounded-full px-3 py-1 text-xs font-medium text-purple-700 hover:bg-purple-100">
+                            {s.platform} ↗
+                          </a>
+                        ) : (
+                          <span key={i} className="inline-flex items-center bg-white border border-purple-200 rounded-full px-3 py-1 text-xs font-medium text-purple-700">
+                            {s.platform}
+                          </span>
+                        )
+                      ))}
+                    </div>
+                  </div>
+                )}
 
                 {/* Score Reason */}
                 {extractHook(selectedLead.notes) && (

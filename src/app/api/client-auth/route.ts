@@ -185,7 +185,7 @@ export async function POST(req: NextRequest) {
       const clientId = client.id;
 
       const leadsResult = await db.execute({
-        sql: `SELECT l.id, l.company_name, l.contact_name, l.industry, l.location, l.score, l.status, l.notes, l.contact_email, l.contact_phone
+        sql: `SELECT l.id, l.company_name, l.contact_name, l.industry, l.location, l.score, l.status, l.notes, l.contact_email, l.contact_phone, l.website_url
               FROM leads l
               JOIN client_leads cl ON l.id = cl.lead_id
               WHERE cl.client_id = ?
