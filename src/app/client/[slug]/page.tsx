@@ -20,6 +20,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { toast } from "sonner";
 import {
   PieChart,
@@ -64,7 +70,10 @@ interface Subscription {
 function extractHook(notes: string | null): string {
   if (!notes) return "";
   const match = notes.match(/Hook:\s*(.+?)(?:\n|$)/i);
-  return match ? match[1].trim() : "";
+  if (match) return match[1].trim();
+  const firstLine = notes.split("\n")[0];
+  if (firstLine.length > 10) return firstLine.trim();
+  return "";
 }
 
 const COLORS = ["#2563eb", "#f59e0b", "#10b981", "#ef4444", "#8b5cf6", "#ec4899"];
@@ -83,6 +92,7 @@ export default function ClientDashboardPage() {
   const [clientSlug, setClientSlug] = useState("");
   const [clientId, setClientId] = useState<number | null>(null);
   const [debugOtp, setDebugOtp] = useState<string | null>(null);
+  const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
 
   async function handlePasswordSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -476,7 +486,7 @@ export default function ClientDashboardPage() {
           <CardHeader>
             <CardTitle>Your Leads</CardTitle>
             <CardDescription>
-              {leads.length} leads generated for your business. Mark leads as you contact them.
+              {leads.length} leads generated for your business. Click any lead to see full details.
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -487,7 +497,7 @@ export default function ClientDashboardPage() {
                   <TableHead>Location</TableHead>
                   <TableHead>Industry</TableHead>
                   <TableHead>Score</TableHead>
-                  <TableHead className="max-w-xs">Score Reason</TableHead>
+                  <TableHead className="max-w-xs">Hook</TableHead>
                   <TableHead>Status</TableHead>
                 </TableRow>
               </TableHeader>
@@ -495,7 +505,11 @@ export default function ClientDashboardPage() {
                 {leads
                   .sort((a, b) => b.score - a.score)
                   .map((lead) => (
-                    <TableRow key={lead.id}>
+                    <TableRow
+                      key={lead.id}
+                      className="cursor-pointer hover:bg-gray-50"
+                      onClick={() => setSelectedLead(lead)}
+                    >
                       <TableCell className="font-medium">
                         {lead.contact_name}
                         {lead.contact_email && (
@@ -520,7 +534,7 @@ export default function ClientDashboardPage() {
                       <TableCell>
                         <select
                           value={lead.status}
-                          onChange={(e) => updateLeadStatus(lead.id, e.target.value)}
+                          onChange={(e) => { e.stopPropagation(); updateLeadStatus(lead.id, e.target.value); }}
                           className="text-xs border rounded px-2 py-1 bg-white"
                         >
                           {statusOptions.map((s) => (
@@ -534,6 +548,90 @@ export default function ClientDashboardPage() {
             </Table>
           </CardContent>
         </Card>
+
+        {/* Lead Detail Dialog */}
+        <Dialog open={!!selectedLead} onOpenChange={(open) => { if (!open) setSelectedLead(null); }}>
+          <DialogContent className="max-w-lg">
+            <DialogHeader>
+              <DialogTitle>{selectedLead?.contact_name || selectedLead?.company_name}</DialogTitle>
+            </DialogHeader>
+            {selectedLead && (
+              <div className="space-y-4">
+                {/* Score */}
+                <div className="flex items-center gap-3">
+                  <span className={`inline-flex items-center justify-center w-10 h-10 rounded-full text-sm font-bold ${
+                    selectedLead.score >= 9 ? "bg-red-100 text-red-800" :
+                    selectedLead.score >= 7 ? "bg-orange-100 text-orange-800" :
+                    selectedLead.score >= 5 ? "bg-yellow-100 text-yellow-800" :
+                    "bg-gray-100 text-gray-800"
+                  }`}>
+                    {selectedLead.score}/10
+                  </span>
+                  <div>
+                    <p className="text-sm font-medium">Lead Score</p>
+                    <p className="text-xs text-muted-foreground">{selectedLead.industry || "Unknown industry"}</p>
+                  </div>
+                </div>
+
+                {/* Contact Info */}
+                <div className="bg-gray-50 rounded-lg p-4 space-y-2">
+                  <h4 className="text-sm font-semibold text-gray-700">Contact Information</h4>
+                  {selectedLead.contact_email && (
+                    <div className="flex items-center gap-2 text-sm">
+                      <span className="text-muted-foreground w-16">Email:</span>
+                      <a href={`mailto:${selectedLead.contact_email}`} className="text-blue-600 hover:underline">{selectedLead.contact_email}</a>
+                    </div>
+                  )}
+                  {selectedLead.contact_phone && (
+                    <div className="flex items-center gap-2 text-sm">
+                      <span className="text-muted-foreground w-16">Phone:</span>
+                      <a href={`tel:${selectedLead.contact_phone}`} className="text-blue-600 hover:underline">{selectedLead.contact_phone}</a>
+                    </div>
+                  )}
+                  {selectedLead.location && (
+                    <div className="flex items-center gap-2 text-sm">
+                      <span className="text-muted-foreground w-16">Location:</span>
+                      <span>{selectedLead.location}</span>
+                    </div>
+                  )}
+                </div>
+
+                {/* Score Reason */}
+                {extractHook(selectedLead.notes) && (
+                  <div className="bg-blue-50 rounded-lg p-4">
+                    <h4 className="text-sm font-semibold text-blue-700 mb-1">Why This Score</h4>
+                    <p className="text-sm text-blue-900">{extractHook(selectedLead.notes)}</p>
+                  </div>
+                )}
+
+                {/* Notes */}
+                {selectedLead.notes && (
+                  <div className="bg-gray-50 rounded-lg p-4">
+                    <h4 className="text-sm font-semibold text-gray-700 mb-1">Full Notes</h4>
+                    <p className="text-sm text-gray-600 whitespace-pre-wrap">{selectedLead.notes}</p>
+                  </div>
+                )}
+
+                {/* Status */}
+                <div className="flex items-center gap-2">
+                  <Label className="text-sm">Status:</Label>
+                  <select
+                    value={selectedLead.status}
+                    onChange={(e) => {
+                      updateLeadStatus(selectedLead.id, e.target.value);
+                      setSelectedLead({ ...selectedLead, status: e.target.value });
+                    }}
+                    className="text-sm border rounded px-3 py-1.5 bg-white"
+                  >
+                    {statusOptions.map((s) => (
+                      <option key={s} value={s}>{s}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            )}
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );
