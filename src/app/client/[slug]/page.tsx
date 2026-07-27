@@ -57,6 +57,10 @@ interface Lead {
   status: string;
   notes: string;
   website_url: string;
+  contact_linkedin: string | null;
+  contact_twitter: string | null;
+  contact_facebook: string | null;
+  contact_instagram: string | null;
 }
 
 interface Subscription {
@@ -79,37 +83,78 @@ function extractHook(notes: string | null): string {
 
 interface SocialLink { platform: string; url: string; }
 
-function extractSocials(notes: string | null): SocialLink[] {
-  if (!notes) return [];
+function extractSocials(notes: string | null, lead?: Lead): SocialLink[] {
   const socials: SocialLink[] = [];
-  // Format 1: URL-based social media (Joseph/Kevin leads)
+  const seen = new Set<string>();
+  
+  // Priority 1: Use dedicated columns (actual verified URLs)
+  if (lead) {
+    if (lead.contact_facebook && !seen.has('facebook')) { socials.push({ platform: 'Facebook', url: lead.contact_facebook }); seen.add('facebook'); }
+    if (lead.contact_instagram && !seen.has('instagram')) { socials.push({ platform: 'Instagram', url: lead.contact_instagram }); seen.add('instagram'); }
+    if (lead.contact_linkedin && !seen.has('linkedin')) { socials.push({ platform: 'LinkedIn', url: lead.contact_linkedin }); seen.add('linkedin'); }
+    if (lead.contact_twitter && !seen.has('twitter')) { socials.push({ platform: 'Twitter/X', url: lead.contact_twitter }); seen.add('twitter'); }
+  }
+  
+  if (!notes) return socials;
+  
+  // Priority 2: URL-based social media in notes
   const urlPatterns = [
-    { platform: "Facebook", regex: /Facebook:\s*(https?:\/\/[^\s\n]+)/gi },
-    { platform: "Instagram", regex: /Instagram:\s*(https?:\/\/[^\s\n]+)/gi },
-    { platform: "LinkedIn", regex: /LinkedIn:\s*(https?:\/\/[^\s\n]+)/gi },
-    { platform: "Twitter/X", regex: /Twitter:\s*(https?:\/\/[^\s\n]+)/gi },
-    { platform: "TikTok", regex: /TikTok:\s*(https?:\/\/[^\s\n]+)/gi },
-    { platform: "YouTube", regex: /YouTube:\s*(https?:\/\/[^\s\n]+)/gi },
+    { platform: "Facebook", key: "facebook", regex: /Facebook:\s*(https?:\/\/[^\s\n]+)/gi },
+    { platform: "Instagram", key: "instagram", regex: /Instagram:\s*(https?:\/\/[^\s\n]+)/gi },
+    { platform: "LinkedIn", key: "linkedin", regex: /LinkedIn:\s*(https?:\/\/[^\s\n]+)/gi },
+    { platform: "Twitter/X", key: "twitter", regex: /Twitter:\s*(https?:\/\/[^\s\n]+)/gi },
+    { platform: "TikTok", key: "tiktok", regex: /TikTok:\s*(https?:\/\/[^\s\n]+)/gi },
+    { platform: "YouTube", key: "youtube", regex: /YouTube:\s*(https?:\/\/[^\s\n]+)/gi },
   ];
-  for (const { platform, regex } of urlPatterns) {
+  for (const { platform, key, regex } of urlPatterns) {
+    if (seen.has(key)) continue;
     let m;
     while ((m = regex.exec(notes)) !== null) {
       socials.push({ platform, url: m[1] });
+      seen.add(key);
     }
   }
-  // Format 2: "Social: facebook, instagram" (Niloy/Maria/Ethan/Carter leads)
-  if (socials.length === 0) {
-    const socialMatch = notes.match(/Social:\s*(.+)/i);
-    if (socialMatch) {
-      const platforms = socialMatch[1].split(/[,|]/).map(s => s.trim().toLowerCase());
-      for (const p of platforms) {
-        if (p) {
-          const name = p.charAt(0).toUpperCase() + p.slice(1);
-          socials.push({ platform: name, url: "" });
-        }
+  
+  // Priority 3: "Social: facebook, instagram" — only show as platform names (no URL)
+  const socialMatch = notes.match(/Social:\s*(.+)/i);
+  if (socialMatch) {
+    const platforms = socialMatch[1].split(/[,|]/).map(s => s.trim().toLowerCase());
+    for (const p of platforms) {
+      if (p && !seen.has(p)) {
+        const name = p.charAt(0).toUpperCase() + p.slice(1);
+        socials.push({ platform: name, url: "" });
+        seen.add(p);
       }
     }
   }
+  
+  // Priority 4: Social links section from rewritten notes
+  const linksMatch = notes.match(/Social links:\s*(.+)/i);
+  if (linksMatch) {
+    const parts = linksMatch[1].split('|');
+    for (const part of parts) {
+      const [platform, url] = part.split(': ').map(s => s.trim());
+      const key = platform.toLowerCase();
+      if (url && url.startsWith('http') && !seen.has(key)) {
+        socials.push({ platform, url });
+        seen.add(key);
+      }
+    }
+  }
+  
+  // Priority 5: "Social platforms (no URL found)" section
+  const noUrlMatch = notes.match(/Social platforms \(no URL found\):\s*(.+)/i);
+  if (noUrlMatch) {
+    const platforms = noUrlMatch[1].split(',').map(s => s.trim().toLowerCase());
+    for (const p of platforms) {
+      if (p && !seen.has(p)) {
+        const name = p.charAt(0).toUpperCase() + p.slice(1);
+        socials.push({ platform: `${name} (no link found)`, url: "" });
+        seen.add(p);
+      }
+    }
+  }
+  
   return socials;
 }
 
@@ -655,14 +700,20 @@ export default function ClientDashboardPage() {
                       <span>{extractLocation(selectedLead.notes, selectedLead.location)}</span>
                     </div>
                   )}
+                  {selectedLead.website_url && (
+                    <div className="flex items-center gap-2 text-sm">
+                      <span className="text-muted-foreground w-16">Website:</span>
+                      <a href={selectedLead.website_url.startsWith('http') ? selectedLead.website_url : `https://${selectedLead.website_url}`} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline truncate max-w-[300px]">{selectedLead.website_url}</a>
+                    </div>
+                  )}
                 </div>
 
                 {/* Social Media */}
-                {extractSocials(selectedLead.notes).length > 0 && (
+                {extractSocials(selectedLead.notes, selectedLead).length > 0 && (
                   <div className="bg-purple-50 rounded-lg p-4">
                     <h4 className="text-sm font-semibold text-purple-700 mb-2">Social Media</h4>
                     <div className="flex flex-wrap gap-2">
-                      {extractSocials(selectedLead.notes).map((s, i) => (
+                      {extractSocials(selectedLead.notes, selectedLead).map((s, i) => (
                         s.url ? (
                           <a key={i} href={s.url} target="_blank" rel="noopener noreferrer"
                             className="inline-flex items-center gap-1 bg-white border border-purple-200 rounded-full px-3 py-1 text-xs font-medium text-purple-700 hover:bg-purple-100">
@@ -679,20 +730,37 @@ export default function ClientDashboardPage() {
                 )}
 
                 {/* Score Reason */}
-                {extractHook(selectedLead.notes) && (
+                {(selectedLead.notes.includes('Assessment:') || extractHook(selectedLead.notes)) && (
                   <div className="bg-blue-50 rounded-lg p-4">
                     <h4 className="text-sm font-semibold text-blue-700 mb-1">Why This Score</h4>
-                    <p className="text-sm text-blue-900">{extractHook(selectedLead.notes)}</p>
+                    <p className="text-sm text-blue-900">
+                      {selectedLead.notes.includes('Assessment:') 
+                        ? selectedLead.notes.split('Assessment:')[1].split('\n')[0].trim()
+                        : extractHook(selectedLead.notes)}
+                    </p>
                   </div>
                 )}
 
                 {/* Notes */}
-                {selectedLead.notes && (
-                  <div className="bg-gray-50 rounded-lg p-4">
-                    <h4 className="text-sm font-semibold text-gray-700 mb-1">Full Notes</h4>
-                    <p className="text-sm text-gray-600 whitespace-pre-wrap">{selectedLead.notes}</p>
-                  </div>
-                )}
+                {selectedLead.notes && (() => {
+                  // Filter out lines already shown in other sections
+                  const lines = selectedLead.notes.split('\n').filter(line => {
+                    const trimmed = line.trim();
+                    if (!trimmed) return false;
+                    if (trimmed.startsWith('Contact:') || trimmed.startsWith('Business:')) return false;
+                    if (trimmed.startsWith('Email:') || trimmed.startsWith('Phone:')) return false;
+                    if (trimmed.startsWith('Location:') || trimmed.startsWith('Website:')) return false;
+                    if (trimmed.startsWith('Social presence:') || trimmed.startsWith('Social links:') || trimmed.startsWith('Social platforms')) return false;
+                    if (trimmed.startsWith('Assessment:')) return false;
+                    return true;
+                  });
+                  return lines.length > 0 ? (
+                    <div className="bg-gray-50 rounded-lg p-4">
+                      <h4 className="text-sm font-semibold text-gray-700 mb-1">Additional Notes</h4>
+                      <p className="text-sm text-gray-600 whitespace-pre-wrap">{lines.join('\n')}</p>
+                    </div>
+                  ) : null;
+                })()}
 
                 {/* Status */}
                 <div className="flex items-center gap-2">
