@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -47,6 +47,20 @@ interface Subscription {
   last_export_at: string | null;
   exported_this_period: boolean;
   export_formats: string | null;
+}
+
+interface AnalyticsData {
+  sent: number; opened: number; openRate: number; bounced: number; bounceRate: number;
+  replies: number; replyRate: number;
+  classificationBreakdown: { classification: string; count: number }[];
+  conversions: { status: string; count: number; totalValue: number }[];
+  recentReplies: { id: number; sender: string; sender_email: string; subject: string; body: string; received_at: string; classification: string; company_name: string }[];
+}
+interface LeadMonthInfo {
+  currentMonth: number;
+  pastMonths: number;
+  monthlyCap: number;
+  total: number;
 }
 
 function extractHook(notes: string | null): string {
@@ -157,6 +171,7 @@ export default function ClientDashboardPage() {
   const [client, setClient] = useState<Client | null>(null);
   const [leads, setLeads] = useState<Lead[]>([]);
   const [subscription, setSubscription] = useState<Subscription | null>(null);
+  const [leadMonthInfo, setLeadMonthInfo] = useState<LeadMonthInfo | null>(null);
   const [loading, setLoading] = useState(false);
   const [authStep, setAuthStep] = useState<"password" | "otp">("password");
   const [clientSlug, setClientSlug] = useState("");
@@ -164,6 +179,7 @@ export default function ClientDashboardPage() {
   const [debugOtp, setDebugOtp] = useState<string | null>(null);
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
   const [tempToken, setTempToken] = useState<string | null>(null);
+  const [analytics, setAnalytics] = useState<AnalyticsData | null>(null);
 
   async function handlePasswordSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -224,6 +240,7 @@ export default function ClientDashboardPage() {
       setClient(data.client);
       setLeads(data.leads);
       setSubscription(data.subscription || null);
+      setLeadMonthInfo(data.leadMonthInfo || null);
       setClientSlug(params.slug as string);
       setClientId(data.clientId);
       setAuthenticated(true);
@@ -259,6 +276,14 @@ export default function ClientDashboardPage() {
       toast.error("Failed to update status");
     }
   }
+
+  useEffect(() => {
+    if (!authenticated || !params.slug) return;
+    fetch(`/api/client-analytics/${params.slug}`)
+      .then(r => r.json())
+      .then(setAnalytics)
+      .catch(() => {});
+  }, [authenticated, params.slug]);
 
   const statusOptions = ["new", "contacted", "qualified", "closed"];
 
@@ -426,6 +451,30 @@ export default function ClientDashboardPage() {
 
       <div className="max-w-6xl mx-auto px-4 py-6 md:py-8 space-y-8">
 
+        {/* Monthly Lead Cap Banner */}
+        {leadMonthInfo && leadMonthInfo.monthlyCap > 0 && (
+          <div className="bg-white rounded-xl border border-gray-100 border-l-4 border-l-blue-500 p-4 shadow-sm">
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
+              <span className="text-sm font-semibold text-gray-700">Monthly Lead Cap:</span>
+              <span className="text-sm text-gray-600">
+                <span className="font-bold text-blue-600">{leadMonthInfo.currentMonth}</span> this month
+              </span>
+              <span className="text-sm text-gray-400 hidden sm:inline">|</span>
+              <span className="text-sm text-gray-600">
+                <span className="font-bold text-gray-800">{leadMonthInfo.pastMonths}</span> from past months
+              </span>
+              <span className="text-sm text-gray-400 hidden sm:inline">|</span>
+              <span className="text-sm text-gray-600">
+                Cap: <span className="font-bold text-gray-800">{leadMonthInfo.monthlyCap}</span>/mo
+              </span>
+              <span className="text-sm text-gray-400 hidden sm:inline">|</span>
+              <span className="text-sm text-gray-600">
+                <span className="font-bold text-amber-600">{Math.max(0, leadMonthInfo.monthlyCap - leadMonthInfo.currentMonth)}</span> remaining this month
+              </span>
+            </div>
+          </div>
+        )}
+
         {/* KPI Cards — 2x2 on mobile, 4-col on desktop */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
           {[
@@ -469,13 +518,133 @@ export default function ClientDashboardPage() {
           </div>
         </div>
 
+        {/* Email Performance */}
+        {analytics && (
+          <>
+            <div>
+              <h2 className="text-lg font-bold text-gray-900 mb-3">Email Performance</h2>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+                {[
+                  { label: "Sent", value: analytics.sent, color: "border-l-blue-500" },
+                  { label: "Opened", value: `${analytics.opened} (${analytics.openRate}%)`, color: "border-l-emerald-500" },
+                  { label: "Replied", value: `${analytics.replies} (${analytics.replyRate}%)`, color: "border-l-amber-500" },
+                  { label: "Bounced", value: `${analytics.bounced} (${analytics.bounceRate}%)`, color: "border-l-red-500" },
+                ].map(k => (
+                  <div key={k.label} className={`bg-white rounded-xl border border-gray-100 border-l-4 ${k.color} p-4 shadow-sm`}>
+                    <p className="text-2xl font-bold text-gray-900">{k.value}</p>
+                    <p className="text-xs text-gray-500 mt-0.5">{k.label}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Reply Classification + Conversion Pipeline */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {analytics.classificationBreakdown.length > 0 && (
+                <div className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
+                  <h3 className="text-sm font-semibold text-gray-700 mb-3">Reply Classification</h3>
+                  <div className="space-y-2">
+                    {[
+                      { key: "positive", label: "Positive", color: "bg-emerald-100 text-emerald-800" },
+                      { key: "neutral", label: "Neutral", color: "bg-blue-100 text-blue-800" },
+                      { key: "negative", label: "Negative", color: "bg-red-100 text-red-800" },
+                      { key: "auto", label: "Auto", color: "bg-gray-100 text-gray-800" },
+                    ].map(({ key, label, color }) => {
+                      const item = analytics.classificationBreakdown.find(c => c.classification === key);
+                      return (
+                        <div key={key} className="flex items-center justify-between">
+                          <span className="text-sm text-gray-700">{label}</span>
+                          <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${color}`}>
+                            {item ? item.count : 0}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              <div className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
+                <h3 className="text-sm font-semibold text-gray-700 mb-3">Conversion Pipeline</h3>
+                {analytics.conversions.length > 0 ? (
+                  <div className="space-y-2">
+                    {[
+                      { status: "replied", label: "Replied" },
+                      { status: "meeting_scheduled", label: "Meeting Scheduled" },
+                      { status: "proposal_sent", label: "Proposal Sent" },
+                      { status: "negotiating", label: "Negotiating" },
+                      { status: "closed_won", label: "Closed Won" },
+                      { status: "closed_lost", label: "Closed Lost" },
+                    ].map(({ status, label }) => {
+                      const item = analytics.conversions.find(c => c.status === status);
+                      return (
+                        <div key={status}>
+                          <div className="flex items-center justify-between text-sm mb-1">
+                            <span className="text-gray-700">{label}</span>
+                            <span className="font-semibold text-gray-900">
+                              {item ? `${item.count}${item.totalValue ? ` ($${item.totalValue})` : ""}` : "0"}
+                            </span>
+                          </div>
+                          {analytics.conversions.length > 1 && (
+                            <div className="w-full bg-gray-100 rounded-full h-1.5">
+                              <div
+                                className="bg-blue-500 h-1.5 rounded-full transition-all"
+                                style={{ width: `${(item?.count || 0) / Math.max(...analytics.conversions.map(c => c.count)) * 100}%` }}
+                              />
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <p className="text-sm text-gray-400">No conversions tracked yet</p>
+                )}
+              </div>
+            </div>
+
+            {/* Recent Replies */}
+            {analytics.recentReplies.length > 0 && (
+              <div className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
+                <h3 className="text-sm font-semibold text-gray-700 mb-3">Recent Replies</h3>
+                <div className="space-y-3">
+                  {analytics.recentReplies.map(r => (
+                    <div key={r.id} className="flex items-start justify-between gap-3 pb-3 border-b border-gray-50 last:border-0">
+                      <div className="min-w-0">
+                        <p className="text-sm font-medium text-gray-900">{r.company_name || r.sender}</p>
+                        <p className="text-xs text-gray-500 truncate">{r.subject}</p>
+                        <p className="text-xs text-gray-400 mt-0.5 line-clamp-2">{r.body}</p>
+                      </div>
+                      <div className="shrink-0 text-right">
+                        <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${
+                          r.classification === "positive" ? "bg-emerald-100 text-emerald-800" :
+                          r.classification === "negative" ? "bg-red-100 text-red-800" :
+                          r.classification === "neutral" ? "bg-blue-100 text-blue-800" :
+                          "bg-gray-100 text-gray-600"
+                        }`}>{r.classification || "auto"}</span>
+                        <p className="text-xs text-gray-400 mt-1">{r.received_at ? new Date(r.received_at).toLocaleDateString() : ""}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </>
+        )}
+
         {/* Divider */}
         <div className="border-t border-gray-200" />
 
         {/* Lead List — Card-based for mobile */}
         <div>
           <h2 className="text-lg font-bold text-gray-900 mb-1">Your Leads</h2>
-          <p className="text-sm text-gray-500 mb-5">{leads.length} leads — click any to see details</p>
+          <p className="text-sm text-gray-500 mb-5">
+            {leads.length} lead{leads.length !== 1 ? 's' : ''}
+            {leadMonthInfo && (
+              <span> — {leadMonthInfo.currentMonth} this month, {leadMonthInfo.pastMonths} from past months</span>
+            )}
+            — click any to see details
+          </p>
 
           {/* Desktop Table */}
           <div className="hidden md:block overflow-x-auto rounded-xl border border-gray-100 bg-white shadow-sm">

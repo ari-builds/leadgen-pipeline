@@ -64,7 +64,7 @@ interface ReportData {
 }
 
 const QC: Record<string, string> = { Strong: "#10b981", Good: "#f59e0b", Weak: "#ef4444" };
-const SC: Record<string, string> = { pass: "#10b981", warn: "#f59e0b", fail: "#ef4444" };
+
 const PIE = ["#2563eb", "#10b981", "#f59e0b", "#ef4444", "#8b5cf6", "#ec4899", "#06b6d4", "#84cc16"];
 
 function HealthBadge({ score }: { score: number }) {

@@ -199,8 +199,9 @@ export async function POST(req: NextRequest) {
       const client = clientResult.rows[0];
       const clientId = client.id;
 
+      // Get leads with assigned_at for month grouping
       const leadsResult = await db.execute({
-        sql: `SELECT l.id, l.company_name, l.contact_name, l.industry, l.location, l.score, l.status, l.notes, l.contact_email, l.contact_phone, l.website_url
+        sql: `SELECT l.id, l.company_name, l.contact_name, l.industry, l.location, l.score, l.status, l.notes, l.contact_email, l.contact_phone, l.website_url, cl.assigned_at
               FROM leads l
               JOIN client_leads cl ON l.id = cl.lead_id
               WHERE cl.client_id = ?
@@ -210,6 +211,7 @@ export async function POST(req: NextRequest) {
 
       let subscription = null;
       let exportedThisPeriod = false;
+      let monthlyCap = 100;
 
       try {
         const subResult = await db.execute({
@@ -220,6 +222,7 @@ export async function POST(req: NextRequest) {
 
         if (subResult.rows.length > 0) {
           const sub = subResult.rows[0];
+          monthlyCap = Number(sub.monthly_lead_quota) || 100;
 
           try {
             const deliveryResult = await db.execute({
@@ -246,11 +249,66 @@ export async function POST(req: NextRequest) {
         // client_subscriptions table might not exist
       }
 
+      // Group leads by current month vs past months
+      const now = new Date();
+      const currentMonth = now.getMonth();
+      const currentYear = now.getFullYear();
+
+      let currentMonthLeads = 0;
+      let pastMonthsLeads = 0;
+
+      for (const lead of leadsResult.rows) {
+        if (lead.assigned_at) {
+          const assigned = new Date(lead.assigned_at as string);
+          if (assigned.getMonth() === currentMonth && assigned.getFullYear() === currentYear) {
+            currentMonthLeads++;
+          } else {
+            pastMonthsLeads++;
+          }
+        } else {
+          currentMonthLeads++; // fallback: treat unassigned as current
+        }
+      }
+
+      const leadMonthInfo = {
+        currentMonth: currentMonthLeads,
+        pastMonths: pastMonthsLeads,
+        monthlyCap,
+        total: leadsResult.rows.length,
+      };
+
       const authToken = await generateToken({
         userId: clientId as number,
         email: `client-${slug}`,
         role: "client",
       });
+
+      // Cap leads at monthly quota, prioritize current month
+      let cappedLeads = leadsResult.rows;
+      const totalLeads = leadsResult.rows.length;
+
+      if (totalLeads > monthlyCap) {
+        const currentMonthOnly = leadsResult.rows.filter((lead: Record<string, unknown>) => {
+          if (lead.assigned_at) {
+            const assigned = new Date(lead.assigned_at as string);
+            return assigned.getMonth() === currentMonth && assigned.getFullYear() === currentYear;
+          }
+          return true;
+        });
+        if (currentMonthOnly.length >= monthlyCap) {
+          cappedLeads = currentMonthOnly.slice(0, monthlyCap);
+        } else {
+          const pastLeads = leadsResult.rows.filter((lead: Record<string, unknown>) => {
+            if (lead.assigned_at) {
+              const assigned = new Date(lead.assigned_at as string);
+              return !(assigned.getMonth() === currentMonth && assigned.getFullYear() === currentYear);
+            }
+            return false;
+          });
+          const fromPast = monthlyCap - currentMonthOnly.length;
+          cappedLeads = [...currentMonthOnly, ...pastLeads.slice(0, fromPast)];
+        }
+      }
 
       const response = NextResponse.json({
         clientId: clientId,
@@ -258,8 +316,13 @@ export async function POST(req: NextRequest) {
           name: client.name,
           description: client.description,
         },
-        leads: leadsResult.rows,
+        leads: cappedLeads.map(l => {
+          const row = { ...l as Record<string, unknown> };
+          delete row.assigned_at;
+          return row;
+        }),
         subscription,
+        leadMonthInfo,
       });
 
       response.cookies.set("auth-token", authToken, {
